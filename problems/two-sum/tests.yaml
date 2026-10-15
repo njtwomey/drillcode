@@ -1,0 +1,27 @@
+kind: function
+entry: Solution.twoSum
+scaffolds: []
+args: [nums, target]
+compare: unordered
+cases:
+  - name: example 1
+    input: {nums: [2, 7, 11, 15], target: 9}
+    expected: [0, 1]
+  - name: example 2
+    input: {nums: [3, 2, 4], target: 6}
+    expected: [1, 2]
+  - name: duplicate values
+    input: {nums: [3, 3], target: 6}
+    expected: [0, 1]
+  - name: negatives
+    input: {nums: [-3, 4, 3, 90], target: 0}
+    expected: [0, 2]
+  - name: zeros
+    input: {nums: [0, 4, 3, 0], target: 0}
+    expected: [0, 3]
+  - name: element cannot pair with itself
+    input: {nums: [5, 1, 9], target: 10}
+    expected: [1, 2]
+  - name: pair at the end
+    input: {nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 100, 200], target: 300}
+    expected: [9, 10]

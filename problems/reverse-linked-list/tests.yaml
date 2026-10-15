@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.reverseList
+scaffolds: [linked_list]
+args: [head]
+convert:
+  head: linked_list
+  result: linked_list
+cases:
+  - name: example 1
+    input: {head: [1, 2, 3, 4, 5]}
+    expected: [5, 4, 3, 2, 1]
+  - name: example 2
+    input: {head: [1, 2]}
+    expected: [2, 1]
+  - name: empty list
+    input: {head: []}
+    expected: []
+  - name: single node
+    input: {head: [7]}
+    expected: [7]
+  - name: duplicate values
+    input: {head: [1, 1, 2, 2]}
+    expected: [2, 2, 1, 1]
+  - name: long list
+    input: {head: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+    expected: [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
