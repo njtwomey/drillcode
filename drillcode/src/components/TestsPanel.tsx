@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, Play, Terminal } from 'lucide-react'
+import { ChevronDown, ChevronRight, Lock, Play, Terminal } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { StatusBadge } from '@/components/badges'
 import { Badge } from '@/components/ui/badge'
@@ -17,16 +17,22 @@ interface Props {
   onToggle: (name: string) => void
   onSelectAll: () => void
   onSelectNone: () => void
+  onSelectMine: () => void
   onRunOne: (name: string) => void
-  /** Practice mode: only the first `hideAfter` catalogue cases are shown by name and input; the rest are hidden until they fail. */
+  /** Practice mode: only the first `hideAfter` catalogue cases are shown by name and input; the rest are hidden cases that cannot be opened. */
   hideAfter?: number
 }
 
 const show = (v: unknown) => JSON.stringify(v)
+/** A hidden practice case: a catalogue case past the first `hideAfter`. It shows a status only and cannot be opened. */
+function isHiddenCase(spec: TestsSpec, hideAfter: number | undefined, c: TestCase): boolean {
+  return hideAfter !== undefined && !c.custom && spec.cases.findIndex((x) => x.name === c.name) >= hideAfter
+}
+
 const hasOutput = (r?: CaseResult) => !!r && !!(r.stdout.trim() || r.stderr.trim())
 
 /** Every test case: tick the ones to run, open one to see its input, result and console output, or run it alone. */
-export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onRunOne, hideAfter }: Props) {
+export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, hideAfter }: Props) {
   const [open, setOpen] = useState<Record<string, boolean>>({})
   // Failures open themselves once per run, so the reason is on screen; the reader can still close them.
   const autoOpened = useRef(new Set<string>())
@@ -34,7 +40,7 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
     const opened: Record<string, boolean> = {}
     for (const c of cases) {
       const r = results[c.name]
-      const bad = !!r && r.status !== 'pass' && r.status !== 'skipped'
+      const bad = !!r && r.status !== 'pass' && r.status !== 'skipped' && !isHiddenCase(spec, hideAfter, c)
       if (bad && !autoOpened.current.has(c.name)) {
         autoOpened.current.add(c.name)
         opened[c.name] = true
@@ -42,27 +48,47 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
       if (!bad) autoOpened.current.delete(c.name)
     }
     if (Object.keys(opened).length) setOpen((o) => ({ ...o, ...opened }))
-  }, [results, cases])
+  }, [results, cases, spec, hideAfter])
 
-  const allOpen = cases.every((c) => open[c.name])
-  const setAll = (value: boolean) => setOpen(Object.fromEntries(cases.map((c) => [c.name, value])))
+  const openable = cases.filter((c) => !isHiddenCase(spec, hideAfter, c))
+  const allOpen = openable.every((c) => open[c.name])
+  const setAll = (value: boolean) => setOpen(Object.fromEntries(openable.map((c) => [c.name, value])))
+  const hasMine = cases.some((c) => c.custom)
 
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-center gap-1.5 text-xs">
         <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectAll}>Select all</Button>
         <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectNone}>Select none</Button>
-        <Button size="sm" variant="ghost" className="ml-auto h-7 px-2" onClick={() => setAll(!allOpen)}>
+        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectMine} disabled={!hasMine} title="Select only the test cases you added">
+          Select mine
+        </Button>
+        <Button size="sm" variant="ghost" className="ml-auto h-7 px-2" onClick={() => setAll(!allOpen)} disabled={openable.length === 0}>
           {allOpen ? 'Collapse all' : 'Expand all'}
         </Button>
       </div>
       <ul className="divide-y rounded-md border text-sm">
-        {cases.map((c, i) => {
+        {cases.map((c) => {
           const r = results[c.name]
-          const hidden = hideAfter !== undefined && !c.custom && i >= hideAfter
+          const hidden = isHiddenCase(spec, hideAfter, c)
           const failed = !!r && r.status !== 'pass' && r.status !== 'skipped'
-          const isOpen = !!open[c.name]
-          const label = hidden ? `Hidden case ${i - hideAfter + 1}` : c.name
+          const isOpen = !hidden && !!open[c.name]
+          const label = hidden ? `Hidden case ${spec.cases.findIndex((x) => x.name === c.name) - hideAfter! + 1}` : c.name
+          if (hidden) {
+            return (
+              <li key={c.name} className="flex items-center gap-1.5 px-2 py-1.5">
+                <Checkbox checked={selected.has(c.name)} onCheckedChange={() => onToggle(c.name)} aria-label={`Run ${label}`} />
+                <Lock className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+                {r ? <StatusBadge status={r.status} /> : <Badge variant="outline" className="text-muted-foreground">not run</Badge>}
+                <span className="min-w-0 truncate font-medium">{label}</span>
+                {failed && <span className="truncate text-xs text-muted-foreground">did not pass; its input stays hidden</span>}
+                {r && r.status !== 'skipped' && <span className="ml-auto shrink-0 text-xs text-muted-foreground tabular-nums">{r.ms.toFixed(2)} ms</span>}
+                <Button size="icon" variant="ghost" className="size-7 shrink-0" disabled={running} onClick={() => onRunOne(c.name)} aria-label={`Run only ${label}`} title="Run only this test">
+                  <Play className="size-3.5" />
+                </Button>
+              </li>
+            )
+          }
           return (
             <li key={c.name}>
               <Collapsible open={isOpen} onOpenChange={(v) => setOpen((o) => ({ ...o, [c.name]: v }))}>
@@ -84,11 +110,7 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                 </div>
                 <CollapsibleContent>
                   <div className="space-y-2 border-t bg-muted/20 px-3 py-2">
-                    {(!hidden || failed) && (
-                      <div className="break-all font-mono text-xs text-muted-foreground">
-                        {hidden ? formatCase(spec, { ...c, expected: undefined }).replace(/ → undefined$/, '') : formatCase(spec, c)}
-                      </div>
-                    )}
+                    <div className="break-all font-mono text-xs text-muted-foreground">{formatCase(spec, c)}</div>
                     {r?.status === 'fail' && (
                       <div className="grid gap-2 rounded-md bg-muted/50 p-2 font-mono text-xs sm:grid-cols-2">
                         <div className="break-all"><span className="text-muted-foreground">expected </span>{show(r.expected)}</div>

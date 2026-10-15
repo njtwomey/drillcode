@@ -61,7 +61,8 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
   const [rightCollapsed, setRightCollapsed] = useState(false)
 
   const source = drafts[draftKey] ?? originalSource
-  const cases = [...spec.cases, ...custom.map((c) => ({ ...c, custom: true }))]
+  // Cases you added come first, newest at the top, so a new one is right where you are looking.
+  const cases = [...custom.map((c) => ({ ...c, custom: true })).reverse(), ...spec.cases]
   const busy = status === 'running' || status === 'error'
 
   // A newly added custom case starts ticked.
@@ -173,6 +174,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
           onToggle={toggle}
           onSelectAll={() => setSelected(new Set(cases.map((c) => c.name)))}
           onSelectNone={() => setSelected(new Set())}
+          onSelectMine={() => setSelected(new Set(custom.map((c) => c.name)))}
           onRunOne={(name) => void runNames([name])}
           hideAfter={practice ? EXAMPLES_SHOWN : undefined}
         />

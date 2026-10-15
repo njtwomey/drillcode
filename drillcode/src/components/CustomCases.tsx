@@ -134,7 +134,7 @@ export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
 
       {cases.length > 0 && (
         <ul className="divide-y rounded-md border">
-          {cases.map((c) => (
+          {[...cases].reverse().map((c) => (
             <li key={c.name} className="flex items-center justify-between gap-2 px-3 py-1.5">
               <span className="min-w-0 truncate">
                 <Badge variant="outline" className="mr-2">custom</Badge>
