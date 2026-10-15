@@ -1,5 +1,6 @@
 import { HashRouter, Link, Route, Routes } from 'react-router'
-import { ThemeToggle, useApplyTheme } from '@/components/ThemeToggle'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { useApplyTheme } from '@/lib/useApplyTheme'
 import { Landing } from '@/pages/Landing'
 import { ProblemPage } from '@/pages/ProblemPage'
 

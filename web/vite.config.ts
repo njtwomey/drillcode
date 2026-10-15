@@ -1,4 +1,4 @@
-import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
@@ -7,7 +7,9 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
-  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
-  server: { fs: { allow: [path.resolve(__dirname, '..')] } },
+  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+  server: { fs: { allow: [fileURLToPath(new URL('..', import.meta.url))] } },
   worker: { format: 'es' },
+  // The bundle embeds every problem's source text, so it is bigger than the default 500 kB.
+  build: { chunkSizeWarningLimit: 2500 },
 })

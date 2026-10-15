@@ -34,3 +34,13 @@ def read_optional(path):
 
 def problem_dirs():
     return sorted(p.name for p in PROBLEMS.iterdir() if p.is_dir() and not p.name.startswith("_"))
+
+
+def solution_files(slug):
+    """solution.py first, then alternative approaches as solution_<variant>.py."""
+    directory = PROBLEMS / slug
+    return [directory / "solution.py", *sorted(directory.glob("solution_*.py"))]
+
+
+def variant_label(path):
+    return "primary" if path.name == "solution.py" else path.stem.removeprefix("solution_")

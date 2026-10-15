@@ -25,14 +25,16 @@ interface State {
   setQueue: (queue: string[]) => void
   setQueuePos: (pos: number) => void
   clearQueue: () => void
-  setDraft: (slug: string, mode: Mode, source: string) => void
-  clearDraft: (slug: string, mode: Mode) => void
+  setDraft: (key: string, source: string) => void
+  clearDraft: (key: string) => void
   addCustomCase: (slug: string, testCase: TestCase) => void
   removeCustomCase: (slug: string, name: string) => void
   setTheme: (theme: Theme) => void
 }
 
-export const draftKey = (slug: string, mode: Mode) => `${slug}:${mode}`
+/** Draft slot: one per slug and mode; View mode has one more per alternative solution. */
+export const draftKey = (slug: string, mode: Mode, variant = 'primary') =>
+  mode === 'view' && variant !== 'primary' ? `${slug}:view:${variant}` : `${slug}:${mode}`
 
 export const useStore = create<State>()(
   persist(
@@ -55,12 +57,11 @@ export const useStore = create<State>()(
       setQueue: (queue) => set({ queue, queuePos: 0 }),
       setQueuePos: (queuePos) => set({ queuePos }),
       clearQueue: () => set({ queue: [], queuePos: 0 }),
-      setDraft: (slug, mode, source) =>
-        set((s) => ({ drafts: { ...s.drafts, [draftKey(slug, mode)]: source } })),
-      clearDraft: (slug, mode) =>
+      setDraft: (key, source) => set((s) => ({ drafts: { ...s.drafts, [key]: source } })),
+      clearDraft: (key) =>
         set((s) => {
           const drafts = { ...s.drafts }
-          delete drafts[draftKey(slug, mode)]
+          delete drafts[key]
           return { drafts }
         }),
       addCustomCase: (slug, testCase) =>

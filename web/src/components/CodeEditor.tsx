@@ -5,7 +5,7 @@ import { python } from '@codemirror/lang-python'
 import {
   bracketMatching, defaultHighlightStyle, indentOnInput, indentUnit, syntaxHighlighting,
 } from '@codemirror/language'
-import { Compartment, EditorState, Prec } from '@codemirror/state'
+import { Annotation, Compartment, EditorState, Prec } from '@codemirror/state'
 import { oneDark } from '@codemirror/theme-one-dark'
 import {
   EditorView, highlightActiveLine, highlightActiveLineGutter, keymap, lineNumbers,
@@ -17,6 +17,9 @@ interface Props {
   onRun: () => void
   dark: boolean
 }
+
+// Marks edits made by the app (mode switch, Reset) so they are not saved as user drafts.
+const external = Annotation.define<boolean>()
 
 const baseTheme = EditorView.theme({
   '&': { height: '100%', fontSize: '13px' },
@@ -60,7 +63,7 @@ export function CodeEditor({ value, onChange, onRun, dark }: Props) {
           ),
           keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap, indentWithTab]),
           EditorView.updateListener.of((update) => {
-            if (update.docChanged) callbacks.current.onChange(update.state.doc.toString())
+            if (update.docChanged && !update.transactions.some((t) => t.annotation(external))) callbacks.current.onChange(update.state.doc.toString())
           }),
         ],
       }),
@@ -73,7 +76,7 @@ export function CodeEditor({ value, onChange, onRun, dark }: Props) {
   useEffect(() => {
     const editor = view.current
     if (editor && editor.state.doc.toString() !== value) {
-      editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: value } })
+      editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: value }, annotations: external.of(true) })
     }
   }, [value])
 

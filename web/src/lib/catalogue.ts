@@ -4,7 +4,7 @@ import indexRaw from '../../../problems/index.yaml?raw'
 
 // Everything under problems/ is read straight from disk, so edits hot-reload.
 const problemFiles = import.meta.glob(
-  '../../../problems/*/{solution.py,skeleton.py,tests.yaml,validator.py}',
+  '../../../problems/*/{solution*.py,skeleton.py,tests.yaml,validator.py}',
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>
 
@@ -40,6 +40,23 @@ export function hasFiles(slug: string): boolean {
 export function solutionSource(slug: string) {
   return file(slug, 'solution.py') ?? ''
 }
+export interface Variant {
+  id: string // 'primary' or the solution_<id>.py suffix
+  label: string
+  source: string
+}
+
+/** solution.py first, then any solution_<variant>.py alternatives (same tests, different approach). */
+export function solutionVariants(slug: string): Variant[] {
+  const prefix = `../../../problems/${slug}/`
+  const variants: Variant[] = [{ id: 'primary', label: 'Primary', source: solutionSource(slug) }]
+  for (const path of Object.keys(problemFiles).sort()) {
+    const match = path.startsWith(prefix) && path.slice(prefix.length).match(/^solution_(.+)\.py$/)
+    if (match) variants.push({ id: match[1], label: match[1].replace(/_/g, ' '), source: problemFiles[path] })
+  }
+  return variants
+}
+
 export function skeletonSource(slug: string) {
   return file(slug, 'skeleton.py') ?? ''
 }

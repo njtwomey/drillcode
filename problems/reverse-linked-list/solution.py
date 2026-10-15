@@ -14,12 +14,3 @@ class Solution:
             prev = curr
             curr = next_node
         return prev
-
-    # Recursive alternative: O(n) space on the call stack.
-    def reverseListRecursive(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head is None or head.next is None:
-            return head
-        new_head = self.reverseListRecursive(head.next)
-        head.next.next = head
-        head.next = None
-        return new_head

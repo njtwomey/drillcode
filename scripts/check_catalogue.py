@@ -3,7 +3,7 @@
 import ast
 import sys
 
-from _common import PROBLEMS, REQUIRED_FILES, TOPICS, load_index, load_spec, problem_dirs
+from _common import PROBLEMS, REQUIRED_FILES, TOPICS, load_index, load_spec, problem_dirs, solution_files
 
 DIFFICULTIES = {"easy", "medium", "hard"}
 FIELDS = ["slug", "number", "title", "difficulty", "topic", "tags", "blind75", "premium",
@@ -55,19 +55,20 @@ def main():
         spec = load_spec(slug)
         if spec.get("compare") == "validator" and not (directory / "validator.py").exists():
             errors.append(f"{slug}: compare is validator but validator.py is missing")
-        try:
-            classes = defined_names((directory / "solution.py").read_text())
-        except SyntaxError as e:
-            errors.append(f"{slug}: solution.py does not parse: {e}")
-            continue
         if "entry" not in spec:
             errors.append(f"{slug}: tests.yaml has no entry")
             continue
         cls, _, method = spec["entry"].partition(".")
-        if cls not in classes:
-            errors.append(f"{slug}: solution.py does not define class {cls}")
-        elif method and method not in classes[cls]:
-            errors.append(f"{slug}: {cls} has no method {method}")
+        for path in solution_files(slug):
+            try:
+                classes = defined_names(path.read_text())
+            except SyntaxError as e:
+                errors.append(f"{slug}: {path.name} does not parse: {e}")
+                continue
+            if cls not in classes:
+                errors.append(f"{slug}: {path.name} does not define class {cls}")
+            elif method and method not in classes[cls]:
+                errors.append(f"{slug}: {path.name}: {cls} has no method {method}")
 
     if errors:
         print("\n".join(errors))

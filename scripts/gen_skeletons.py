@@ -71,7 +71,11 @@ def main():
     for slug in sys.argv[1:] or problem_dirs():
         directory = PROBLEMS / slug
         spec = load_spec(slug)
-        (directory / "skeleton.py").write_text(skeleton(spec, (directory / "solution.py").read_text()))
+        target = directory / "skeleton.py"
+        text = skeleton(spec, (directory / "solution.py").read_text())
+        if not target.exists() or target.read_text() != text:
+            target.write_text(text)
+            print(f"regenerated {slug}/skeleton.py")
 
 
 if __name__ == "__main__":
