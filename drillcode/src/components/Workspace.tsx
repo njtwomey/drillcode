@@ -54,6 +54,8 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
   const [editing, setEditing] = useState<string | null>(null)
   // The case whose error line is marked in the editor (null: none). Cleared as soon as the code changes.
   const [errorCase, setErrorCase] = useState<string | null>(null)
+  // Focus mode: the one test that is on, and the ticks to put back when it is turned off.
+  const [focus, setFocus] = useState<{ name: string; saved: Set<string> } | null>(null)
   const status = useSyncExternalStore(pyRunner.subscribe, pyRunner.getSnapshot)
   const wide = useIsWide()
 
@@ -70,13 +72,25 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
   const cases = [...custom.map((c) => ({ ...c, custom: true })).reverse(), ...spec.cases]
   const busy = status === 'running' || status === 'error'
 
+  const focusOn = (name: string | null) => {
+    if (name === null) {
+      if (focus) setSelected(focus.saved)
+      setFocus(null)
+      return
+    }
+    setFocus({ name, saved: focus ? focus.saved : selected })
+    setSelected(new Set([name]))
+  }
+
   // A newly added custom case starts ticked.
   const known = useRef(new Set(spec.cases.map((c) => c.name)))
   useEffect(() => {
     const fresh = cases.filter((c) => !known.current.has(c.name))
     if (!fresh.length) return
     fresh.forEach((c) => known.current.add(c.name))
-    setSelected((s) => new Set([...s, ...fresh.map((c) => c.name)]))
+    // Adding a case ends focus mode, so the new case is on and visible.
+    setSelected((s) => new Set([...(focus ? focus.saved : s), ...fresh.map((c) => c.name)]))
+    setFocus(null)
   })
 
   // CodeEditor keeps its onRun callback current, so these closures always see the latest text.
@@ -212,6 +226,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
           onDelete={(name) => {
             lastRun.current.delete(name)
             if (editing === name) setEditing(null)
+            if (focus?.name === name) focusOn(null)
             removeCustomCase(slug, name)
           }}
           renderEditor={(c) => (
@@ -219,6 +234,8 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
           )}
           visibleExamples={visibleExamples}
           errorCase={errorCase}
+          focused={focus?.name ?? null}
+          onFocus={focusOn}
           onShowError={setErrorCase}
         />
       </section>

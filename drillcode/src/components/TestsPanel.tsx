@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Lock, Pencil, Play, Terminal, Trash2, TriangleAlert } from 'lucide-react'
+import { ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Eye, EyeOff, Lock, Pencil, Play, Terminal, Trash2, TriangleAlert } from 'lucide-react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { StatusBadge } from '@/components/badges'
 import { Badge } from '@/components/ui/badge'
@@ -28,6 +28,9 @@ interface Props {
   visibleExamples?: number
   /** The case whose error line is marked in the editor, and how to change it. */
   errorCase?: string | null
+  /** Focus mode: the one test that is on; all others are collapsed, unticked and disabled. */
+  focused?: string | null
+  onFocus?: (name: string | null) => void
   onShowError?: (name: string | null) => void
 }
 
@@ -55,10 +58,23 @@ function ErrorLineButton({ result, label, active, onToggle }: { result?: CaseRes
   )
 }
 
+/** A compact joined group of small icon buttons. */
+function ButtonGroup({ children }: { children: ReactNode }) {
+  return <div className="flex shrink-0 items-center divide-x overflow-hidden rounded-md border">{children}</div>
+}
+
+function GroupButton({ label, title, onClick, disabled, active, children }: { label: string; title: string; onClick: () => void; disabled?: boolean; active?: boolean; children: ReactNode }) {
+  return (
+    <Button size="icon" variant={active ? 'secondary' : 'ghost'} className="size-6 rounded-none" disabled={disabled} onClick={onClick} aria-label={label} aria-pressed={active} title={title}>
+      {children}
+    </Button>
+  )
+}
+
 const hasOutput = (r?: CaseResult) => !!r && !!(r.stdout.trim() || r.stderr.trim())
 
 /** Every test case: tick the ones to run, open one to see its input, result and console output, or run it alone. */
-export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, visibleExamples, errorCase, onShowError }: Props) {
+export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, visibleExamples, errorCase, onShowError, focused, onFocus }: Props) {
   const [open, setOpen] = useState<Record<string, boolean>>({})
   // Which tests have their console output open. Kept here, not in the row, so it survives a re-run (the row is empty while it runs).
   const [consoleOpen, setConsoleOpen] = useState<Record<string, boolean>>({})
@@ -78,6 +94,10 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
     if (Object.keys(opened).length) setOpen((o) => ({ ...o, ...opened }))
   }, [results, cases, spec, visibleExamples])
 
+  useEffect(() => {
+    if (focused) setOpen({ [focused]: true })
+  }, [focused])
+
   const openable = cases.filter((c) => !isHiddenCase(spec, visibleExamples, c))
   const setAll = (value: boolean) => setOpen(Object.fromEntries(openable.map((c) => [c.name, value])))
   const hasMine = cases.some((c) => c.custom)
@@ -85,9 +105,9 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-center gap-1.5 text-xs">
-        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectAll}>Select all</Button>
-        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectNone}>Select none</Button>
-        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectMine} disabled={!hasMine} title="Select only the test cases you added">
+        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectAll} disabled={!!focused}>Select all</Button>
+        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectNone} disabled={!!focused}>Select none</Button>
+        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectMine} disabled={!hasMine || !!focused} title="Select only the test cases you added">
           Select mine
         </Button>
         <div className="ml-auto flex items-center">
@@ -99,35 +119,48 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
           </Button>
         </div>
       </div>
+      {focused && (
+        <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-2 py-1 text-xs">
+          <Eye className="size-3.5 shrink-0" />
+          <span className="min-w-0 flex-1 truncate">Focused on <span className="font-medium">{focused}</span>; the other tests are off.</span>
+          <Button size="sm" variant="ghost" className="h-6 px-2 text-xs" onClick={() => onFocus?.(null)}>Show all</Button>
+        </div>
+      )}
       <ul className="divide-y rounded-md border text-sm">
         {cases.map((c) => {
           const r = results[c.name]
           const hidden = isHiddenCase(spec, visibleExamples, c)
           const failed = !!r && r.status !== 'pass' && r.status !== 'skipped'
           const isEditing = editing === c.name
-          const isOpen = !hidden && (isEditing || !!open[c.name])
+          const dimmed = !!focused && focused !== c.name
+          const isOpen = !hidden && !dimmed && (isEditing || !!open[c.name])
           const label = hidden ? `Hidden case ${spec.cases.findIndex((x) => x.name === c.name) - visibleExamples! + 1}` : c.name
+          const focusBtn = !hidden && onFocus ? (
+            <GroupButton label={`${focused === c.name ? 'Stop focusing on' : 'Focus on'} ${label}`} title={focused === c.name ? 'Show all tests again' : 'Focus on this test: turn the others off'} active={focused === c.name} onClick={() => onFocus(focused === c.name ? null : c.name)}>
+              {focused === c.name ? <EyeOff className="size-3" /> : <Eye className="size-3" />}
+            </GroupButton>
+          ) : null
           if (hidden) {
             return (
-              <li key={c.name} className="flex items-center gap-1.5 px-2 py-1.5">
-                <Checkbox checked={selected.has(c.name)} onCheckedChange={() => onToggle(c.name)} aria-label={`Run ${label}`} />
+              <li key={c.name} className={`flex items-center gap-1.5 px-2 py-1.5 ${dimmed ? 'opacity-50' : ''}`}>
+                <Checkbox checked={selected.has(c.name)} disabled={dimmed} onCheckedChange={() => onToggle(c.name)} aria-label={`Run ${label}`} />
                 <Lock className="size-4 shrink-0 text-muted-foreground" aria-hidden />
                 {r ? <StatusBadge status={r.status} /> : <Badge variant="outline" className="text-muted-foreground">not run</Badge>}
                 <span className="min-w-0 truncate font-medium">{label}</span>
                 {failed && <span className="truncate text-xs text-muted-foreground">did not pass; its input stays hidden</span>}
                 {r && r.status !== 'skipped' && <span className="ml-auto shrink-0 text-xs text-muted-foreground tabular-nums">{r.ms.toFixed(2)} ms</span>}
                 <ErrorLineButton result={r} label={label} active={errorCase === c.name} onToggle={() => onShowError?.(errorCase === c.name ? null : c.name)} />
-                <Button size="icon" variant="ghost" className="size-7 shrink-0" disabled={running} onClick={() => onRunOne(c.name)} aria-label={`Run only ${label}`} title="Run only this test">
-                  <Play className="size-3.5" />
-                </Button>
+                <ButtonGroup>
+                  <GroupButton label={`Run only ${label}`} title="Run only this test" disabled={running || dimmed} onClick={() => onRunOne(c.name)}><Play className="size-3" /></GroupButton>
+                </ButtonGroup>
               </li>
             )
           }
           return (
-            <li key={c.name}>
+            <li key={c.name} className={dimmed ? 'opacity-50' : ''}>
               <Collapsible open={isOpen} onOpenChange={(v) => !isEditing && setOpen((o) => ({ ...o, [c.name]: v }))}>
                 <div className="flex items-center gap-1.5 px-2 py-1.5">
-                  <Checkbox checked={selected.has(c.name)} onCheckedChange={() => onToggle(c.name)} aria-label={`Run ${label}`} />
+                  <Checkbox checked={selected.has(c.name)} disabled={dimmed} onCheckedChange={() => onToggle(c.name)} aria-label={`Run ${label}`} />
                   <CollapsibleTrigger asChild>
                     <button className="flex min-w-0 flex-1 items-center gap-1.5 text-left" aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${label}`}>
                       {isOpen ? <ChevronDown className="size-4 shrink-0 text-muted-foreground" /> : <ChevronRight className="size-4 shrink-0 text-muted-foreground" />}
@@ -148,19 +181,16 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                     </button>
                   </CollapsibleTrigger>
                   <ErrorLineButton result={r} label={label} active={errorCase === c.name} onToggle={() => onShowError?.(errorCase === c.name ? null : c.name)} />
-                  <Button size="icon" variant="ghost" className="size-7 shrink-0" disabled={running} onClick={() => onRunOne(c.name)} aria-label={`Run only ${label}`} title="Run only this test">
-                    <Play className="size-3.5" />
-                  </Button>
-                  {c.custom && onEdit && (
-                    <Button size="icon" variant="ghost" className="size-7 shrink-0" onClick={() => onEdit(isEditing ? null : c.name)} aria-label={`Edit ${label}`} title="Edit this case">
-                      <Pencil className="size-3.5" />
-                    </Button>
-                  )}
-                  {c.custom && onDelete && (
-                    <Button size="icon" variant="ghost" className="size-7 shrink-0" onClick={() => onDelete(c.name)} aria-label={`Delete ${label}`} title="Delete this case">
-                      <Trash2 className="size-3.5" />
-                    </Button>
-                  )}
+                  <ButtonGroup>
+                    <GroupButton label={`Run only ${label}`} title="Run only this test" disabled={running || dimmed} onClick={() => onRunOne(c.name)}><Play className="size-3" /></GroupButton>
+                    {focusBtn}
+                    {c.custom && onEdit && (
+                      <GroupButton label={`Edit ${label}`} title="Edit this case" disabled={dimmed} onClick={() => onEdit(isEditing ? null : c.name)}><Pencil className="size-3" /></GroupButton>
+                    )}
+                    {c.custom && onDelete && (
+                      <GroupButton label={`Delete ${label}`} title="Delete this case" onClick={() => onDelete(c.name)}><Trash2 className="size-3" /></GroupButton>
+                    )}
+                  </ButtonGroup>
                 </div>
                 <CollapsibleContent>
                   <div className="space-y-2 border-t bg-muted/20 px-3 py-2">
