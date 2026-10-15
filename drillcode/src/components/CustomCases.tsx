@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { skeletonSource } from '@/lib/catalogue'
 import { caseHelp, formatCase, inputNames, parseCaseLine, parseJson, splitTopLevel } from '@/lib/caseFormat'
 import { useStore } from '@/lib/store'
+import { parseTyped, typeError } from '@/lib/valueTypes'
 import type { TestCase, TestsSpec } from '@/lib/types'
 
 const NONE: TestCase[] = []
@@ -49,7 +50,9 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
   // Parse every filled field; the form can be added only when all of them parse.
   const fields = names.map((name) => {
     const text = values[name] ?? ''
-    return { name, text, parsed: text.trim() ? parseJson(`[${text}]`, name, text) : null }
+    const parsed = text.trim() ? parseTyped(text, types[name], name) : null
+    const mismatch = parsed && !parsed.error ? typeError(parsed.value, types[name]) : null
+    return { name, text, parsed, mismatch }
   })
   const expectedParsed = expected.trim() ? parseJson(expected, 'the expected result') : null
   // Blank expected on a design problem: parse the calls against placeholder nulls, then drop them.
@@ -61,7 +64,7 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
   const expectedOk = blankExpected ? allowReference : !!expectedParsed && !expectedParsed.error
   const ready = isOps
     ? !!opsParsed?.case && expectedOk
-    : fields.every((f) => f.parsed && !f.parsed.error) && expectedOk
+    : fields.every((f) => f.parsed && !f.parsed.error && !f.mismatch) && expectedOk
 
   function add() {
     if (!ready) return
@@ -75,7 +78,7 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
       addCustomCase(slug, { name, ...parsedCase })
       setCalls('')
     } else {
-      const input = Object.fromEntries(fields.map((f) => [f.name, (f.parsed!.value as unknown[])[0]]))
+      const input = Object.fromEntries(fields.map((f) => [f.name, f.parsed!.value]))
       addCustomCase(slug, { name, input, ...(blankExpected ? {} : { expected: expectedParsed!.value }), custom: true })
       setValues({})
     }
@@ -112,14 +115,15 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
               </Label>
               <Input
                 id={`cc-${f.name}`}
-                className={`font-mono text-xs ${f.parsed?.error ? 'border-destructive' : ''}`}
+                className={`font-mono text-xs ${f.parsed?.error || f.mismatch ? 'border-destructive' : ''}`}
                 spellCheck={false}
                 value={f.text}
                 onChange={(e) => setValues({ ...values, [f.name]: e.target.value })}
                 onKeyDown={onEnter}
-                placeholder={show(example.input?.[f.name])}
+                placeholder={typeof example.input?.[f.name] === 'string' ? (example.input?.[f.name] as string) : show(example.input?.[f.name])}
               />
               {f.parsed?.error && <p className="text-xs text-destructive">Not a valid value. Use JSON, e.g. {show(example.input?.[f.name])}</p>}
+              {f.mismatch && <p className="text-xs text-destructive"><span className="font-mono">{f.name}</span> {f.mismatch}.</p>}
             </div>
           ))
         )}

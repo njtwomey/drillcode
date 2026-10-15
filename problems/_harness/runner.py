@@ -236,6 +236,16 @@ def run_case(solution_source, spec, case, validator_source=None, reference_sourc
     return result
 
 
+def _one_line(message):
+    """The gist of an error message: the exception line of a traceback, or the sentence itself."""
+    lines = [line.strip() for line in str(message).splitlines() if line.strip()]
+    if not lines:
+        return "unknown error"
+    if lines[0].startswith("Traceback"):
+        return lines[-1]
+    return lines[0] if len(lines) == 1 else f"{lines[0]}: {lines[-1]}"
+
+
 def _derive_expected(spec, case, reference_source):
     """Run the reference solution on the case's input and use its answer as the expected value."""
     ref_spec = dict(spec, call=True)
@@ -244,9 +254,10 @@ def _derive_expected(spec, case, reference_source):
     placeholder = [] if spec.get("kind") == "operations" else None
     ref = run_case(reference_source, ref_spec, dict(case, expected=placeholder))
     if ref["status"] in ("error", "timeout"):
+        # One line, no traceback: the frames would be the reference solution's own code, not the reader's.
         raise CaseError(
-            "No expected value was given, and the reference solution could not answer this input"
-            " (check it is valid for the problem, or fill in the expected value yourself).\n" + ref["message"]
+            f"No expected value was given, and the reference solution could not answer this input ({_one_line(ref['message'])}). "
+            "Check that each value has the right type and is within the problem's limits, or fill in the expected value yourself."
         )
     return dict(case, expected=ref["actual"]), ref["actual"], "reference"
 
