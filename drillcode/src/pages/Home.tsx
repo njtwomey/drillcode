@@ -1,4 +1,4 @@
-import { BookOpen, Dices, Flame, Play, Pencil, RotateCcw, Sparkles } from 'lucide-react'
+import { BookOpen, Dices, Flame, Footprints, Play, Pencil, RotateCcw, Sparkles } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { DifficultyBadge } from '@/components/badges'
@@ -62,6 +62,7 @@ export function Home() {
   const done = useStore((s) => s.done)
   const solves = useStore((s) => s.solves)
   const session = useStore((s) => s.practice)
+  const walk = useStore((s) => s.walk)
   const setFilters = useStore((s) => s.setFilters)
 
   const stats = useMemo(() => solveStats(solves), [solves])
@@ -112,6 +113,14 @@ export function Home() {
           <RotateCcw className="size-4" />
           <span>Practice session in progress: problem {unfinished.index + 1} of {unfinished.slugs.length}.</span>
           <Button asChild size="sm" className="ml-auto"><Link to="/practice/session">Resume</Link></Button>
+        </div>
+      )}
+
+      {walk && (
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border bg-muted/40 p-4 text-sm">
+          <Footprints className="size-4" />
+          <span>Random walk in progress: {walk.history.length} visited, {Object.values(walk.outcomes).filter((o) => o.status === 'passed').length} solved.</span>
+          <Button asChild size="sm" className="ml-auto"><Link to="/practice/walk">Continue</Link></Button>
         </div>
       )}
 

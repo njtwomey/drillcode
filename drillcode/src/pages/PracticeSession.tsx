@@ -1,16 +1,15 @@
-import { Check, ExternalLink, Flag, SkipForward } from 'lucide-react'
+import { Check, Flag, SkipForward } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router'
 import { DifficultyBadge } from '@/components/badges'
-import { Description } from '@/components/Description'
-import { Workspace } from '@/components/Workspace'
+import { PracticeProblem } from '@/components/PracticeProblem'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { bySlug, definitions, descriptionSource, skeletonSource } from '@/lib/catalogue'
+import { bySlug } from '@/lib/catalogue'
 import { formatDuration } from '@/lib/format'
-import { practiceDraftKey, useStore } from '@/lib/store'
+import { useStore } from '@/lib/store'
 import type { CaseResult } from '@/lib/types'
 
 function useElapsed(since: number) {
@@ -36,8 +35,6 @@ function Current() {
   const outcome = session.outcomes[slug]
   const elapsed = useElapsed(session.problemStartedAt)
   const last = session.index === session.slugs.length - 1
-  const defs = definitions(slug)
-  const description = descriptionSource(slug)
 
   function onResults(results: CaseResult[]) {
     const passed = results.length > 0 && results.every((r) => r.status === 'pass')
@@ -74,34 +71,7 @@ function Current() {
         {outcome.attempts > 0 && <span className="text-xs text-muted-foreground">{outcome.attempts} run{outcome.attempts === 1 ? '' : 's'}</span>}
       </div>
 
-      <div>
-        <Workspace
-          left={
-        <aside className="space-y-4 text-sm">
-            {description && <Description source={description} />}
-            <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
-              Full statement on LeetCode <ExternalLink className="size-3" />
-            </a>
-            <p className="rounded-md border p-3 text-muted-foreground">
-              Practice mode: no solution, approach or hints. The first two test cases are shown as examples;
-              the rest stay hidden until one fails.
-            </p>
-            {defs && (
-              <div className="rounded-md border p-3">
-                <h2 className="mb-2 font-medium">Definitions and judge notes</h2>
-                <pre className="overflow-auto font-mono text-xs">{defs}</pre>
-              </div>
-            )}
-          </aside>
-          }
-          key={slug}
-          slug={slug}
-          practice
-          draftKey={practiceDraftKey(slug)}
-          originalSource={skeletonSource(slug)}
-          onResults={onResults}
-        />
-      </div>
+      <PracticeProblem key={slug} slug={slug} onResults={onResults} />
     </div>
   )
 }

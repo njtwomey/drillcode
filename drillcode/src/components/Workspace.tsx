@@ -49,7 +49,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
   const drafts = useStore((s) => s.drafts)
   const theme = useStore((s) => s.theme)
   const custom = useStore((s) => s.customCases[slug]) ?? NONE
-  const { setDraft, clearDraft } = useStore()
+  const { setDraft, clearDraft, updateCustomCase } = useStore()
   const status = useSyncExternalStore(pyRunner.subscribe, pyRunner.getSnapshot)
   const wide = useIsWide()
 
@@ -89,10 +89,26 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
     const out = await pyRunner.runCases(job, subset, (partial) =>
       setResults((prev) => ({ ...prev, ...Object.fromEntries(partial.map((r) => [r.name, r])) })),
     )
+    // A case added without an expected value now has one, from the reference solution: keep it so it shows in the list.
+    for (const r of out) {
+      if (r.expected_source === 'reference' && subset.find((c) => c.name === r.name)?.custom) {
+        updateCustomCase(slug, r.name, { expected: r.expected, derived: true })
+      }
+    }
     // Only a run of every test counts as "the solution is done".
     if (subset.length === cases.length) onResults?.(out)
     return { results: out, cases: subset }
   }
+
+  // A case you add without an expected value runs straight away, so you see what the answer is.
+  const autoRan = useRef(new Set<string>())
+  useEffect(() => {
+    if (practice || status !== 'ready') return
+    const waiting = cases.find((c) => c.custom && c.expected === undefined && !autoRan.current.has(c.name))
+    if (!waiting) return
+    autoRan.current.add(waiting.name)
+    void runNames([waiting.name])
+  })
 
   const run = () => void runNames(cases.filter((c) => selected.has(c.name)).map((c) => c.name))
   const toggle = (name: string) =>

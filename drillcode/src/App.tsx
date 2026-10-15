@@ -5,6 +5,7 @@ import { useApplyTheme } from '@/lib/useApplyTheme'
 import { Home } from '@/pages/Home'
 import { Practice } from '@/pages/Practice'
 import { PracticeSession } from '@/pages/PracticeSession'
+import { PracticeWalk } from '@/pages/PracticeWalk'
 import { ProblemPage } from '@/pages/ProblemPage'
 import { Problems } from '@/pages/Problems'
 import { Profile } from '@/pages/Profile'
@@ -67,6 +68,7 @@ export default function App() {
           <Route path="/p/:slug/read" element={<ProblemPage mode="read" />} />
           <Route path="/practice" element={<Practice />} />
           <Route path="/practice/session" element={<PracticeSession />} />
+          <Route path="/practice/walk" element={<PracticeWalk />} />
           <Route path="/tips" element={<Tips />} />
           <Route path="/tips/:slug" element={<TipPage />} />
           <Route path="/profile" element={<Profile />} />

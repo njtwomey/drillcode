@@ -52,6 +52,19 @@ export interface SolveEvent {
   seconds?: number
 }
 
+/** Criteria for the random walk: the session filters without a count. */
+export type WalkConfig = Omit<PracticeConfig, 'count'>
+
+/** A random walk: no count and no end; it keeps its place until you end it. */
+export interface WalkState {
+  /** Problems visited, in order; `index` is the one on screen (Back and Forward move along this list). */
+  history: string[]
+  index: number
+  outcomes: Record<string, PracticeOutcome>
+  problemStartedAt: number
+  startedAt: number
+}
+
 export interface PracticeRecord {
   finishedAt: number
   total: number
@@ -71,6 +84,8 @@ interface State {
   practiceConfig: PracticeConfig
   practice: PracticeSession | null
   practiceHistory: PracticeRecord[]
+  walkConfig: WalkConfig
+  walk: WalkState | null
   solves: SolveEvent[]
   toggleDone: (slug: string) => void
   markDone: (slug: string) => void
@@ -83,6 +98,7 @@ interface State {
   clearDraft: (key: string) => void
   addCustomCase: (slug: string, testCase: TestCase) => void
   removeCustomCase: (slug: string, name: string) => void
+  updateCustomCase: (slug: string, name: string, patch: Partial<TestCase>) => void
   setTheme: (theme: Theme) => void
   setPracticeConfig: (patch: Partial<PracticeConfig>) => void
   startPractice: (slugs: string[], seed?: number) => void
@@ -90,6 +106,12 @@ interface State {
   practiceAdvance: (skip: boolean) => void
   finishPractice: () => void
   discardPractice: () => void
+  setWalkConfig: (patch: Partial<WalkConfig>) => void
+  startWalk: (slug: string) => void
+  walkGo: (slug: string) => void
+  walkMove: (delta: -1 | 1) => void
+  walkAttempt: (slug: string, passed: boolean) => void
+  endWalk: () => void
 }
 
 /** Draft slot: one per slug and mode; View mode has one more per alternative solution. */
@@ -124,6 +146,8 @@ export const useStore = create<State>()(
       practiceConfig: { difficulties: [], topics: [], blind75Only: false, status: 'todo', count: 5 },
       practice: null,
       practiceHistory: [],
+      walkConfig: { difficulties: [], topics: [], blind75Only: false, status: 'todo' },
+      walk: null,
       solves: [],
       toggleDone: (slug) =>
         set((s) => {
@@ -133,7 +157,7 @@ export const useStore = create<State>()(
           return { done }
         }),
       markDone: (slug) => set((s) => (s.done[slug] ? s : { done: { ...s.done, [slug]: true } })),
-      resetProgress: () => set({ done: {}, practiceHistory: [], practice: null, solves: [] }),
+      resetProgress: () => set({ done: {}, practiceHistory: [], practice: null, walk: null, solves: [] }),
       recordSolve: (event) => set((s) => ({ solves: [...s.solves, { ...event, at: Date.now() }].slice(-5000) })),
       setFilters: (patch) => set((s) => ({ filters: { ...s.filters, ...patch } })),
       clearFilters: () => set({ filters: DEFAULT_FILTERS }),
@@ -155,6 +179,10 @@ export const useStore = create<State>()(
       removeCustomCase: (slug, name) =>
         set((s) => ({
           customCases: { ...s.customCases, [slug]: (s.customCases[slug] ?? []).filter((c) => c.name !== name) },
+        })),
+      updateCustomCase: (slug, name, patch) =>
+        set((s) => ({
+          customCases: { ...s.customCases, [slug]: (s.customCases[slug] ?? []).map((c) => (c.name === name ? { ...c, ...patch } : c)) },
         })),
       setTheme: (theme) => set({ theme }),
       setPracticeConfig: (patch) => set((s) => ({ practiceConfig: { ...s.practiceConfig, ...patch } })),
@@ -210,6 +238,49 @@ export const useStore = create<State>()(
           return { practice: session, practiceHistory: [record, ...s.practiceHistory].slice(0, 50) }
         }),
       discardPractice: () => set({ practice: null }),
+      setWalkConfig: (patch) => set((s) => ({ walkConfig: { ...s.walkConfig, ...patch } })),
+      // A newly reached problem always starts from a blank skeleton; going Back keeps your code.
+      startWalk: (slug) =>
+        set((s) => {
+          const drafts = { ...s.drafts }
+          delete drafts[practiceDraftKey(slug)]
+          const now = Date.now()
+          return {
+            drafts,
+            walk: { history: [slug], index: 0, startedAt: now, problemStartedAt: now, outcomes: { [slug]: { status: 'pending', attempts: 0, seconds: 0 } } },
+          }
+        }),
+      walkGo: (slug) =>
+        set((s) => {
+          if (!s.walk) return {}
+          const drafts = { ...s.drafts }
+          delete drafts[practiceDraftKey(slug)]
+          const outcomes = { ...s.walk.outcomes }
+          const current = s.walk.history[s.walk.index]
+          if (outcomes[current]?.status === 'pending') outcomes[current] = { ...outcomes[current], status: 'skipped' }
+          outcomes[slug] = { status: 'pending', attempts: 0, seconds: 0 }
+          const history = [...s.walk.history.slice(0, s.walk.index + 1), slug]
+          return { drafts, walk: { ...s.walk, history, index: history.length - 1, outcomes, problemStartedAt: Date.now() } }
+        }),
+      walkMove: (delta) =>
+        set((s) => {
+          if (!s.walk) return {}
+          const index = Math.min(Math.max(s.walk.index + delta, 0), s.walk.history.length - 1)
+          return { walk: { ...s.walk, index, problemStartedAt: Date.now() } }
+        }),
+      walkAttempt: (slug, passed) =>
+        set((s) => {
+          if (!s.walk) return {}
+          const current = s.walk.outcomes[slug] ?? { status: 'pending' as const, attempts: 0, seconds: 0 }
+          const seconds = passed && current.status !== 'passed' ? Math.round((Date.now() - s.walk.problemStartedAt) / 1000) : current.seconds
+          return {
+            walk: {
+              ...s.walk,
+              outcomes: { ...s.walk.outcomes, [slug]: { status: passed ? 'passed' : current.status, attempts: current.attempts + 1, seconds } },
+            },
+          }
+        }),
+      endWalk: () => set({ walk: null }),
     }),
     {
       name: 'leetcode-workbench',

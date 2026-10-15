@@ -23,6 +23,8 @@ export interface TestCase {
   ops?: [string, unknown[]][]
   /** Absent on a case you added with the expected value left blank: the reference solution supplies it. */
   expected?: unknown
+  /** The expected value was filled in from the reference solution when the case was first run. */
+  derived?: boolean
   custom?: boolean
 }
 
