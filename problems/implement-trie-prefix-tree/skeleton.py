@@ -1,3 +1,9 @@
+# Judge notes:
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_1 = obj.search(word)
+# param_2 = obj.startsWith(prefix)
 class Trie:
 
     def __init__(self):

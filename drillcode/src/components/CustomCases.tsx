@@ -90,6 +90,11 @@ export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
               <Label htmlFor={`cc-${f.name}`} className="gap-1.5 text-xs">
                 <span className="font-mono font-medium">{f.name}</span>
                 {types[f.name] && <span className="font-mono font-normal text-muted-foreground">{types[f.name]}</span>}
+                {!(spec.args ?? []).includes(f.name) && (
+                  <span className="font-normal text-muted-foreground">
+                    {spec.extra_inputs?.[f.name] ?? 'used to build the input, not passed to your function'}
+                  </span>
+                )}
               </Label>
               <Input
                 id={`cc-${f.name}`}

@@ -10,6 +10,14 @@ Edge cases:
 Time O(1) per operation, space O(n).
 """
 
+# Judge notes:
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(val)
+# obj.pop()
+# param_1 = obj.top()
+# param_2 = obj.getMin()
+
 
 class MinStack:
     def __init__(self):

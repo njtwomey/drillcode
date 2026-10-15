@@ -1,5 +1,11 @@
 kind: function
 entry: Codec
+provided: |
+  Your Codec object will be instantiated and called as such:
+  ser = Codec()
+  deser = Codec()
+  ans = deser.deserialize(ser.serialize(root))
+  deser is a separate instance, so no state can pass between the two calls.
 call: false
 scaffolds: [tree]
 args: [root]

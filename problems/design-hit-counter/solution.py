@@ -12,6 +12,13 @@ Edge cases:
 Time O(1) amortised per call, space O(hits in window).
 """
 
+# Judge notes:
+# Your HitCounter object will be instantiated and called as such:
+# obj = HitCounter()
+# obj.hit(timestamp)
+# param_1 = obj.getHits(timestamp)
+
+
 from collections import deque
 
 

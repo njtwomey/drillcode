@@ -11,6 +11,15 @@ Edge cases:
 Time O(1) average per operation, space O(n).
 """
 
+# Judge notes:
+# Your RandomizedSet object will be instantiated and called as such:
+# obj = RandomizedSet()
+# param_1 = obj.insert(val)
+# param_2 = obj.remove(val)
+# param_3 = obj.getRandom()
+# Each element present must be returned by getRandom with equal probability.
+
+
 import random
 
 

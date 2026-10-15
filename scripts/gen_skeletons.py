@@ -3,7 +3,7 @@
 import ast
 import sys
 
-from _common import PROBLEMS, load_spec, problem_dirs
+from _common import PROBLEMS, judge_block, judge_notes, load_spec, problem_dirs
 
 DEFINITIONS = {
     "ListNode": '''# Definition for singly-linked list.
@@ -64,7 +64,9 @@ def skeleton(spec, source):
             keep.append(node)
     cls.body = keep or [ast.Pass()]
     cls.decorator_list = []
-    return definitions(spec) + ast.unparse(ast.fix_missing_locations(cls)) + "\n"
+    block = judge_block(judge_notes(spec, source))
+    notes = "\n".join(block) + "\n" if block else ""
+    return definitions(spec) + notes + ast.unparse(ast.fix_missing_locations(cls)) + "\n"
 
 
 def main():

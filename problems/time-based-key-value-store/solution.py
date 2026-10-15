@@ -13,6 +13,13 @@ Edge cases:
 Time O(1) set, O(log n) get, space O(n).
 """
 
+# Judge notes:
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key, value, timestamp)
+# param_1 = obj.get(key, timestamp)
+
+
 from bisect import bisect_right
 
 

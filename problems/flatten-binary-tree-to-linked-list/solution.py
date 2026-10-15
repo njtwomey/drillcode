@@ -13,6 +13,10 @@ Edge cases:
 Time O(n), space O(1).
 """
 
+# Judge notes:
+# Do not return anything: modify root in place instead.
+
+
 class Solution:
     def flatten(self, root: Optional[TreeNode]) -> None:
         """Do not return anything, modify root in-place instead."""

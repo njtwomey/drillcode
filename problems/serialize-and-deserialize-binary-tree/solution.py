@@ -11,6 +11,13 @@ Edge cases:
 Time O(n), space O(n).
 """
 
+# Judge notes:
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
+# deser is a separate instance, so no state can pass between the two calls.
+
 
 class Codec:
     def serialize(self, root):

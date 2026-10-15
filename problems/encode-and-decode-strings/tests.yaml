@@ -1,5 +1,10 @@
 kind: function
 entry: Codec
+provided: |
+  Your Codec object will be instantiated and called as such:
+  codec = Codec()
+  codec.decode(codec.encode(strs))
+  decode sees only the string that encode returned.
 scaffolds: []
 args: [strs]
 call: false

@@ -12,6 +12,12 @@ Edge cases:
 Time O(1) amortised per call, space O(n).
 """
 
+# Judge notes:
+# Your StockSpanner object will be instantiated and called as such:
+# obj = StockSpanner()
+# param_1 = obj.next(price)
+
+
 class StockSpanner:
     def __init__(self):
         # Stack of (price, span) with strictly decreasing prices. Each entry stands for a

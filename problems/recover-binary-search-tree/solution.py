@@ -13,6 +13,10 @@ Edge cases:
 Time O(n), space O(h).
 """
 
+# Judge notes:
+# Do not return anything: modify root in place instead.
+
+
 class Solution:
     def recoverTree(self, root: Optional[TreeNode]) -> None:
         """Do not return anything, modify root in-place instead."""

@@ -9,6 +9,9 @@ Edge cases:
 Time O(n²), space O(1).
 """
 
+# Judge notes:
+# Do not return anything: modify matrix in place instead.
+
 
 class Solution:
     def rotate(self, matrix: List[List[int]]) -> None:

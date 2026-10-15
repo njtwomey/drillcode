@@ -13,6 +13,14 @@ Edge cases:
 Time O(1) per operation, space O(open check-ins + routes).
 """
 
+# Judge notes:
+# Your UndergroundSystem object will be instantiated and called as such:
+# obj = UndergroundSystem()
+# obj.checkIn(id, stationName, t)
+# obj.checkOut(id, stationName, t)
+# param_1 = obj.getAverageTime(startStation, endStation)
+
+
 class UndergroundSystem:
     def __init__(self):
         self.open = {}  # customer id -> (start station, check-in time)

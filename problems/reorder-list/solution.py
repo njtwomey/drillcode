@@ -9,6 +9,9 @@ Edge cases:
 Time O(n), space O(1).
 """
 
+# Judge notes:
+# Do not return anything: modify head in place instead.
+
 
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:

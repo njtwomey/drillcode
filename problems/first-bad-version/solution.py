@@ -10,9 +10,10 @@ Edge cases:
 Time O(log n), space O(1).
 """
 
-
-# The isBadVersion API is already defined by LeetCode.
+# Judge notes:
+# The isBadVersion API is already defined for you.
 # def isBadVersion(version: int) -> bool:
+
 
 class Solution:
     def firstBadVersion(self, n: int) -> int:

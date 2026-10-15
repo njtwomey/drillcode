@@ -11,6 +11,12 @@ Edge cases:
 Time O(log k) per add, space O(k).
 """
 
+# Judge notes:
+# Your KthLargest object will be instantiated and called as such:
+# obj = KthLargest(k, nums)
+# param_1 = obj.add(val)
+
+
 import heapq
 
 

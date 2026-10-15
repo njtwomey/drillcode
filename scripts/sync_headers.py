@@ -11,7 +11,7 @@ import ast
 import sys
 import textwrap
 
-from _common import PROBLEMS, load_index
+from _common import JUDGE_HEADER, PROBLEMS, judge_block, judge_notes, load_index, load_spec
 
 
 def wrap(text, first, rest="    "):
@@ -46,6 +46,33 @@ def rewrite(source, new_header):
     return "".join(lines[:at]) + new_header + "\n" + "".join(lines[at:])
 
 
+def apply_notes(source, block):
+    """Replace (or remove, or insert) the generated Judge notes block just after the module docstring."""
+    lines = source.split("\n")
+    tree = ast.parse(source)
+    first = tree.body[0] if tree.body else None
+    has_doc = isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant) and isinstance(first.value.value, str)
+    start = first.end_lineno if has_doc else 0
+    j = start
+    while j < len(lines) and lines[j].strip() == "":
+        j += 1
+    if j < len(lines) and lines[j] == JUDGE_HEADER:
+        k = j
+        while k < len(lines) and lines[k].startswith("#"):
+            k += 1
+        j = k
+        while j < len(lines) and lines[j].strip() == "":
+            j += 1
+    had_block = j > start and (start < len(lines)) and any(l == JUDGE_HEADER for l in lines[start:j])
+    if not block and not had_block:
+        return source  # nothing generated, nothing to remove: leave the file exactly as it is
+    rest = lines[j:]
+    head = lines[:start]
+    if block:
+        return "\n".join(head + [""] + block + ["", ""] + rest)
+    return "\n".join(head + ["", ""] + rest) if head else "\n".join(rest)
+
+
 def main():
     check = "--check" in sys.argv
     stale = []
@@ -55,6 +82,8 @@ def main():
             continue
         old = path.read_text()
         new = rewrite(old, header(entry))
+        spec = load_spec(entry["slug"])
+        new = apply_notes(new, judge_block(judge_notes(spec, new)))
         if new != old:
             stale.append(entry["slug"])
             if not check:

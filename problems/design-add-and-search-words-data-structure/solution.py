@@ -10,6 +10,12 @@ Edge cases:
 Time O(L) add, O(26^L) worst-case search, space O(total chars).
 """
 
+# Judge notes:
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_1 = obj.search(word)
+
 
 class WordDictionary:
     def __init__(self):

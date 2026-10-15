@@ -1,3 +1,8 @@
+# Judge notes:
+# Your LFUCache object will be instantiated and called as such:
+# obj = LFUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key, value)
 class LFUCache:
 
     def __init__(self, capacity: int):

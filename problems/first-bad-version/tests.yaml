@@ -1,5 +1,10 @@
 kind: function
 entry: Solution.firstBadVersion
+provided: |
+  The isBadVersion API is already defined for you.
+  def isBadVersion(version: int) -> bool:
+extra_inputs:
+  bad: The first bad version. The checker reads it; it is not passed to your function.
 scaffolds: []
 args: [n]
 call: false

@@ -178,7 +178,7 @@ function ProblemView({ slug, mode }: { slug: string; mode: PageMode }) {
               )}
               {defs && (
                 <div className="rounded-md border p-3">
-                  <h2 className="mb-2 font-medium">Definitions</h2>
+                  <h2 className="mb-2 font-medium">Definitions and judge notes</h2>
                   <pre className="overflow-auto font-mono text-xs">{defs}</pre>
                 </div>
               )}

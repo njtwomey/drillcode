@@ -10,6 +10,7 @@ import copy
 import importlib
 import io
 import json
+import linecache
 import math
 import time
 import traceback
@@ -132,6 +133,59 @@ def _compare(mode, actual, expected):
 
 # ---- running --------------------------------------------------------------------------------
 
+USER_FILE = "solution.py"
+
+
+class CaseError(Exception):
+    """An error whose message is already written for the reader (it is shown as-is)."""
+
+
+def _user_frames(exc):
+    return [f for f in traceback.extract_tb(exc.__traceback__) if f.filename == USER_FILE]
+
+
+def _user_traceback(exc):
+    """A traceback with only the frames from the reader's own code."""
+    frames = _user_frames(exc)
+    if len(frames) > 8:  # deep recursion: keep the ends
+        skipped = len(frames) - 7
+        frames = frames[:3] + [None] + frames[-4:]
+    lines = ["Traceback (most recent call last):"]
+    for f in frames:
+        if f is None:
+            lines.append(f"  ... {skipped} more calls ...")
+            continue
+        lines.append(f'  File "{USER_FILE}", line {f.lineno}, in {f.name}')
+        if f.line:
+            lines.append("    " + f.line.strip())
+    lines.append("".join(traceback.format_exception_only(type(exc), exc)).strip())
+    return "\n".join(lines)
+
+
+def _explain(exc, context):
+    """Message for an exception that escaped while `context` was running: the reader's frames if
+    their code was involved, otherwise a one-line description (no harness internals)."""
+    if isinstance(exc, SyntaxError) and exc.filename == USER_FILE:
+        return "Syntax error in your code:\n" + "".join(traceback.format_exception_only(type(exc), exc)).strip()
+    if _user_frames(exc):
+        return _user_traceback(exc)
+    return f"{context}: {type(exc).__name__}: {exc}"
+
+
+def needed_inputs(spec):
+    """Input names a case must provide: the arguments, extras the checker reads, converter extras."""
+    names = list(spec.get("args") or [])
+    for name in (spec.get("extra_inputs") or {}):
+        if name not in names:
+            names.append(name)
+    for conv in (spec.get("convert") or {}).values():
+        if ":" in str(conv):
+            extra = str(conv).split(":", 1)[1]
+            if extra not in names and not str(conv).startswith("tree_node:"):
+                names.append(extra)
+    return names
+
+
 def run_case(solution_source, spec, case, validator_source=None):
     """Run one case and return a plain dict. Never raises (except SystemExit/KeyboardInterrupt)."""
     out, err = io.StringIO(), io.StringIO()
@@ -148,7 +202,12 @@ def run_case(solution_source, spec, case, validator_source=None):
     try:
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
             namespace = build_namespace(spec)
-            exec(compile(solution_source, "solution.py", "exec"), namespace)
+            # Register the source so tracebacks can show the offending line of the reader's code.
+            linecache.cache[USER_FILE] = (len(solution_source), None, solution_source.splitlines(True), USER_FILE)
+            try:
+                exec(compile(solution_source, USER_FILE, "exec"), namespace)
+            except Exception as e:
+                raise CaseError(_explain(e, "Your code failed while loading")) from None
             if spec.get("kind") == "operations":
                 _run_operations(namespace, spec, case, result)
             else:
@@ -156,9 +215,16 @@ def run_case(solution_source, spec, case, validator_source=None):
     except CaseTimeout:
         result["status"] = "timeout"
         result["message"] = "Time limit exceeded"
-    except Exception:
+    except CaseError as e:
         result["status"] = "error"
-        result["message"] = traceback.format_exc()
+        result["message"] = str(e)
+    except Exception as e:
+        # Not the reader's problem: a bug in the harness or a checker. Keep the full traceback to debug it.
+        result["status"] = "error"
+        result["message"] = (
+            _user_traceback(e) if _user_frames(e)
+            else "Internal error in the test harness (not your code):\n" + traceback.format_exc()
+        )
     result["stdout"] = out.getvalue()
     result["stderr"] = err.getvalue()
     return result
@@ -171,11 +237,20 @@ def run_case_json(solution_source, spec_json, case_json, validator_source=None):
 
 
 def _resolve_entry(namespace, entry):
-    target = namespace[entry.split(".")[0]]
-    if "." not in entry:
+    cls_name, _, method = entry.partition(".")
+    if cls_name not in namespace:
+        hint = f" with a method {method}" if method else ""
+        raise CaseError(f"Your code does not define {cls_name}. Define class {cls_name}{hint}.")
+    target = namespace[cls_name]
+    if not method:
         return target
-    cls_name, method = entry.split(".", 1)
-    return getattr(target(), method)
+    try:
+        instance = target()
+    except Exception as e:
+        raise CaseError(_explain(e, f"Creating {cls_name}() failed")) from None
+    if not hasattr(instance, method):
+        raise CaseError(f"Your class {cls_name} has no method {method}.")
+    return getattr(instance, method)
 
 
 def _run_function(namespace, spec, case, result, validator_source):
@@ -185,16 +260,30 @@ def _run_function(namespace, spec, case, result, validator_source):
 
     entry = _resolve_entry(namespace, spec["entry"])
 
+    needed = needed_inputs(spec)
+    missing = [n for n in needed if n not in case_input]
+    if missing:
+        raise CaseError(
+            f"This case is missing input value(s): {', '.join(missing)}. "
+            f"Every case for this problem needs: {', '.join(needed)}."
+        )
+
     # Arguments needing another argument (tree_node:) are built after the rest.
     args = {}
-    for name in spec["args"]:
-        conv = convert.get(name)
-        if conv and conv.startswith("tree_node:"):
-            continue
-        args[name] = _convert_in(conv, case_input[name], case_input, args) if conv else copy.deepcopy(case_input[name])
-    for name in spec["args"]:
-        if name not in args:
-            args[name] = _convert_in(convert[name], case_input[name], case_input, args)
+    building = None
+    try:
+        for name in spec["args"]:
+            building = name
+            conv = convert.get(name)
+            if conv and conv.startswith("tree_node:"):
+                continue
+            args[name] = _convert_in(conv, case_input[name], case_input, args) if conv else copy.deepcopy(case_input[name])
+        for name in spec["args"]:
+            building = name
+            if name not in args:
+                args[name] = _convert_in(convert[name], case_input[name], case_input, args)
+    except Exception as e:
+        raise CaseError(f"Could not build the input {building!r} from {case_input.get(building)!r}: {type(e).__name__}: {e}") from None
 
     ordered = [args[name] for name in spec["args"]]
     raw = None
@@ -202,27 +291,48 @@ def _run_function(namespace, spec, case, result, validator_source):
         start = time.perf_counter()
         try:
             raw = entry(*ordered)
+        except Exception as e:
+            raise CaseError(_explain(e, "Could not call your function")) from None
         finally:
             result["ms"] = (time.perf_counter() - start) * 1000
 
     if mode == "validator":
-        namespace_v = {}
-        exec(compile(validator_source or "", "validator.py", "exec"), namespace_v)
-        scaffolds = types.SimpleNamespace(**{n: _module(n) for n in spec.get("scaffolds", [])})
-        full_case = dict(case, args=args, entry=entry)
-        ok, message = namespace_v["validate"](raw, full_case, scaffolds)
-        result["actual"] = to_json(_convert_out(convert.get("result"), raw)) if raw is not None else None
+        try:
+            namespace_v = {}
+            exec(compile(validator_source or "", "validator.py", "exec"), namespace_v)
+            scaffolds = types.SimpleNamespace(**{n: _module(n) for n in spec.get("scaffolds", [])})
+            full_case = dict(case, args=args, entry=entry)
+            ok, message = namespace_v["validate"](raw, full_case, scaffolds)
+        except Exception as e:
+            if _user_frames(e):  # the checker ran the reader's code and it failed
+                raise CaseError(_explain(e, "")) from None
+            hint = f" It needs an input value named {e.args[0]!r}; a case you added may be missing it." if isinstance(e, KeyError) and e.args else ""
+            raise CaseError(
+                f"The checker for this problem could not judge this case ({type(e).__name__}: {e}).{hint} "
+                f"Inputs for this problem: {', '.join(needed)}."
+            ) from None
+        try:
+            result["actual"] = to_json(_convert_out(convert.get("result"), raw)) if raw is not None else None
+        except Exception:
+            result["actual"] = None
         result["status"] = "pass" if ok else "fail"
         result["message"] = "" if ok else str(message)
         return
 
-    if mode.startswith("in_place:"):
-        name = mode.split(":", 1)[1]
-        actual = to_json(_convert_out(convert.get(name), args[name]))
-    else:
-        actual = to_json(_convert_out(convert.get("result"), raw))
+    try:
+        if mode.startswith("in_place:"):
+            name = mode.split(":", 1)[1]
+            actual = to_json(_convert_out(convert.get(name), args[name]))
+        else:
+            actual = to_json(_convert_out(convert.get("result"), raw))
+    except Exception as e:
+        what = f"the modified {mode.split(':', 1)[1]}" if mode.startswith("in_place:") else "the returned value"
+        raise CaseError(f"Could not read {what} to compare it: {type(e).__name__}: {e}") from None
     result["actual"] = actual
-    expected = to_json(case.get("expected"))
+    try:
+        expected = to_json(case.get("expected"))
+    except Exception as e:
+        raise CaseError(f"The expected value is not usable: {type(e).__name__}: {e}") from None
     ok = _compare(mode, actual, expected)
     result["status"] = "pass" if ok else "fail"
     if not ok:
@@ -238,15 +348,27 @@ def _run_operations(namespace, spec, case, result):
     try:
         for index, (name, op_args) in enumerate(ops):
             start = time.perf_counter()
+            call = f"{name}({', '.join(map(repr, op_args))})"
             try:
                 if index == 0:
+                    if name not in namespace:
+                        raise CaseError(f"Your code does not define {name}. Define class {name}.")
                     instance = namespace[name](*copy.deepcopy(op_args))
                     value = None
                 else:
+                    if not hasattr(instance, name):
+                        raise CaseError(f"Call {index + 1} of {len(ops)}: your class has no method {name}.")
                     value = getattr(instance, name)(*copy.deepcopy(op_args))
+            except CaseError:
+                raise
+            except Exception as e:
+                raise CaseError(f"Error in call {index + 1} of {len(ops)}: {call}\n" + _explain(e, "It raised")) from None
             finally:
                 elapsed += (time.perf_counter() - start) * 1000
-            actual.append(to_json(value))
+            try:
+                actual.append(to_json(value))
+            except Exception as e:
+                raise CaseError(f"Call {index + 1} of {len(ops)}, {call}, returned something the tests cannot compare: {e}") from None
     finally:
         result["ms"] = elapsed
         result["actual"] = actual

@@ -12,6 +12,10 @@ Edge cases:
 Time O(m·n), space O(m·n).
 """
 
+# Judge notes:
+# Do not return anything: modify rooms in place instead.
+
+
 from collections import deque
 
 

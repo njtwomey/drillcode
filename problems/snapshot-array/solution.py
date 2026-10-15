@@ -13,6 +13,14 @@ Edge cases:
 Time O(1) set and snap, O(log s) get, space O(number of sets).
 """
 
+# Judge notes:
+# Your SnapshotArray object will be instantiated and called as such:
+# obj = SnapshotArray(length)
+# obj.set(index, val)
+# param_1 = obj.snap()
+# param_2 = obj.get(index, snap_id)
+
+
 from bisect import bisect_right
 
 

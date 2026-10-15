@@ -12,6 +12,13 @@ Edge cases:
 Time O(n) constructor, O(log n) per pickIndex, space O(n).
 """
 
+# Judge notes:
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
+# pickIndex returns index i with probability w[i] / sum(w).
+
+
 import random
 from bisect import bisect_left
 from itertools import accumulate

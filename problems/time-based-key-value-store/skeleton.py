@@ -1,3 +1,8 @@
+# Judge notes:
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key, value, timestamp)
+# param_1 = obj.get(key, timestamp)
 class TimeMap:
 
     def __init__(self):

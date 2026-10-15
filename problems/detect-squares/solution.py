@@ -13,6 +13,13 @@ Edge cases:
 Time O(1) add, O(p) count (p distinct points), space O(p).
 """
 
+# Judge notes:
+# Your DetectSquares object will be instantiated and called as such:
+# obj = DetectSquares()
+# obj.add(point)
+# param_1 = obj.count(point)
+
+
 from collections import Counter
 
 

@@ -1,5 +1,8 @@
 kind: function
 entry: Solution.removeDuplicates
+provided: |
+  Custom judge: after the call, nums[:k] must hold the distinct values in their
+  original order, and you return k. Elements after the first k are ignored.
 scaffolds: []
 args: [nums]
 compare: validator

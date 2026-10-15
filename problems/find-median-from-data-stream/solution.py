@@ -11,6 +11,14 @@ Edge cases:
 
 Time O(log n) add, O(1) median, space O(n).
 """
+
+# Judge notes:
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_1 = obj.findMedian()
+
+
 import heapq
 
 

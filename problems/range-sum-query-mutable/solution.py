@@ -12,6 +12,13 @@ Edge cases:
 Time O(n) build, O(log n) per operation, space O(n).
 """
 
+# Judge notes:
+# Your NumArray object will be instantiated and called as such:
+# obj = NumArray(nums)
+# obj.update(index, val)
+# param_1 = obj.sumRange(left, right)
+
+
 class NumArray:
     # Fenwick tree (binary indexed tree), 1-based. tree[i] stores the sum of the
     # block of elements ending at i whose length is the lowest set bit of i, i.e.

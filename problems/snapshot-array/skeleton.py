@@ -1,3 +1,9 @@
+# Judge notes:
+# Your SnapshotArray object will be instantiated and called as such:
+# obj = SnapshotArray(length)
+# obj.set(index, val)
+# param_1 = obj.snap()
+# param_2 = obj.get(index, snap_id)
 class SnapshotArray:
 
     def __init__(self, length: int):

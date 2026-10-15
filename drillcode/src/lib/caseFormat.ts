@@ -5,6 +5,7 @@ const ARROW = /->|=>|→/g
 /** Names of the values a case line holds, in order: the call arguments, then converter extras (e.g. `pos`). */
 export function inputNames(spec: TestsSpec): string[] {
   const names = [...(spec.args ?? [])]
+  for (const extra of Object.keys(spec.extra_inputs ?? {})) if (!names.includes(extra)) names.push(extra)
   for (const conv of Object.values(spec.convert ?? {})) {
     const extra = conv.includes(':') ? conv.split(':')[1] : undefined
     if (extra && !names.includes(extra) && !(conv.startsWith('tree_node:'))) names.push(extra)

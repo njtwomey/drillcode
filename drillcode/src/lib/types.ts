@@ -29,6 +29,8 @@ export interface TestsSpec {
   kind: 'function' | 'operations'
   entry: string
   scaffolds: string[]
+  /** Inputs the checker reads that are not arguments of the function: name to what it means. */
+  extra_inputs?: Record<string, string>
   args?: string[]
   convert?: Record<string, string>
   compare?: string
