@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Lock, Pencil, Play, Terminal, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Lock, Pencil, Play, Terminal, Trash2, TriangleAlert } from 'lucide-react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { StatusBadge } from '@/components/badges'
 import { Badge } from '@/components/ui/badge'
@@ -26,6 +26,9 @@ interface Props {
   renderEditor?: (c: TestCase) => ReactNode
   /** Exposure: only the first `visibleExamples` catalogue cases are shown by name and input; the rest are hidden cases that cannot be opened. Undefined shows everything. */
   visibleExamples?: number
+  /** The case whose error line is marked in the editor, and how to change it. */
+  errorCase?: string | null
+  onShowError?: (name: string | null) => void
 }
 
 const show = (v: unknown) => JSON.stringify(v)
@@ -34,10 +37,28 @@ function isHiddenCase(spec: TestsSpec, visibleExamples: number | undefined, c: T
   return visibleExamples !== undefined && !c.custom && spec.cases.findIndex((x) => x.name === c.name) >= visibleExamples
 }
 
+/** Toggles the marker on the line of the solution that this case's error points at. */
+function ErrorLineButton({ result, label, active, onToggle }: { result?: CaseResult; label: string; active: boolean; onToggle: () => void }) {
+  if (!result?.error_line) return null
+  return (
+    <Button
+      size="sm"
+      variant={active ? 'secondary' : 'ghost'}
+      className={`h-7 shrink-0 gap-1 px-1.5 text-xs ${active ? 'text-destructive' : 'text-muted-foreground'}`}
+      onClick={onToggle}
+      aria-pressed={active}
+      aria-label={`${active ? 'Hide' : 'Show'} the error line for ${label}`}
+      title={active ? 'Hide the error line in the code' : 'Show the error line in the code'}
+    >
+      <TriangleAlert className="size-3.5" /> line {result.error_line}
+    </Button>
+  )
+}
+
 const hasOutput = (r?: CaseResult) => !!r && !!(r.stdout.trim() || r.stderr.trim())
 
 /** Every test case: tick the ones to run, open one to see its input, result and console output, or run it alone. */
-export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, visibleExamples }: Props) {
+export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, visibleExamples, errorCase, onShowError }: Props) {
   const [open, setOpen] = useState<Record<string, boolean>>({})
   // Failures open themselves once per run, so the reason is on screen; the reader can still close them.
   const autoOpened = useRef(new Set<string>())
@@ -93,6 +114,7 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                 <span className="min-w-0 truncate font-medium">{label}</span>
                 {failed && <span className="truncate text-xs text-muted-foreground">did not pass; its input stays hidden</span>}
                 {r && r.status !== 'skipped' && <span className="ml-auto shrink-0 text-xs text-muted-foreground tabular-nums">{r.ms.toFixed(2)} ms</span>}
+                <ErrorLineButton result={r} label={label} active={errorCase === c.name} onToggle={() => onShowError?.(errorCase === c.name ? null : c.name)} />
                 <Button size="icon" variant="ghost" className="size-7 shrink-0" disabled={running} onClick={() => onRunOne(c.name)} aria-label={`Run only ${label}`} title="Run only this test">
                   <Play className="size-3.5" />
                 </Button>
@@ -123,6 +145,7 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                       {r && r.status !== 'skipped' && <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{r.ms.toFixed(2)} ms</span>}
                     </button>
                   </CollapsibleTrigger>
+                  <ErrorLineButton result={r} label={label} active={errorCase === c.name} onToggle={() => onShowError?.(errorCase === c.name ? null : c.name)} />
                   <Button size="icon" variant="ghost" className="size-7 shrink-0" disabled={running} onClick={() => onRunOne(c.name)} aria-label={`Run only ${label}`} title="Run only this test">
                     <Play className="size-3.5" />
                   </Button>

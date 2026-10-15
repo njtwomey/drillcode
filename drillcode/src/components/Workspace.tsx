@@ -52,6 +52,8 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
   const custom = useStore((s) => s.customCases[slug]) ?? NONE
   const { setDraft, clearDraft, updateCustomCase, removeCustomCase } = useStore()
   const [editing, setEditing] = useState<string | null>(null)
+  // The case whose error line is marked in the editor (null: none). Cleared as soon as the code changes.
+  const [errorCase, setErrorCase] = useState<string | null>(null)
   const status = useSyncExternalStore(pyRunner.subscribe, pyRunner.getSnapshot)
   const wide = useIsWide()
 
@@ -63,6 +65,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
   const [rightCollapsed, setRightCollapsed] = useState(false)
 
   const source = drafts[draftKey] ?? originalSource
+  useEffect(() => setErrorCase(null), [source])
   // Cases you added come first, newest at the top, so a new one is right where you are looking.
   const cases = [...custom.map((c) => ({ ...c, custom: true })).reverse(), ...spec.cases]
   const busy = status === 'running' || status === 'error'
@@ -98,6 +101,9 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
         updateCustomCase(slug, r.name, { expected: r.expected, derived: true })
       }
     }
+    // An error points at a line of your code: mark the first one, so you see where it happened.
+    const broken = out.find((r) => (r.status === 'error' || r.status === 'timeout') && r.error_line)
+    setErrorCase(broken ? broken.name : null)
     // Only a run of every test counts as "the solution is done".
     if (subset.length === cases.length) onResults?.(out)
     return { results: out, cases: subset }
@@ -161,7 +167,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
         </span>
       </div>
       <div className="h-[min(66vh,760px)] min-h-[420px]">
-        <CodeEditor value={source} dark={theme === 'dark'} onChange={(v) => setDraft(draftKey, v)} onRun={run} />
+        <CodeEditor value={source} dark={theme === 'dark'} errorLine={errorCase ? results[errorCase]?.error_line : null} onChange={(v) => setDraft(draftKey, v)} onRun={run} />
       </div>
       <Collapsible className="rounded-md border">
           <CollapsibleTrigger className="group flex w-full items-center gap-1.5 px-3 py-2 text-sm font-medium">
@@ -212,6 +218,8 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, visib
             <CaseForm slug={slug} spec={spec} initial={c} onDone={() => setEditing(null)} />
           )}
           visibleExamples={visibleExamples}
+          errorCase={errorCase}
+          onShowError={setErrorCase}
         />
       </section>
     </div>

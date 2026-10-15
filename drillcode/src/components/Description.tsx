@@ -38,20 +38,29 @@ export function Description({ source, slug }: { source: string; slug?: string })
   )
 }
 
-/** The first two catalogue cases (the public examples), as a list in the style of the constraints. Only shown when they have an answer. */
+const MAX_EXAMPLE = 160
+
+/** The statement's examples: of the first two catalogue cases (the ones Practice shows), those named "example ...". */
 function Examples({ slug }: { slug: string }) {
   const spec = testsSpec(slug)
   // Where the harness checks behaviour itself (`call: false`) the expected value is a bare pass flag, which says nothing.
   if (!spec || spec.call === false) return null
-  const shown = spec.cases.slice(0, 2).filter((c) => c.expected !== undefined)
+  const shown = spec.cases.slice(0, 2).filter((c) => c.name.startsWith('example') && c.expected !== undefined)
   if (shown.length === 0) return null
   return (
     <>
-      <p>Examples:</p>
+      <p>Examples{spec.compare === 'validator' ? ' (any valid answer is accepted)' : ''}:</p>
       <ul className="list-disc space-y-1 pl-5">
-        {shown.map((c) => (
-          <li key={c.name}><code className="break-words rounded bg-muted px-1 py-0.5 font-mono text-[0.85em]">{formatNamedCase(spec, c)}</code></li>
-        ))}
+        {shown.map((c) => {
+          const line = formatNamedCase(spec, c)
+          return (
+            <li key={c.name}>
+              <code title={line.length > MAX_EXAMPLE ? line : undefined} className="break-words rounded bg-muted px-1 py-0.5 font-mono text-[0.85em]">
+                {line.length > MAX_EXAMPLE ? `${line.slice(0, MAX_EXAMPLE)}…` : line}
+              </code>
+            </li>
+          )
+        })}
       </ul>
     </>
   )

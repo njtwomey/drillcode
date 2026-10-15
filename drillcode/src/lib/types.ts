@@ -54,6 +54,8 @@ export interface CaseResult {
   stderr: string
   /** 'reference' when the expected value came from the reference solution. */
   expected_source?: 'reference' | null
+  /** Line of the solution an error points at (runtime, syntax, load and timeout errors). */
+  error_line?: number | null
   custom?: boolean
 }
 

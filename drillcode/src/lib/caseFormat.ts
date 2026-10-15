@@ -29,7 +29,7 @@ export function formatCase(spec: TestsSpec, c: TestCase): string {
 /** A case with the parameter names shown: `nums = [2,7,11,15], target = 9 → [0,1]`. */
 export function formatNamedCase(spec: TestsSpec, c: TestCase): string {
   if (spec.kind === 'operations') return formatCase(spec, c)
-  const named = inputNames(spec).map((n) => `${n} = ${show(c.input?.[n])}`)
+  const named = inputNames(spec).filter((n) => c.input?.[n] !== undefined).map((n) => `${n} = ${show(c.input?.[n])}`)
   return `${named.join(', ')} → ${showExpected(c)}`
 }
 

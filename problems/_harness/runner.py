@@ -12,6 +12,7 @@ import io
 import json
 import linecache
 import math
+import sys
 import time
 import traceback
 import types
@@ -137,11 +138,24 @@ USER_FILE = "solution.py"
 
 
 class CaseError(Exception):
-    """An error whose message is already written for the reader (it is shown as-is)."""
+    """An error whose message is already written for the reader (it is shown as-is).
+    `line` is the line of solution.py the error points at, when there is one."""
+
+    def __init__(self, message, line=None):
+        super().__init__(message)
+        self.line = line
 
 
 def _user_frames(exc):
     return [f for f in traceback.extract_tb(exc.__traceback__) if f.filename == USER_FILE]
+
+
+def _user_line(exc):
+    """The line of solution.py where the error happened: the innermost frame of the reader's code."""
+    if isinstance(exc, SyntaxError) and exc.filename == USER_FILE:
+        return exc.lineno
+    frames = _user_frames(exc)
+    return frames[-1].lineno if frames else None
 
 
 def _user_traceback(exc):
@@ -202,6 +216,7 @@ def run_case(solution_source, spec, case, validator_source=None, reference_sourc
         "stdout": "",
         "stderr": "",
         "expected_source": None,
+        "error_line": None,
     }
     try:
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
@@ -213,7 +228,7 @@ def run_case(solution_source, spec, case, validator_source=None, reference_sourc
             try:
                 exec(compile(solution_source, USER_FILE, "exec"), namespace)
             except Exception as e:
-                raise CaseError(_explain(e, "Your code failed while loading")) from None
+                raise CaseError(_explain(e, "Your code failed while loading"), _user_line(e)) from None
             if spec.get("kind") == "operations":
                 _run_operations(namespace, spec, case, result)
             else:
@@ -221,12 +236,15 @@ def run_case(solution_source, spec, case, validator_source=None, reference_sourc
     except CaseTimeout:
         result["status"] = "timeout"
         result["message"] = "Time limit exceeded"
+        result["error_line"] = _user_line(sys.exc_info()[1])
     except CaseError as e:
         result["status"] = "error"
         result["message"] = str(e)
+        result["error_line"] = e.line
     except Exception as e:
         # Not the reader's problem: a bug in the harness or a checker. Keep the full traceback to debug it.
         result["status"] = "error"
+        result["error_line"] = _user_line(e)
         result["message"] = (
             _user_traceback(e) if _user_frames(e)
             else "Internal error in the test harness (not your code):\n" + traceback.format_exc()
@@ -279,7 +297,7 @@ def _resolve_entry(namespace, entry):
     try:
         instance = target()
     except Exception as e:
-        raise CaseError(_explain(e, f"Creating {cls_name}() failed")) from None
+        raise CaseError(_explain(e, f"Creating {cls_name}() failed"), _user_line(e)) from None
     if not hasattr(instance, method):
         raise CaseError(f"Your class {cls_name} has no method {method}.")
     return getattr(instance, method)
@@ -324,7 +342,7 @@ def _run_function(namespace, spec, case, result, validator_source):
         try:
             raw = entry(*ordered)
         except Exception as e:
-            raise CaseError(_explain(e, "Could not call your function")) from None
+            raise CaseError(_explain(e, "Could not call your function"), _user_line(e)) from None
         finally:
             result["ms"] = (time.perf_counter() - start) * 1000
 
@@ -337,7 +355,7 @@ def _run_function(namespace, spec, case, result, validator_source):
             ok, message = namespace_v["validate"](raw, full_case, scaffolds)
         except Exception as e:
             if _user_frames(e):  # the checker ran the reader's code and it failed
-                raise CaseError(_explain(e, "")) from None
+                raise CaseError(_explain(e, ""), _user_line(e)) from None
             hint = f" It needs an input value named {e.args[0]!r}; a case you added may be missing it." if isinstance(e, KeyError) and e.args else ""
             raise CaseError(
                 f"The checker for this problem could not judge this case ({type(e).__name__}: {e}).{hint} "
@@ -394,7 +412,7 @@ def _run_operations(namespace, spec, case, result):
             except CaseError:
                 raise
             except Exception as e:
-                raise CaseError(f"Error in call {index + 1} of {len(ops)}: {call}\n" + _explain(e, "It raised")) from None
+                raise CaseError(f"Error in call {index + 1} of {len(ops)}: {call}\n" + _explain(e, "It raised"), _user_line(e)) from None
             finally:
                 elapsed += (time.perf_counter() - start) * 1000
             try:
