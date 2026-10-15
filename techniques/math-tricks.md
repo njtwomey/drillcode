@@ -1,6 +1,6 @@
 ---
 title: Math tricks
-area: Math
+area: Maths
 topics: [Array]
 problems:
   - powx-n

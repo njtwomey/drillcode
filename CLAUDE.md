@@ -67,7 +67,7 @@ Package manager is npm (pnpm was not installed). `drillcode/` is its own npm pro
 
 ## index.yaml
 
-Entry fields: `slug, number, title, difficulty (easy|medium|hard), topic, tags, blind75, premium, leetcode, summary, tricks, edge_cases (list), complexity {time, space}`. Keep the file ordered by difficulty, then title. `topic` is exactly one of, and `tags` draw from the same list: Array, String, Hash, Two pointers, Sliding window, Stack, Monotonic stack, Binary search, Linked list, Tree, Trie, Heap, Graph, Intervals, Matrix, Dynamic programming, Greedy, Backtracking, Bit manipulation, Design. The landing filter matches `topic` or `tags`. Titles drop the dagger/`(premium)` markers; three use LeetCode's official titles rather than the shortened ones (211, 167, 208). `blind75` follows the original appendix's daggers (only the original 110 can be true; new additions are false).
+Entry fields: `slug, number, title, difficulty (easy|medium|hard), topic, tags, blind75, premium, leetcode, summary, tricks, edge_cases (list), complexity {time, space}`. Keep the file ordered by difficulty, then title. `topic` is exactly one of, and `tags` draw from the same list: Array, String, Hash, Two pointers, Sliding window, Stack, Monotonic stack, Binary search, Linked list, Tree, Trie, Heap, Graph, Intervals, Matrix, Dynamic programming, Greedy, Backtracking, Bit manipulation, Design, Maths. The landing filter matches `topic` or `tags`. Titles drop the dagger/`(premium)` markers; three use LeetCode's official titles rather than the shortened ones (211, 167, 208). `blind75` follows the original appendix's daggers (only the original 110 can be true; new additions are false).
 
 ## tests.yaml schema
 
@@ -114,7 +114,7 @@ Comparators (`compare`): `exact` (default); `unordered` (sort the outer list onl
 
 One page per technique in `techniques/<slug>.md` (the directory and `scripts/check_techniques.py` keep the brief's name; the UI, nav and routes say "Tips": `/tips`, `/tips/:slug`). Pages are derived from the code in `problems/`, not from memory; where a page and a solution disagree, one of them changes.
 
-Frontmatter: `title`, `area` (one of Linked lists, Pointers and windows, Hashing and counting, Stacks, Binary search, Trees, Graphs, Backtracking, Divide and conquer, Heaps, Intervals, Dynamic programming, Greedy, Matrices, Math, Bits, Tries, Design), `topics` (from the fixed topic list), `problems` (catalogue slugs in reading order), `related` (technique slugs). The app renders the problem list and related techniques from the frontmatter, so the body does not repeat them.
+Frontmatter: `title`, `area` (one of Linked lists, Pointers and windows, Hashing and counting, Stacks, Binary search, Trees, Graphs, Backtracking, Divide and conquer, Heaps, Intervals, Dynamic programming, Greedy, Matrices, Maths, Bits, Tries, Design), `topics` (from the fixed topic list), `problems` (catalogue slugs in reading order), `related` (technique slugs). The app renders the problem list and related techniques from the frontmatter, so the body does not repeat them.
 
 The body has exactly seven `##` headings in this order and nothing else: Reach for it when, Setup, Template, What it removes, Pitfalls, Variants, Worked example. Template is one runnable `python` block containing a function. Worked example starts with a line ``Problem: `slug` `` (a slug in the page's `problems`) and its `python` block is that solution's code verbatim (comments and docstring may be dropped); `check_techniques.py` compares it line by line after `ast.unparse`.
 

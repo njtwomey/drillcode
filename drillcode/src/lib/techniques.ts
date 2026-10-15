@@ -23,7 +23,7 @@ export const AREAS = [
   'Dynamic programming',
   'Greedy',
   'Matrices',
-  'Math',
+  'Maths',
   'Bits',
   'Tries',
   'Design',

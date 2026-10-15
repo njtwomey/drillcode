@@ -2883,7 +2883,7 @@
   number: 50
   title: Pow(x, n)
   difficulty: medium
-  topic: Array
+  topic: Maths
   tags:
   - Bit manipulation
   blind75: false

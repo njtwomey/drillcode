@@ -37,6 +37,7 @@ export const TOPICS = [
   'Heap',
   'Intervals',
   'Linked list',
+  'Maths',
   'Matrix',
   'Monotonic stack',
   'Sliding window',
