@@ -38,3 +38,13 @@ export function typeError(value: unknown, type: string | undefined): string | nu
   }
   return null // nodes, dicts and the like are built by converters or not checked
 }
+
+/** What to tell someone whose text for this type could not be read at all. */
+export function unreadableHint(type: string | undefined, example: string): string {
+  const t = squash(type)
+  if (t === 'int') return `Needs a whole number, e.g. ${example}`
+  if (t === 'float') return `Needs a number, e.g. ${example}`
+  if (t === 'bool') return 'Needs true or false'
+  if (/^(Optional\[)?List\[/.test(t)) return `Needs a list like ${example}`
+  return `Not a valid value. Use JSON, e.g. ${example}`
+}

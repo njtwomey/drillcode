@@ -47,6 +47,7 @@ export function CodeEditor({ value, onChange, onRun, dark }: Props) {
         doc: value,
         extensions: [
           lineNumbers(),
+          EditorView.lineWrapping,
           highlightActiveLine(),
           highlightActiveLineGutter(),
           history(),

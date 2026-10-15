@@ -1,15 +1,14 @@
-import { Plus, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronRight, Plus, Save } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { ChevronDown, ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { skeletonSource } from '@/lib/catalogue'
-import { caseHelp, formatCase, inputNames, parseCaseLine, parseJson, splitTopLevel } from '@/lib/caseFormat'
+import { caseHelp, inputNames, parseCaseLine, parseJson, splitTopLevel } from '@/lib/caseFormat'
 import { useStore } from '@/lib/store'
-import { parseTyped, typeError } from '@/lib/valueTypes'
+import { parseTyped, typeError, unreadableHint } from '@/lib/valueTypes'
 import type { TestCase, TestsSpec } from '@/lib/types'
 
 const NONE: TestCase[] = []
@@ -31,19 +30,44 @@ function parameterTypes(slug: string, entry: string): Record<string, string> {
   return types
 }
 
-/** Function problems: one labelled field per argument, then the expected result. Design problems: calls and results. */
+const isStrType = (type?: string) => (type ?? '').replace(/\s+/g, '').replace(/^'|'$/g, '') === 'str'
+/** How a stored value reads back in its field: bare text for `str`, JSON for everything else. */
+const valueText = (v: unknown, type?: string) => (typeof v === 'string' && isStrType(type) ? v : JSON.stringify(v))
+
+/** The add-a-case panel. */
 export function CustomCases({ slug, spec, allowReference }: { slug: string; spec: TestsSpec; allowReference: boolean }) {
+  return (
+    <div className="space-y-3 text-sm">
+      <h3 className="font-medium">Add your own test case</h3>
+      <CaseForm slug={slug} spec={spec} allowReference={allowReference} />
+    </div>
+  )
+}
+
+/**
+ * Function problems: one labelled field per argument, then the expected result. Design problems: calls and results.
+ * With `initial` it edits that case in place (keeping its name and place in the list) instead of adding a new one.
+ */
+export function CaseForm({
+  slug, spec, allowReference, initial, onDone,
+}: { slug: string; spec: TestsSpec; allowReference: boolean; initial?: TestCase; onDone?: () => void }) {
   const cases = useStore((s) => s.customCases[slug]) ?? NONE
-  const { addCustomCase, removeCustomCase } = useStore()
+  const { addCustomCase, updateCustomCase } = useStore()
   const names = useMemo(() => inputNames(spec), [spec])
   const types = useMemo(() => parameterTypes(slug, spec.entry), [slug, spec.entry])
   const isOps = spec.kind === 'operations'
   const example = spec.cases[0]
 
-  const [values, setValues] = useState<Record<string, string>>({})
-  const [calls, setCalls] = useState('')
-  const [expected, setExpected] = useState('')
-  const [expectedOpen, setExpectedOpen] = useState(false)
+  // Editing: the fields start from the case. A value that came from the reference is left blank so it is worked out again.
+  const [values, setValues] = useState<Record<string, string>>(() =>
+    initial && !isOps ? Object.fromEntries(names.map((n) => [n, valueText(initial.input?.[n], types[n])])) : {},
+  )
+  const [calls, setCalls] = useState(() =>
+    initial?.ops ? initial.ops.map(([n, a]) => `${n}(${a.map(show).join(', ')})`).join('; ') : '',
+  )
+  const keepExpected = !!initial && !initial.derived && initial.expected !== undefined
+  const [expected, setExpected] = useState(() => (keepExpected ? show(initial!.expected) : ''))
+  const [expectedOpen, setExpectedOpen] = useState(keepExpected)
 
   const inPlace = spec.compare?.startsWith('in_place:') ? spec.compare.split(':')[1] : null
 
@@ -68,6 +92,14 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
 
   function add() {
     if (!ready) return
+    if (initial) {
+      // Save in place. A blank expected is dropped, so the reference answers it again.
+      const answer = blankExpected ? { expected: undefined } : { expected: isOps ? opsParsed!.case!.expected : expectedParsed!.value }
+      if (isOps) updateCustomCase(slug, initial.name, { ops: opsParsed!.case!.ops, ...answer, derived: false })
+      else updateCustomCase(slug, initial.name, { input: Object.fromEntries(fields.map((f) => [f.name, f.parsed!.value])), ...answer, derived: false })
+      onDone?.()
+      return
+    }
     const used = new Set(cases.map((c) => c.name))
     let n = cases.length + 1
     while (used.has(`my case ${n}`)) n++
@@ -89,7 +121,6 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
 
   return (
     <div className="space-y-3 text-sm">
-      <h3 className="font-medium">Add your own test case</h3>
       <div className="space-y-2.5">
         {isOps ? (
           <div className="space-y-1">
@@ -122,7 +153,7 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
                 onKeyDown={onEnter}
                 placeholder={typeof example.input?.[f.name] === 'string' ? (example.input?.[f.name] as string) : show(example.input?.[f.name])}
               />
-              {f.parsed?.error && <p className="text-xs text-destructive">Not a valid value. Use JSON, e.g. {show(example.input?.[f.name])}</p>}
+              {f.parsed?.error && <p className="text-xs text-destructive">{unreadableHint(types[f.name], show(example.input?.[f.name]))}</p>}
               {f.mismatch && <p className="text-xs text-destructive"><span className="font-mono">{f.name}</span> {f.mismatch}.</p>}
             </div>
           ))
@@ -169,25 +200,12 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
           )
         })()}
       </div>
-      <Button size="sm" onClick={add} disabled={!ready}>
-        <Plus /> Add case
-      </Button>
-
-      {cases.length > 0 && (
-        <ul className="divide-y rounded-md border">
-          {[...cases].reverse().map((c) => (
-            <li key={c.name} className="flex items-center justify-between gap-2 px-3 py-1.5">
-              <span className="min-w-0 truncate">
-                <Badge variant="outline" className="mr-2">custom</Badge>
-                <span className="font-mono text-xs">{formatCase(spec, c)}</span>
-              </span>
-              <Button size="icon" variant="ghost" aria-label={`Delete ${c.name}`} onClick={() => removeCustomCase(slug, c.name)}>
-                <Trash2 />
-              </Button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="flex items-center gap-2">
+        <Button size="sm" onClick={add} disabled={!ready}>
+          {initial ? <Save /> : <Plus />} {initial ? 'Save changes' : 'Add case'}
+        </Button>
+        {initial && <Button size="sm" variant="ghost" onClick={onDone}>Cancel</Button>}
+      </div>
     </div>
   )
 }

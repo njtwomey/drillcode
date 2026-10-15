@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } fro
 import { usePanelRef } from 'react-resizable-panels'
 import { Benchmark } from '@/components/Benchmark'
 import { CodeEditor } from '@/components/CodeEditor'
-import { CustomCases } from '@/components/CustomCases'
+import { CaseForm, CustomCases } from '@/components/CustomCases'
 import { TestsPanel } from '@/components/TestsPanel'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -40,6 +40,9 @@ interface Props {
 
 const EXAMPLES_SHOWN = 2
 
+/** What makes a case's run result stale: its input and its expected value. */
+const fingerprint = (c: TestCase) => JSON.stringify([c.input, c.ops, c.expected])
+
 /**
  * Three columns: notes | code | tests. The side columns collapse and drag. Each test can be ticked,
  * run alone, opened, and carries its own console output; Run runs whatever is ticked.
@@ -49,7 +52,8 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
   const drafts = useStore((s) => s.drafts)
   const theme = useStore((s) => s.theme)
   const custom = useStore((s) => s.customCases[slug]) ?? NONE
-  const { setDraft, clearDraft, updateCustomCase } = useStore()
+  const { setDraft, clearDraft, updateCustomCase, removeCustomCase } = useStore()
+  const [editing, setEditing] = useState<string | null>(null)
   const status = useSyncExternalStore(pyRunner.subscribe, pyRunner.getSnapshot)
   const wide = useIsWide()
 
@@ -92,6 +96,8 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
     // A case added without an expected value now has one, from the reference solution: keep it so it shows in the list.
     for (const r of out) {
       if (r.expected_source === 'reference' && subset.find((c) => c.name === r.name)?.custom) {
+        const c = subset.find((x) => x.name === r.name)!
+        lastRun.current.set(r.name, fingerprint({ ...c, expected: r.expected }))
         updateCustomCase(slug, r.name, { expected: r.expected, derived: true })
       }
     }
@@ -100,14 +106,19 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
     return { results: out, cases: subset }
   }
 
-  // A case you add without an expected value runs straight away, so you see what the answer is.
-  const autoRan = useRef(new Set<string>())
+  // A case you add or edit runs straight away (just that case), so you see its result without pressing anything.
+  // The cases already there when the page opens are not re-run.
+  const lastRun = useRef<Map<string, string>>(new Map(custom.map((c) => [c.name, fingerprint(c)])))
   useEffect(() => {
-    if (practice || status !== 'ready') return
-    const waiting = cases.find((c) => c.custom && c.expected === undefined && !autoRan.current.has(c.name))
-    if (!waiting) return
-    autoRan.current.add(waiting.name)
-    void runNames([waiting.name])
+    if (status !== 'ready') return
+    for (const c of cases) {
+      if (!c.custom) continue
+      const f = fingerprint(c)
+      if (lastRun.current.get(c.name) === f) continue
+      lastRun.current.set(c.name, f)
+      void runNames([c.name])
+      return // one at a time; the next render picks up any others
+    }
   })
 
   const run = () => void runNames(cases.filter((c) => selected.has(c.name)).map((c) => c.name))
@@ -194,6 +205,16 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
           onSelectNone={() => setSelected(new Set())}
           onSelectMine={() => setSelected(new Set(custom.map((c) => c.name)))}
           onRunOne={(name) => void runNames([name])}
+          editing={editing}
+          onEdit={setEditing}
+          onDelete={(name) => {
+            lastRun.current.delete(name)
+            if (editing === name) setEditing(null)
+            removeCustomCase(slug, name)
+          }}
+          renderEditor={(c) => (
+            <CaseForm slug={slug} spec={spec} allowReference={!practice && spec.call !== false} initial={c} onDone={() => setEditing(null)} />
+          )}
           hideAfter={practice ? EXAMPLES_SHOWN : undefined}
         />
       </section>

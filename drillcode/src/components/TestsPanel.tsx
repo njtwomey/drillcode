@@ -1,5 +1,5 @@
-import { ChevronDown, ChevronRight, Lock, Play, Terminal } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { ChevronDown, ChevronRight, Lock, Pencil, Play, Terminal, Trash2 } from 'lucide-react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { StatusBadge } from '@/components/badges'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -19,6 +19,11 @@ interface Props {
   onSelectNone: () => void
   onSelectMine: () => void
   onRunOne: (name: string) => void
+  /** The case being edited (its row opens with the editor in it), and how to start, finish and delete. */
+  editing?: string | null
+  onEdit?: (name: string | null) => void
+  onDelete?: (name: string) => void
+  renderEditor?: (c: TestCase) => ReactNode
   /** Practice mode: only the first `hideAfter` catalogue cases are shown by name and input; the rest are hidden cases that cannot be opened. */
   hideAfter?: number
 }
@@ -32,7 +37,7 @@ function isHiddenCase(spec: TestsSpec, hideAfter: number | undefined, c: TestCas
 const hasOutput = (r?: CaseResult) => !!r && !!(r.stdout.trim() || r.stderr.trim())
 
 /** Every test case: tick the ones to run, open one to see its input, result and console output, or run it alone. */
-export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, hideAfter }: Props) {
+export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, hideAfter }: Props) {
   const [open, setOpen] = useState<Record<string, boolean>>({})
   // Failures open themselves once per run, so the reason is on screen; the reader can still close them.
   const autoOpened = useRef(new Set<string>())
@@ -72,7 +77,8 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
           const r = results[c.name]
           const hidden = isHiddenCase(spec, hideAfter, c)
           const failed = !!r && r.status !== 'pass' && r.status !== 'skipped'
-          const isOpen = !hidden && !!open[c.name]
+          const isEditing = editing === c.name
+          const isOpen = !hidden && (isEditing || !!open[c.name])
           const label = hidden ? `Hidden case ${spec.cases.findIndex((x) => x.name === c.name) - hideAfter! + 1}` : c.name
           if (hidden) {
             return (
@@ -91,25 +97,45 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
           }
           return (
             <li key={c.name}>
-              <Collapsible open={isOpen} onOpenChange={(v) => setOpen((o) => ({ ...o, [c.name]: v }))}>
+              <Collapsible open={isOpen} onOpenChange={(v) => !isEditing && setOpen((o) => ({ ...o, [c.name]: v }))}>
                 <div className="flex items-center gap-1.5 px-2 py-1.5">
                   <Checkbox checked={selected.has(c.name)} onCheckedChange={() => onToggle(c.name)} aria-label={`Run ${label}`} />
                   <CollapsibleTrigger asChild>
                     <button className="flex min-w-0 flex-1 items-center gap-1.5 text-left" aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${label}`}>
                       {isOpen ? <ChevronDown className="size-4 shrink-0 text-muted-foreground" /> : <ChevronRight className="size-4 shrink-0 text-muted-foreground" />}
                       {r ? <StatusBadge status={r.status} /> : <Badge variant="outline" className="text-muted-foreground">not run</Badge>}
-                      <span className="min-w-0 truncate font-medium">{label}</span>
-                      {c.custom && <Badge variant="outline">custom</Badge>}
-                      {hasOutput(r) && <Terminal className="size-3.5 shrink-0 text-muted-foreground" aria-label="Has console output" />}
-                      {r && r.status !== 'skipped' && <span className="ml-auto shrink-0 text-xs text-muted-foreground tabular-nums">{r.ms.toFixed(2)} ms</span>}
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-1.5">
+                          <span className="min-w-0 truncate font-medium">{label}</span>
+                          {c.custom && <Badge variant="outline">custom</Badge>}
+                          {hasOutput(r) && <Terminal className="size-3.5 shrink-0 text-muted-foreground" aria-label="Has console output" />}
+                        </span>
+                        {c.custom && (
+                          <span className="block truncate font-mono text-xs text-muted-foreground" title={formatCase(spec, c)}>
+                            {formatCase(spec, c)}
+                          </span>
+                        )}
+                      </span>
+                      {r && r.status !== 'skipped' && <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{r.ms.toFixed(2)} ms</span>}
                     </button>
                   </CollapsibleTrigger>
                   <Button size="icon" variant="ghost" className="size-7 shrink-0" disabled={running} onClick={() => onRunOne(c.name)} aria-label={`Run only ${label}`} title="Run only this test">
                     <Play className="size-3.5" />
                   </Button>
+                  {c.custom && onEdit && (
+                    <Button size="icon" variant="ghost" className="size-7 shrink-0" onClick={() => onEdit(isEditing ? null : c.name)} aria-label={`Edit ${label}`} title="Edit this case">
+                      <Pencil className="size-3.5" />
+                    </Button>
+                  )}
+                  {c.custom && onDelete && (
+                    <Button size="icon" variant="ghost" className="size-7 shrink-0" onClick={() => onDelete(c.name)} aria-label={`Delete ${label}`} title="Delete this case">
+                      <Trash2 className="size-3.5" />
+                    </Button>
+                  )}
                 </div>
                 <CollapsibleContent>
                   <div className="space-y-2 border-t bg-muted/20 px-3 py-2">
+                    {isEditing && renderEditor ? renderEditor(c) : (<>
                     <div className="break-all font-mono text-xs text-muted-foreground">{formatCase(spec, c)}</div>
                     {r?.status === 'fail' && (
                       <div className="grid gap-2 rounded-md bg-muted/50 p-2 font-mono text-xs sm:grid-cols-2">
@@ -143,6 +169,7 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                         </CollapsibleContent>
                       </Collapsible>
                     )}
+                    </>)}
                   </div>
                 </CollapsibleContent>
               </Collapsible>
