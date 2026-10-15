@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, Lock, Pencil, Play, Terminal, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Lock, Pencil, Play, Terminal, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { StatusBadge } from '@/components/badges'
 import { Badge } from '@/components/ui/badge'
@@ -56,7 +56,6 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
   }, [results, cases, spec, hideAfter])
 
   const openable = cases.filter((c) => !isHiddenCase(spec, hideAfter, c))
-  const allOpen = openable.every((c) => open[c.name])
   const setAll = (value: boolean) => setOpen(Object.fromEntries(openable.map((c) => [c.name, value])))
   const hasMine = cases.some((c) => c.custom)
 
@@ -68,9 +67,14 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
         <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onSelectMine} disabled={!hasMine} title="Select only the test cases you added">
           Select mine
         </Button>
-        <Button size="sm" variant="ghost" className="ml-auto h-7 px-2" onClick={() => setAll(!allOpen)} disabled={openable.length === 0}>
-          {allOpen ? 'Collapse all' : 'Expand all'}
-        </Button>
+        <div className="ml-auto flex items-center">
+          <Button size="icon" variant="ghost" className="size-7" onClick={() => setAll(true)} disabled={openable.length === 0} aria-label="Expand all" title="Expand all">
+            <ChevronsUpDown className="size-4" />
+          </Button>
+          <Button size="icon" variant="ghost" className="size-7" onClick={() => setAll(false)} disabled={openable.length === 0} aria-label="Collapse all" title="Collapse all">
+            <ChevronsDownUp className="size-4" />
+          </Button>
+        </div>
       </div>
       <ul className="divide-y rounded-md border text-sm">
         {cases.map((c) => {
