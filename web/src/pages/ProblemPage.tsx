@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight, Eye, ExternalLink } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { DifficultyBadge } from '@/components/badges'
+import { Description } from '@/components/Description'
 import { Workspace } from '@/components/Workspace'
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
@@ -13,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { bySlug, definitions, problems, skeletonSource, solutionVariants, testsSpec } from '@/lib/catalogue'
+import { bySlug, definitions, descriptionSource, problems, skeletonSource, solutionVariants, testsSpec } from '@/lib/catalogue'
 import { draftKey, useStore } from '@/lib/store'
 import type { Mode } from '@/lib/types'
 
@@ -56,6 +57,7 @@ function ProblemView({ slug }: { slug: string }) {
 
   const viewing = mode === 'view'
   const defs = definitions(slug)
+  const description = descriptionSource(slug)
 
   return (
     <div className="space-y-4">
@@ -79,8 +81,9 @@ function ProblemView({ slug }: { slug: string }) {
 
       <div className="grid gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
         <aside className="space-y-4 text-sm">
+          {description && <Description source={description} />}
           <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
-            Read the full problem on LeetCode <ExternalLink className="size-3" />
+            Full statement on LeetCode <ExternalLink className="size-3" />
           </a>
           {viewing ? (
             <Tabs defaultValue="summary" className="rounded-md border p-3">

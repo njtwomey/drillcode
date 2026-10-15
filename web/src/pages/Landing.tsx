@@ -1,7 +1,6 @@
 import { ArrowDown, ArrowUp, ArrowUpDown, Check, ExternalLink, Play, Search, Shuffle, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { Chart } from '@/components/Chart'
 import { DifficultyBadge } from '@/components/badges'
 import { MultiSelect } from '@/components/MultiSelect'
 import { Badge } from '@/components/ui/badge'
@@ -72,22 +71,6 @@ export function Landing() {
     else if (sort.dir === 'asc') setSort({ key, dir: 'desc' })
     else setSort({ key: null, dir: 'asc' })
   }
-
-  const chartOption = useMemo(() => {
-    const topics = TOPICS.filter((t) => problems.some((p) => p.topic === t))
-    const total = topics.map((t) => problems.filter((p) => p.topic === t).length)
-    const doneByTopic = topics.map((t) => problems.filter((p) => p.topic === t && done[p.slug]).length)
-    return {
-      tooltip: { trigger: 'axis' as const },
-      legend: { top: 0 },
-      xAxis: { type: 'category' as const, data: topics, axisLabel: { rotate: 35, interval: 0 } },
-      yAxis: { type: 'value' as const, minInterval: 1 },
-      series: [
-        { name: 'Done', type: 'bar' as const, stack: 'n', data: doneByTopic },
-        { name: 'Remaining', type: 'bar' as const, stack: 'n', data: total.map((n, i) => n - doneByTopic[i]) },
-      ],
-    }
-  }, [done])
 
   function shuffle() {
     const slugs = filtered.map((p) => p.slug)
@@ -211,11 +194,6 @@ export function Landing() {
           )}
         </TableBody>
       </Table>
-
-      <section>
-        <h2 className="mb-1 text-sm font-medium">Progress by topic</h2>
-        <Chart option={chartOption} height={240} />
-      </section>
     </div>
   )
 }

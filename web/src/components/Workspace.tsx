@@ -43,7 +43,6 @@ export function Workspace({ slug, draftKey, originalSource, toolbar, practice, o
   const { setDraft, clearDraft } = useStore()
   const status = useSyncExternalStore(pyRunner.subscribe, pyRunner.getSnapshot)
   const [results, setResults] = useState<CaseResult[]>([])
-  const [tab, setTab] = useState('tests')
 
   const source = drafts[draftKey] ?? originalSource
   const cases = [...spec.cases, ...custom.map((c) => ({ ...c, custom: true }))]
@@ -58,7 +57,6 @@ export function Workspace({ slug, draftKey, originalSource, toolbar, practice, o
   async function run() {
     if (busy) return
     setResults([])
-    setTab('tests')
     const out = await runSuite(setResults)
     onResults?.(out.results)
   }
@@ -75,56 +73,62 @@ export function Workspace({ slug, draftKey, originalSource, toolbar, practice, o
     .join('\n\n')
 
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2">
-        <Button size="sm" onClick={run} disabled={busy}>
-          <Play /> Run tests <kbd className="ml-1 text-[10px] opacity-70">⌘/Ctrl ↵</kbd>
-        </Button>
-        <Button size="sm" variant="outline" onClick={() => clearDraft(draftKey)}>
-          <RotateCcw /> Reset code
-        </Button>
-        {toolbar}
-        <span className="ml-auto text-xs text-muted-foreground" role="status">
-          {STATUS_TEXT[status]}{status === 'error' && pyRunner.detail ? `: ${pyRunner.detail}` : ''}
-        </span>
-      </div>
-      <div className="h-[min(68vh,760px)] min-h-[440px]">
-        <CodeEditor value={source} dark={theme === 'dark'} onChange={(v) => setDraft(draftKey, v)} onRun={run} />
+    <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(300px,380px)]">
+      <div className="min-w-0 space-y-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button size="sm" onClick={run} disabled={busy}>
+            <Play /> Run tests <kbd className="ml-1 text-[10px] opacity-70">⌘/Ctrl ↵</kbd>
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => clearDraft(draftKey)}>
+            <RotateCcw /> Reset code
+          </Button>
+          {toolbar}
+          <span className="ml-auto text-xs text-muted-foreground" role="status">
+            {STATUS_TEXT[status]}{status === 'error' && pyRunner.detail ? `: ${pyRunner.detail}` : ''}
+          </span>
+        </div>
+        <div className="h-[min(68vh,760px)] min-h-[440px]">
+          <CodeEditor value={source} dark={theme === 'dark'} onChange={(v) => setDraft(draftKey, v)} onRun={run} />
+        </div>
+        <Tabs defaultValue="console">
+          <TabsList>
+            <TabsTrigger value="console">Console</TabsTrigger>
+            {!practice && <TabsTrigger value="benchmark">Benchmark</TabsTrigger>}
+          </TabsList>
+          <TabsContent value="console">
+            <pre className="max-h-64 overflow-auto rounded-md border bg-muted/40 p-3 font-mono text-xs whitespace-pre-wrap">
+              {consoleText || 'print() output, errors and tracebacks appear here after a run.'}
+            </pre>
+          </TabsContent>
+          {!practice && (
+            <TabsContent value="benchmark">
+              <Benchmark
+                disabled={busy}
+                runSuite={async () => {
+                  const out = await runSuite()
+                  setResults(out.results)
+                  return out
+                }}
+              />
+            </TabsContent>
+          )}
+        </Tabs>
       </div>
 
-      <Tabs value={tab} onValueChange={setTab}>
-        <TabsList>
-          <TabsTrigger value="tests">
-            Test cases{results.length > 0 ? ` · ${passed}/${results.length} passed` : ` · ${cases.length}`}
-          </TabsTrigger>
-          <TabsTrigger value="console">Console</TabsTrigger>
-          <TabsTrigger value="custom">Add a case</TabsTrigger>
-          {!practice && <TabsTrigger value="benchmark">Benchmark</TabsTrigger>}
-        </TabsList>
-        <TabsContent value="tests">
+      <aside className="min-w-0 space-y-4 xl:sticky xl:top-4 xl:max-h-[calc(100vh-2rem)] xl:self-start xl:overflow-y-auto">
+        <section className="space-y-2">
+          <h2 className="text-sm font-medium">
+            Test cases
+            <span className="ml-2 font-normal text-muted-foreground">
+              {results.length > 0 ? `${passed} of ${results.length} passed` : `${cases.length} cases`}
+            </span>
+          </h2>
           <TestsPanel spec={spec} cases={cases} results={results} hideAfter={practice ? EXAMPLES_SHOWN : undefined} />
-        </TabsContent>
-        <TabsContent value="console">
-          <pre className="max-h-64 overflow-auto rounded-md border bg-muted/40 p-3 font-mono text-xs whitespace-pre-wrap">
-            {consoleText || 'print() output, errors and tracebacks appear here after a run.'}
-          </pre>
-        </TabsContent>
-        <TabsContent value="custom">
+        </section>
+        <section className="rounded-md border p-3">
           <CustomCases slug={slug} spec={spec} />
-        </TabsContent>
-        {!practice && (
-          <TabsContent value="benchmark">
-            <Benchmark
-              disabled={busy}
-              runSuite={async () => {
-                const out = await runSuite()
-                setResults(out.results)
-                return out
-              }}
-            />
-          </TabsContent>
-        )}
-      </Tabs>
+        </section>
+      </aside>
     </div>
   )
 }

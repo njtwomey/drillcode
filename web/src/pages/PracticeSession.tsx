@@ -2,12 +2,13 @@ import { Check, ExternalLink, Flag, SkipForward } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router'
 import { DifficultyBadge } from '@/components/badges'
+import { Description } from '@/components/Description'
 import { Workspace } from '@/components/Workspace'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { bySlug, definitions, skeletonSource } from '@/lib/catalogue'
+import { bySlug, definitions, descriptionSource, skeletonSource } from '@/lib/catalogue'
 import { formatDuration } from '@/lib/format'
 import { practiceDraftKey, useStore } from '@/lib/store'
 import type { CaseResult } from '@/lib/types'
@@ -36,6 +37,7 @@ function Current() {
   const elapsed = useElapsed(session.problemStartedAt)
   const last = session.index === session.slugs.length - 1
   const defs = definitions(slug)
+  const description = descriptionSource(slug)
 
   function onResults(results: CaseResult[]) {
     const passed = results.length > 0 && results.every((r) => r.status === 'pass')
@@ -72,8 +74,9 @@ function Current() {
 
       <div className="grid gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
         <aside className="space-y-4 text-sm">
+          {description && <Description source={description} />}
           <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
-            Read the full problem on LeetCode <ExternalLink className="size-3" />
+            Full statement on LeetCode <ExternalLink className="size-3" />
           </a>
           <p className="rounded-md border p-3 text-muted-foreground">
             Practice mode: no solution, approach or hints. The first two test cases are shown as examples;

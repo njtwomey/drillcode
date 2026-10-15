@@ -4,7 +4,7 @@ import indexRaw from '../../../problems/index.yaml?raw'
 
 // Everything under problems/ is read straight from disk, so edits hot-reload.
 const problemFiles = import.meta.glob(
-  '../../../problems/*/{solution*.py,skeleton.py,tests.yaml,validator.py}',
+  '../../../problems/*/{solution*.py,skeleton.py,tests.yaml,validator.py,description.md}',
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>
 
@@ -59,6 +59,9 @@ export function solutionVariants(slug: string): Variant[] {
 
 export function skeletonSource(slug: string) {
   return file(slug, 'skeleton.py') ?? ''
+}
+export function descriptionSource(slug: string): string | undefined {
+  return file(slug, 'description.md')
 }
 export function validatorSource(slug: string) {
   return file(slug, 'validator.py')
