@@ -50,7 +50,7 @@ export function pythonToJson(text: string): string {
   return out
 }
 
-function parseJson(text: string, what: string, shown = text): { value?: unknown; error?: string } {
+export function parseJson(text: string, what: string, shown = text): { value?: unknown; error?: string } {
   try {
     return { value: JSON.parse(pythonToJson(text)) }
   } catch {
@@ -59,7 +59,7 @@ function parseJson(text: string, what: string, shown = text): { value?: unknown;
 }
 
 /** Split on a separator that is not inside brackets or a string. */
-function splitTopLevel(text: string, sep: string): string[] {
+export function splitTopLevel(text: string, sep: string): string[] {
   const parts: string[] = []
   let depth = 0
   let quote = ''
