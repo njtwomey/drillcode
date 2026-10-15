@@ -1,0 +1,27 @@
+kind: function
+entry: Solution.letterCombinations
+scaffolds: []
+args: [digits]
+compare: unordered
+cases:
+  - name: example 1
+    input: {digits: "23"}
+    expected: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+  - name: example 2 (empty)
+    input: {digits: ""}
+    expected: []
+  - name: example 3
+    input: {digits: "2"}
+    expected: ["a", "b", "c"]
+  - name: digit 7 has four letters
+    input: {digits: "7"}
+    expected: ["p", "q", "r", "s"]
+  - name: digit 9 has four letters
+    input: {digits: "9"}
+    expected: ["w", "x", "y", "z"]
+  - name: three then four letters
+    input: {digits: "27"}
+    expected: ["ap", "aq", "ar", "as", "bp", "bq", "br", "bs", "cp", "cq", "cr", "cs"]
+  - name: repeated digit
+    input: {digits: "22"}
+    expected: ["aa", "ab", "ac", "ba", "bb", "bc", "ca", "cb", "cc"]

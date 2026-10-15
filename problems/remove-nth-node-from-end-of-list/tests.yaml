@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.removeNthFromEnd
+scaffolds: [linked_list]
+args: [head, n]
+convert:
+  head: linked_list
+  result: linked_list
+cases:
+  - name: example 1
+    input: {head: [1, 2, 3, 4, 5], n: 2}
+    expected: [1, 2, 3, 5]
+  - name: example 2 single node
+    input: {head: [1], n: 1}
+    expected: []
+  - name: example 3 remove last of two
+    input: {head: [1, 2], n: 1}
+    expected: [1]
+  - name: remove the head of two
+    input: {head: [1, 2], n: 2}
+    expected: [2]
+  - name: n equals length
+    input: {head: [1, 2, 3], n: 3}
+    expected: [2, 3]
+  - name: remove the tail
+    input: {head: [1, 2, 3], n: 1}
+    expected: [1, 2]
+  - name: remove the middle
+    input: {head: [1, 2, 3, 4, 5], n: 3}
+    expected: [1, 2, 4, 5]
+  - name: duplicate values
+    input: {head: [7, 7, 7, 7], n: 2}
+    expected: [7, 7, 7]

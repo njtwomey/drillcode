@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.copyRandomList
+scaffolds: [linked_list]
+args: [head]
+convert:
+  head: random_list
+  result: random_list
+compare: validator
+cases:
+  - name: example 1
+    input: {head: [[7, null], [13, 0], [11, 4], [10, 2], [1, 0]]}
+    expected: [[7, null], [13, 0], [11, 4], [10, 2], [1, 0]]
+  - name: example 2
+    input: {head: [[1, 1], [2, 1]]}
+    expected: [[1, 1], [2, 1]]
+  - name: example 3 duplicate values
+    input: {head: [[3, null], [3, 0], [3, null]]}
+    expected: [[3, null], [3, 0], [3, null]]
+  - name: empty list
+    input: {head: []}
+    expected: []
+  - name: random points to itself
+    input: {head: [[1, 0]]}
+    expected: [[1, 0]]
+  - name: random null everywhere
+    input: {head: [[1, null], [2, null], [3, null]]}
+    expected: [[1, null], [2, null], [3, null]]
+  - name: random points to tail and head
+    input: {head: [[5, 3], [6, null], [7, 0], [8, 3]]}
+    expected: [[5, 3], [6, null], [7, 0], [8, 3]]

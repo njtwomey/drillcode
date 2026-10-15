@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.combinationSum4
+scaffolds: []
+args: [nums, target]
+cases:
+  - name: example 1
+    input: {nums: [1, 2, 3], target: 4}
+    expected: 7
+  - name: example 2
+    input: {nums: [9], target: 3}
+    expected: 0
+  - name: target equals only element
+    input: {nums: [3], target: 3}
+    expected: 1
+  - name: order matters
+    input: {nums: [1, 2], target: 3}
+    expected: 3
+  - name: all ones
+    input: {nums: [1], target: 10}
+    expected: 1
+  - name: powers of two
+    input: {nums: [1, 2, 4], target: 8}
+    expected: 55
+  - name: large count
+    input: {nums: [1, 2, 3], target: 10}
+    expected: 274

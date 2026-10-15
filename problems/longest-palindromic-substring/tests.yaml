@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.longestPalindrome
+scaffolds: []
+args: [s]
+compare: validator
+cases:
+  - name: example 1 (bab or aba)
+    input: {s: "babad"}
+    expected: "bab"
+  - name: example 2 (even length)
+    input: {s: "cbbd"}
+    expected: "bb"
+  - name: single character
+    input: {s: "a"}
+    expected: "a"
+  - name: no repeats (any single letter)
+    input: {s: "ac"}
+    expected: "a"
+  - name: all characters equal
+    input: {s: "aaaa"}
+    expected: "aaaa"
+  - name: whole string is a palindrome
+    input: {s: "racecar"}
+    expected: "racecar"
+  - name: palindrome in the middle
+    input: {s: "xyabbaz"}
+    expected: "abba"
+  - name: palindrome at the end
+    input: {s: "abcdeedcb"}
+    expected: "bcdeedcb"

@@ -1,0 +1,27 @@
+kind: function
+entry: Solution.moveZeroes
+scaffolds: []
+args: [nums]
+compare: in_place:nums
+cases:
+  - name: example 1
+    input: {nums: [0, 1, 0, 3, 12]}
+    expected: [1, 3, 12, 0, 0]
+  - name: example 2
+    input: {nums: [0]}
+    expected: [0]
+  - name: all zeros
+    input: {nums: [0, 0, 0, 0]}
+    expected: [0, 0, 0, 0]
+  - name: no zeros
+    input: {nums: [1, 2, 3]}
+    expected: [1, 2, 3]
+  - name: single non-zero
+    input: {nums: [5]}
+    expected: [5]
+  - name: trailing zeros already
+    input: {nums: [1, 2, 0, 0]}
+    expected: [1, 2, 0, 0]
+  - name: negatives keep order
+    input: {nums: [0, -1, 0, -2, 3]}
+    expected: [-1, -2, 3, 0, 0]

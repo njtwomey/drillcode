@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.characterReplacement
+scaffolds: []
+args: [s, k]
+cases:
+  - name: example 1
+    input: {s: "ABAB", k: 2}
+    expected: 4
+  - name: example 2
+    input: {s: "AABABBA", k: 1}
+    expected: 4
+  - name: single character, k = 0
+    input: {s: "A", k: 0}
+    expected: 1
+  - name: k = 0 distinct letters
+    input: {s: "ABC", k: 0}
+    expected: 1
+  - name: k = 0 with a run
+    input: {s: "ABAA", k: 0}
+    expected: 2
+  - name: k larger than length
+    input: {s: "ABC", k: 5}
+    expected: 3
+  - name: all the same
+    input: {s: "AAAA", k: 2}
+    expected: 4
+  - name: replacement in the middle
+    input: {s: "BAAAB", k: 2}
+    expected: 5
+  - name: k = 1 on five distinct letters
+    input: {s: "ABCDE", k: 1}
+    expected: 2

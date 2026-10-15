@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.uniquePaths
+scaffolds: []
+args: [m, n]
+cases:
+  - name: example 1
+    input: {m: 3, n: 7}
+    expected: 28
+  - name: example 2
+    input: {m: 3, n: 2}
+    expected: 3
+  - name: 1x1
+    input: {m: 1, n: 1}
+    expected: 1
+  - name: single row
+    input: {m: 1, n: 5}
+    expected: 1
+  - name: single column
+    input: {m: 7, n: 1}
+    expected: 1
+  - name: 2x2
+    input: {m: 2, n: 2}
+    expected: 2
+  - name: 10x10
+    input: {m: 10, n: 10}
+    expected: 48620
+  - name: large asymmetric
+    input: {m: 23, n: 12}
+    expected: 193536720

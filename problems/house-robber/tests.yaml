@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.rob
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [1, 2, 3, 1]}
+    expected: 4
+  - name: example 2
+    input: {nums: [2, 7, 9, 3, 1]}
+    expected: 12
+  - name: one house
+    input: {nums: [5]}
+    expected: 5
+  - name: two houses first larger
+    input: {nums: [2, 1]}
+    expected: 2
+  - name: two houses second larger
+    input: {nums: [1, 2]}
+    expected: 2
+  - name: greedy picks the wrong houses
+    input: {nums: [2, 1, 1, 2]}
+    expected: 4
+  - name: all zeros
+    input: {nums: [0, 0, 0]}
+    expected: 0
+  - name: big ends
+    input: {nums: [100, 1, 1, 100]}
+    expected: 200

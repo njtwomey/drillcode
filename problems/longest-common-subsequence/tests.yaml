@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.longestCommonSubsequence
+scaffolds: []
+args: [text1, text2]
+cases:
+  - name: example 1
+    input: {text1: "abcde", text2: "ace"}
+    expected: 3
+  - name: example 2 (identical)
+    input: {text1: "abc", text2: "abc"}
+    expected: 3
+  - name: example 3 (nothing in common)
+    input: {text1: "abc", text2: "def"}
+    expected: 0
+  - name: first string empty
+    input: {text1: "", text2: "abc"}
+    expected: 0
+  - name: second string empty
+    input: {text1: "abc", text2: ""}
+    expected: 0
+  - name: reversed strings
+    input: {text1: "abc", text2: "cba"}
+    expected: 1
+  - name: subsequence not substring
+    input: {text1: "AGGTAB", text2: "GXTXAYB"}
+    expected: 4
+  - name: repeated letters
+    input: {text1: "abcba", text2: "abcbcba"}
+    expected: 5
+  - name: single shared letter
+    input: {text1: "bl", text2: "yby"}
+    expected: 1

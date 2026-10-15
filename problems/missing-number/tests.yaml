@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.missingNumber
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [3, 0, 1]}
+    expected: 2
+  - name: example 2
+    input: {nums: [0, 1]}
+    expected: 2
+  - name: example 3
+    input: {nums: [9, 6, 4, 2, 3, 5, 7, 0, 1]}
+    expected: 8
+  - name: missing zero
+    input: {nums: [1]}
+    expected: 0
+  - name: missing n
+    input: {nums: [0]}
+    expected: 1
+  - name: missing zero, longer
+    input: {nums: [3, 1, 2]}
+    expected: 0
+  - name: missing n, unsorted
+    input: {nums: [2, 0, 1, 3]}
+    expected: 4

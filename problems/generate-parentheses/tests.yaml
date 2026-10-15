@@ -1,0 +1,18 @@
+kind: function
+entry: Solution.generateParenthesis
+scaffolds: []
+args: [n]
+compare: unordered
+cases:
+  - name: example 1
+    input: {n: 3}
+    expected: ["((()))", "(()())", "(())()", "()(())", "()()()"]
+  - name: example 2 (n = 1)
+    input: {n: 1}
+    expected: ["()"]
+  - name: n = 2
+    input: {n: 2}
+    expected: ["(())", "()()"]
+  - name: n = 4
+    input: {n: 4}
+    expected: ["(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()", "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"]

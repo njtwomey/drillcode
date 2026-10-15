@@ -1,0 +1,31 @@
+kind: function
+entry: Codec
+scaffolds: []
+args: [strs]
+call: false
+compare: validator
+cases:
+  - name: example 1
+    input: {strs: ["Hello", "World"]}
+    expected: ["Hello", "World"]
+  - name: example 2 single empty string
+    input: {strs: [""]}
+    expected: [""]
+  - name: empty list
+    input: {strs: []}
+    expected: []
+  - name: several empty strings
+    input: {strs: ["", "", ""]}
+    expected: ["", "", ""]
+  - name: strings containing the delimiter
+    input: {strs: ["#", "##", "a#b"]}
+    expected: ["#", "##", "a#b"]
+  - name: strings that look like encodings
+    input: {strs: ["4#word", "3#", "12#34"]}
+    expected: ["4#word", "3#", "12#34"]
+  - name: digits only
+    input: {strs: ["5", "55", "0"]}
+    expected: ["5", "55", "0"]
+  - name: unicode and spaces
+    input: {strs: ["héllo wörld", " ", "ü"]}
+    expected: ["héllo wörld", " ", "ü"]

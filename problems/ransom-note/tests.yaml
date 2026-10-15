@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.canConstruct
+scaffolds: []
+args: [ransomNote, magazine]
+cases:
+  - name: example 1
+    input: {ransomNote: "a", magazine: "b"}
+    expected: false
+  - name: example 2
+    input: {ransomNote: "aa", magazine: "ab"}
+    expected: false
+  - name: example 3
+    input: {ransomNote: "aa", magazine: "aab"}
+    expected: true
+  - name: empty note
+    input: {ransomNote: "", magazine: "abc"}
+    expected: true
+  - name: note longer than magazine
+    input: {ransomNote: "abc", magazine: "ab"}
+    expected: false
+  - name: letters are not reusable across positions
+    input: {ransomNote: "abcab", magazine: "abcdefg"}
+    expected: false
+  - name: exact match, shuffled
+    input: {ransomNote: "listen", magazine: "silent"}
+    expected: true

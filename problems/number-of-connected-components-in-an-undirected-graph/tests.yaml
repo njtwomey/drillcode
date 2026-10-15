@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.countComponents
+scaffolds: []
+args: [n, edges]
+cases:
+  - name: example 1
+    input: {n: 5, edges: [[0, 1], [1, 2], [3, 4]]}
+    expected: 2
+  - name: example 2 single chain
+    input: {n: 5, edges: [[0, 1], [1, 2], [2, 3], [3, 4]]}
+    expected: 1
+  - name: no edges
+    input: {n: 5, edges: []}
+    expected: 5
+  - name: single node
+    input: {n: 1, edges: []}
+    expected: 1
+  - name: self loop
+    input: {n: 3, edges: [[0, 0], [1, 2]]}
+    expected: 2
+  - name: duplicate edges
+    input: {n: 4, edges: [[0, 1], [1, 0], [0, 1]]}
+    expected: 3
+  - name: cycle
+    input: {n: 4, edges: [[0, 1], [1, 2], [2, 0]]}
+    expected: 2
+  - name: edges merge existing sets
+    input: {n: 6, edges: [[0, 1], [2, 3], [1, 2], [4, 5]]}
+    expected: 2
+  - name: reverse order chain
+    input: {n: 4, edges: [[2, 3], [1, 2], [0, 1]]}
+    expected: 1

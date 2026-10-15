@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.twoSum
+scaffolds: []
+args: [numbers, target]
+cases:
+  - name: example 1
+    input: {numbers: [2, 7, 11, 15], target: 9}
+    expected: [1, 2]
+  - name: example 2
+    input: {numbers: [2, 3, 4], target: 6}
+    expected: [1, 3]
+  - name: example 3 negatives
+    input: {numbers: [-1, 0], target: -1}
+    expected: [1, 2]
+  - name: first and last elements
+    input: {numbers: [1, 3, 5, 9], target: 10}
+    expected: [1, 4]
+  - name: duplicates
+    input: {numbers: [3, 3], target: 6}
+    expected: [1, 2]
+  - name: mixed signs
+    input: {numbers: [-10, -3, 0, 5, 9], target: -3}
+    expected: [2, 3]
+  - name: middle pair in longer array
+    input: {numbers: [1, 2, 4, 6, 10, 20, 30], target: 10}
+    expected: [3, 4]
+  - name: pair at the end
+    input: {numbers: [1, 2, 3, 4, 5, 6], target: 11}
+    expected: [5, 6]

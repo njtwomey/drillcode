@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.canAttendMeetings
+scaffolds: []
+args: [intervals]
+cases:
+  - name: example 1
+    input: {intervals: [[0, 30], [5, 10], [15, 20]]}
+    expected: false
+  - name: example 2
+    input: {intervals: [[7, 10], [2, 4]]}
+    expected: true
+  - name: empty
+    input: {intervals: []}
+    expected: true
+  - name: single meeting
+    input: {intervals: [[1, 5]]}
+    expected: true
+  - name: touching intervals
+    input: {intervals: [[1, 5], [5, 8]]}
+    expected: true
+  - name: unsorted overlap
+    input: {intervals: [[5, 8], [1, 6]]}
+    expected: false
+  - name: contained meeting after a gap
+    input: {intervals: [[1, 10], [11, 12], [2, 3]]}
+    expected: false

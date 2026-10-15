@@ -1,0 +1,37 @@
+kind: function
+entry: Solution.findWords
+scaffolds: []
+args: [board, words]
+compare: unordered
+cases:
+  - name: example 1
+    input:
+      board: [["o", "a", "a", "n"], ["e", "t", "a", "e"], ["i", "h", "k", "r"], ["i", "f", "l", "v"]]
+      words: ["oath", "pea", "eat", "rain"]
+    expected: ["eat", "oath"]
+  - name: example 2
+    input: {board: [["a", "b"], ["c", "d"]], words: ["abcb"]}
+    expected: []
+  - name: words sharing prefixes
+    input:
+      board: [["o", "a", "a", "n"], ["e", "t", "a", "e"], ["i", "h", "k", "r"], ["i", "f", "l", "v"]]
+      words: ["oath", "oat", "oa", "eat"]
+    expected: ["oath", "oat", "oa", "eat"]
+  - name: word that is a prefix of another
+    input: {board: [["a", "b", "c"]], words: ["a", "ab", "abc", "abcd"]}
+    expected: ["a", "ab", "abc"]
+  - name: single cell
+    input: {board: [["a"]], words: ["a", "b"]}
+    expected: ["a"]
+  - name: word longer than the grid
+    input: {board: [["a", "b"], ["c", "d"]], words: ["abcdef"]}
+    expected: []
+  - name: cell cannot be reused
+    input: {board: [["a", "a"]], words: ["aaa", "aa"]}
+    expected: ["aa"]
+  - name: found by several paths is reported once
+    input: {board: [["a", "b", "a"]], words: ["ab", "ba"]}
+    expected: ["ab", "ba"]
+  - name: path must be adjacent, not diagonal
+    input: {board: [["a", "x"], ["y", "b"]], words: ["ab"]}
+    expected: []

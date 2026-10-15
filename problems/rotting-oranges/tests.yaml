@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.orangesRotting
+scaffolds: []
+args: [grid]
+cases:
+  - name: example 1
+    input: {grid: [[2, 1, 1], [1, 1, 0], [0, 1, 1]]}
+    expected: 4
+  - name: example 2 unreachable
+    input: {grid: [[2, 1, 1], [0, 1, 1], [1, 0, 1]]}
+    expected: -1
+  - name: example 3 no fresh
+    input: {grid: [[0, 2]]}
+    expected: 0
+  - name: fresh but nothing rotten
+    input: {grid: [[1]]}
+    expected: -1
+  - name: empty cell only
+    input: {grid: [[0]]}
+    expected: 0
+  - name: two sources spread simultaneously
+    input: {grid: [[2, 1, 1], [1, 1, 1], [0, 1, 2]]}
+    expected: 2
+  - name: all rotten
+    input: {grid: [[2, 2], [2, 2]]}
+    expected: 0
+  - name: single row chain
+    input: {grid: [[2, 1, 1, 1, 1]]}
+    expected: 4
+  - name: fresh blocked by empty column
+    input: {grid: [[2, 0, 1]]}
+    expected: -1

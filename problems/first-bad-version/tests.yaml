@@ -1,0 +1,31 @@
+kind: function
+entry: Solution.firstBadVersion
+scaffolds: []
+args: [n]
+call: false
+compare: validator
+cases:
+  - name: example 1
+    input: {n: 5, bad: 4}
+    expected: 4
+  - name: example 2 n is 1
+    input: {n: 1, bad: 1}
+    expected: 1
+  - name: first version bad
+    input: {n: 10, bad: 1}
+    expected: 1
+  - name: last version bad
+    input: {n: 10, bad: 10}
+    expected: 10
+  - name: two versions, first bad
+    input: {n: 2, bad: 1}
+    expected: 1
+  - name: two versions, second bad
+    input: {n: 2, bad: 2}
+    expected: 2
+  - name: huge n, last bad
+    input: {n: 2147483647, bad: 2147483647}
+    expected: 2147483647
+  - name: huge n, middle bad
+    input: {n: 2147483647, bad: 1073741824}
+    expected: 1073741824

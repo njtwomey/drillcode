@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.middleNode
+scaffolds: [linked_list]
+args: [head]
+convert:
+  head: linked_list
+  result: linked_list
+cases:
+  - name: example 1
+    input: {head: [1, 2, 3, 4, 5]}
+    expected: [3, 4, 5]
+  - name: example 2
+    input: {head: [1, 2, 3, 4, 5, 6]}
+    expected: [4, 5, 6]
+  - name: single node
+    input: {head: [1]}
+    expected: [1]
+  - name: two nodes
+    input: {head: [1, 2]}
+    expected: [2]
+  - name: three nodes
+    input: {head: [1, 2, 3]}
+    expected: [2, 3]
+  - name: four nodes
+    input: {head: [10, 20, 30, 40]}
+    expected: [30, 40]

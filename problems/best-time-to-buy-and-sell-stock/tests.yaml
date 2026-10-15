@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.maxProfit
+scaffolds: []
+args: [prices]
+cases:
+  - name: example 1
+    input: {prices: [7, 1, 5, 3, 6, 4]}
+    expected: 5
+  - name: example 2 strictly decreasing
+    input: {prices: [7, 6, 4, 3, 1]}
+    expected: 0
+  - name: single price
+    input: {prices: [5]}
+    expected: 0
+  - name: minimum is at the end
+    input: {prices: [1, 2]}
+    expected: 1
+  - name: global min is not the best buy
+    input: {prices: [3, 2, 6, 5, 0, 3]}
+    expected: 4
+  - name: best buy is after the global max
+    input: {prices: [10, 9, 1, 2]}
+    expected: 1
+  - name: equal prices
+    input: {prices: [4, 4, 4]}
+    expected: 0

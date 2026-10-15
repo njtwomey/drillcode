@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.isPalindrome
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "A man, a plan, a canal: Panama"}
+    expected: true
+  - name: example 2
+    input: {s: "race a car"}
+    expected: false
+  - name: example 3 (single space)
+    input: {s: " "}
+    expected: true
+  - name: empty string
+    input: {s: ""}
+    expected: true
+  - name: all punctuation
+    input: {s: ".,!?  ;"}
+    expected: true
+  - name: digits count as characters
+    input: {s: "0P"}
+    expected: false
+  - name: underscore is skipped
+    input: {s: "ab_a"}
+    expected: true
+  - name: numeric palindrome
+    input: {s: "12321"}
+    expected: true

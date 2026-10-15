@@ -1,0 +1,42 @@
+kind: function
+entry: Solution.numIslands
+scaffolds: []
+args: [grid]
+cases:
+  - name: example 1
+    input:
+      grid:
+        - ["1", "1", "1", "1", "0"]
+        - ["1", "1", "0", "1", "0"]
+        - ["1", "1", "0", "0", "0"]
+        - ["0", "0", "0", "0", "0"]
+    expected: 1
+  - name: example 2
+    input:
+      grid:
+        - ["1", "1", "0", "0", "0"]
+        - ["1", "1", "0", "0", "0"]
+        - ["0", "0", "1", "0", "0"]
+        - ["0", "0", "0", "1", "1"]
+    expected: 3
+  - name: all water
+    input: {grid: [["0", "0"], ["0", "0"]]}
+    expected: 0
+  - name: all land
+    input: {grid: [["1", "1"], ["1", "1"]]}
+    expected: 1
+  - name: diagonal cells are not connected
+    input: {grid: [["1", "0"], ["0", "1"]]}
+    expected: 2
+  - name: single land cell
+    input: {grid: [["1"]]}
+    expected: 1
+  - name: single water cell
+    input: {grid: [["0"]]}
+    expected: 0
+  - name: U shape is one island
+    input: {grid: [["1", "0", "1"], ["1", "0", "1"], ["1", "1", "1"]]}
+    expected: 1
+  - name: single row
+    input: {grid: [["1", "0", "1", "1", "0", "1"]]}
+    expected: 3

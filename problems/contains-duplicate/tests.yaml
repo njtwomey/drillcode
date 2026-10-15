@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.containsDuplicate
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [1, 2, 3, 1]}
+    expected: true
+  - name: example 2
+    input: {nums: [1, 2, 3, 4]}
+    expected: false
+  - name: example 3
+    input: {nums: [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]}
+    expected: true
+  - name: empty array
+    input: {nums: []}
+    expected: false
+  - name: single element
+    input: {nums: [7]}
+    expected: false
+  - name: two equal elements
+    input: {nums: [2, 2]}
+    expected: true
+  - name: negative duplicates at the ends
+    input: {nums: [-5, 3, 8, -5]}
+    expected: true
+  - name: negatives all distinct
+    input: {nums: [-1, 1, 0]}
+    expected: false

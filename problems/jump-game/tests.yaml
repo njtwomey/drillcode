@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.canJump
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [2, 3, 1, 1, 4]}
+    expected: true
+  - name: example 2
+    input: {nums: [3, 2, 1, 0, 4]}
+    expected: false
+  - name: single element zero
+    input: {nums: [0]}
+    expected: true
+  - name: zeros that can be jumped over
+    input: {nums: [2, 0, 0]}
+    expected: true
+  - name: zero at the last index
+    input: {nums: [1, 1, 0]}
+    expected: true
+  - name: stuck at the start
+    input: {nums: [0, 1]}
+    expected: false
+  - name: zero blocks the path
+    input: {nums: [1, 1, 0, 1]}
+    expected: false
+  - name: big first jump
+    input: {nums: [5, 0, 0, 0, 0, 0]}
+    expected: true

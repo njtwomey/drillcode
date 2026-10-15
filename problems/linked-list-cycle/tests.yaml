@@ -1,0 +1,31 @@
+kind: function
+entry: Solution.hasCycle
+scaffolds: [linked_list]
+args: [head]
+convert:
+  head: linked_list_cycle:pos
+cases:
+  - name: example 1
+    input: {head: [3, 2, 0, -4], pos: 1}
+    expected: true
+  - name: example 2
+    input: {head: [1, 2], pos: 0}
+    expected: true
+  - name: example 3 single node no cycle
+    input: {head: [1], pos: -1}
+    expected: false
+  - name: empty list
+    input: {head: [], pos: -1}
+    expected: false
+  - name: single node pointing to itself
+    input: {head: [1], pos: 0}
+    expected: true
+  - name: no cycle, longer list
+    input: {head: [1, 2, 3, 4, 5, 6], pos: -1}
+    expected: false
+  - name: tail points to itself
+    input: {head: [1, 2, 3], pos: 2}
+    expected: true
+  - name: duplicate values without a cycle
+    input: {head: [1, 1, 1, 1], pos: -1}
+    expected: false

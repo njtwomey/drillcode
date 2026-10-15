@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.search
+scaffolds: []
+args: [nums, target]
+cases:
+  - name: example 1
+    input: {nums: [4, 5, 6, 7, 0, 1, 2], target: 0}
+    expected: 4
+  - name: example 2
+    input: {nums: [4, 5, 6, 7, 0, 1, 2], target: 3}
+    expected: -1
+  - name: example 3 single missing
+    input: {nums: [1], target: 0}
+    expected: -1
+  - name: single found
+    input: {nums: [1], target: 1}
+    expected: 0
+  - name: not rotated
+    input: {nums: [1, 2, 3, 4, 5], target: 4}
+    expected: 3
+  - name: target at pivot
+    input: {nums: [4, 5, 6, 7, 0, 1, 2], target: 7}
+    expected: 3
+  - name: target is the minimum after pivot
+    input: {nums: [6, 7, 8, 1, 2, 3, 4, 5], target: 1}
+    expected: 3
+  - name: two elements rotated
+    input: {nums: [3, 1], target: 1}
+    expected: 1
+  - name: two elements first
+    input: {nums: [3, 1], target: 3}
+    expected: 0
+  - name: target in left sorted half
+    input: {nums: [5, 1, 3], target: 5}
+    expected: 0

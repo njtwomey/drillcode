@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.findDuplicate
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [1, 3, 4, 2, 2]}
+    expected: 2
+  - name: example 2
+    input: {nums: [3, 1, 3, 4, 2]}
+    expected: 3
+  - name: example 3 repeated many times
+    input: {nums: [3, 3, 3, 3, 3]}
+    expected: 3
+  - name: smallest array
+    input: {nums: [1, 1]}
+    expected: 1
+  - name: duplicate at index 0
+    input: {nums: [2, 2, 1]}
+    expected: 2
+  - name: duplicate appears three times
+    input: {nums: [1, 4, 4, 2, 4]}
+    expected: 4
+  - name: larger array
+    input: {nums: [2, 5, 9, 6, 9, 3, 8, 9, 7, 1]}
+    expected: 9
+  - name: duplicate is the largest value
+    input: {nums: [1, 2, 3, 4, 4]}
+    expected: 4

@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.validTree
+scaffolds: []
+args: [n, edges]
+cases:
+  - name: example 1
+    input: {n: 5, edges: [[0, 1], [0, 2], [0, 3], [1, 4]]}
+    expected: true
+  - name: example 2 (cycle)
+    input: {n: 5, edges: [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]]}
+    expected: false
+  - name: single node
+    input: {n: 1, edges: []}
+    expected: true
+  - name: too few edges is disconnected
+    input: {n: 4, edges: [[0, 1], [2, 3]]}
+    expected: false
+  - name: n - 1 edges but cycle and isolated node
+    input: {n: 4, edges: [[0, 1], [1, 2], [2, 0]]}
+    expected: false
+  - name: two nodes no edge
+    input: {n: 2, edges: []}
+    expected: false
+  - name: two nodes reversed edge
+    input: {n: 2, edges: [[1, 0]]}
+    expected: true
+  - name: duplicate edge
+    input: {n: 3, edges: [[0, 1], [0, 1]]}
+    expected: false
+  - name: path graph
+    input: {n: 5, edges: [[0, 1], [1, 2], [2, 3], [3, 4]]}
+    expected: true

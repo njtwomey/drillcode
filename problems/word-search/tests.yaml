@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.exist
+scaffolds: []
+args: [board, word]
+cases:
+  - name: example 1
+    input: {board: [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], word: "ABCCED"}
+    expected: true
+  - name: example 2
+    input: {board: [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], word: "SEE"}
+    expected: true
+  - name: example 3 cell reuse
+    input: {board: [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], word: "ABCB"}
+    expected: false
+  - name: 1x1 match
+    input: {board: [["A"]], word: "A"}
+    expected: true
+  - name: 1x1 word longer
+    input: {board: [["A"]], word: "AA"}
+    expected: false
+  - name: repeated letters need distinct cells
+    input: {board: [["a", "a"]], word: "aaa"}
+    expected: false
+  - name: path must backtrack from wrong branch
+    input: {board: [["C", "A", "A"], ["A", "A", "A"], ["B", "C", "D"]], word: "AAB"}
+    expected: true
+  - name: word longer than grid cells
+    input: {board: [["a", "b"], ["c", "d"]], word: "abcdea"}
+    expected: false
+  - name: no diagonal moves
+    input: {board: [["a", "b"], ["c", "d"]], word: "ad"}
+    expected: false
+  - name: snake path
+    input: {board: [["a", "b", "c"], ["f", "e", "d"]], word: "abcdef"}
+    expected: true

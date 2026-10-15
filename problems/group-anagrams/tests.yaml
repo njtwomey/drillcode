@@ -1,0 +1,27 @@
+kind: function
+entry: Solution.groupAnagrams
+scaffolds: []
+args: [strs]
+compare: unordered_nested
+cases:
+  - name: example 1
+    input: {strs: ["eat", "tea", "tan", "ate", "nat", "bat"]}
+    expected: [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]
+  - name: example 2 (empty string)
+    input: {strs: [""]}
+    expected: [[""]]
+  - name: example 3 (single word)
+    input: {strs: ["a"]}
+    expected: [["a"]]
+  - name: several empty strings
+    input: {strs: ["", "", ""]}
+    expected: [["", "", ""]]
+  - name: identical words
+    input: {strs: ["abc", "abc", "bca"]}
+    expected: [["abc", "abc", "bca"]]
+  - name: same letters different counts
+    input: {strs: ["aab", "abb", "baa", "bba"]}
+    expected: [["aab", "baa"], ["abb", "bba"]]
+  - name: different lengths
+    input: {strs: ["ab", "ba", "abc", "a"]}
+    expected: [["ab", "ba"], ["abc"], ["a"]]

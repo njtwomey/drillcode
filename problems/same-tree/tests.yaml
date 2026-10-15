@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.isSameTree
+scaffolds: [tree]
+args: [p, q]
+convert:
+  p: tree
+  q: tree
+cases:
+  - name: example 1
+    input: {p: [1, 2, 3], q: [1, 2, 3]}
+    expected: true
+  - name: example 2
+    input: {p: [1, 2], q: [1, null, 2]}
+    expected: false
+  - name: example 3
+    input: {p: [1, 2, 1], q: [1, 1, 2]}
+    expected: false
+  - name: both empty
+    input: {p: [], q: []}
+    expected: true
+  - name: one empty
+    input: {p: [], q: [1]}
+    expected: false
+  - name: same shape different value
+    input: {p: [1, 2, 3], q: [1, 2, 4]}
+    expected: false
+  - name: same values different shape
+    input: {p: [1, 2, 2, 3], q: [1, 2, 2, null, 3]}
+    expected: false

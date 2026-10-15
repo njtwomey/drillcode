@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.lengthOfLongestSubstring
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "abcabcbb"}
+    expected: 3
+  - name: example 2 all identical
+    input: {s: "bbbbb"}
+    expected: 1
+  - name: example 3
+    input: {s: "pwwkew"}
+    expected: 3
+  - name: empty string
+    input: {s: ""}
+    expected: 0
+  - name: all distinct
+    input: {s: "abcdef"}
+    expected: 6
+  - name: single space
+    input: {s: " "}
+    expected: 1
+  - name: left edge must not move backwards
+    input: {s: "abba"}
+    expected: 2
+  - name: stale last index
+    input: {s: "tmmzuxt"}
+    expected: 5
+  - name: dvdf
+    input: {s: "dvdf"}
+    expected: 3

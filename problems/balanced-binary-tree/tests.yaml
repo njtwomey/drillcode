@@ -1,0 +1,28 @@
+kind: function
+entry: Solution.isBalanced
+scaffolds: [tree]
+args: [root]
+convert:
+  root: tree
+cases:
+  - name: example 1
+    input: {root: [3, 9, 20, null, null, 15, 7]}
+    expected: true
+  - name: example 2
+    input: {root: [1, 2, 2, 3, 3, null, null, 4, 4]}
+    expected: false
+  - name: empty tree
+    input: {root: []}
+    expected: true
+  - name: single node
+    input: {root: [1]}
+    expected: true
+  - name: chain of two is balanced
+    input: {root: [1, 2]}
+    expected: true
+  - name: chain of three is unbalanced
+    input: {root: [1, 2, null, 3]}
+    expected: false
+  - name: root heights equal but a subtree is unbalanced
+    input: {root: [1, 2, 3, 4, null, null, 5, 8, null, null, 9]}
+    expected: false

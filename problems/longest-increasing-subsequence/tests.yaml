@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.lengthOfLIS
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [10, 9, 2, 5, 3, 7, 101, 18]}
+    expected: 4
+  - name: example 2
+    input: {nums: [0, 1, 0, 3, 2, 3]}
+    expected: 4
+  - name: example 3 (all equal)
+    input: {nums: [7, 7, 7, 7]}
+    expected: 1
+  - name: strictly decreasing
+    input: {nums: [5, 4, 3, 2, 1]}
+    expected: 1
+  - name: single element
+    input: {nums: [1]}
+    expected: 1
+  - name: strictly increasing
+    input: {nums: [1, 2, 3, 4, 5]}
+    expected: 5
+  - name: duplicates do not extend
+    input: {nums: [4, 10, 4, 3, 8, 9]}
+    expected: 3
+  - name: longer mixed
+    input: {nums: [3, 5, 6, 2, 5, 4, 19, 5, 6, 7, 12]}
+    expected: 6
+  - name: two equal values
+    input: {nums: [2, 2]}
+    expected: 1

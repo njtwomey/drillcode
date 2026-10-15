@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.isAnagram
+scaffolds: []
+args: [s, t]
+cases:
+  - name: example 1
+    input: {s: "anagram", t: "nagaram"}
+    expected: true
+  - name: example 2
+    input: {s: "rat", t: "car"}
+    expected: false
+  - name: different lengths
+    input: {s: "a", t: "ab"}
+    expected: false
+  - name: same length same letters different counts
+    input: {s: "aab", t: "abb"}
+    expected: false
+  - name: single char equal
+    input: {s: "z", t: "z"}
+    expected: true
+  - name: repeated letters
+    input: {s: "aabbcc", t: "cbacba"}
+    expected: true
+  - name: unicode
+    input: {s: "café", t: "éfac"}
+    expected: true

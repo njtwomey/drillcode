@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.reverseBits
+scaffolds: []
+args: [n]
+cases:
+  - name: example 1
+    input: {n: 43261596}
+    expected: 964176192
+  - name: example 2
+    input: {n: 2147483644}
+    expected: 1073741822
+  - name: zero
+    input: {n: 0}
+    expected: 0
+  - name: only top bit set
+    input: {n: 2147483648}
+    expected: 1
+  - name: only lowest bit set
+    input: {n: 1}
+    expected: 2147483648
+  - name: all bits set
+    input: {n: 4294967295}
+    expected: 4294967295
+  - name: leading zeros must be kept
+    input: {n: 2}
+    expected: 1073741824

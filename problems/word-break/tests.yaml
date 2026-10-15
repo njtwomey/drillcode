@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.wordBreak
+scaffolds: []
+args: [s, wordDict]
+cases:
+  - name: example 1
+    input: {s: "leetcode", wordDict: ["leet", "code"]}
+    expected: true
+  - name: example 2 reuse words
+    input: {s: "applepenapple", wordDict: ["apple", "pen"]}
+    expected: true
+  - name: example 3
+    input: {s: "catsandog", wordDict: ["cats", "dog", "sand", "and", "cat"]}
+    expected: false
+  - name: s shorter than every word
+    input: {s: "a", wordDict: ["ab", "abc"]}
+    expected: false
+  - name: single char match
+    input: {s: "a", wordDict: ["a"]}
+    expected: true
+  - name: prefix word must be skipped
+    input: {s: "cars", wordDict: ["car", "ca", "rs"]}
+    expected: true
+  - name: repeated word
+    input: {s: "aaaaaaa", wordDict: ["aaaa", "aaa"]}
+    expected: true
+  - name: almost breakable
+    input: {s: "aaaaaaaaaaaab", wordDict: ["a", "aa", "aaa"]}
+    expected: false
+  - name: long input
+    input: {s: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", wordDict: ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa"]}
+    expected: false

@@ -1,0 +1,31 @@
+kind: function
+entry: Solution.lowestCommonAncestor
+scaffolds: [tree]
+args: [root, p, q]
+convert:
+  root: tree
+  p: tree_node:root
+  q: tree_node:root
+  result: node_val
+cases:
+  - name: example 1
+    input: {root: [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], p: 2, q: 8}
+    expected: 6
+  - name: example 2 ancestor of the other
+    input: {root: [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], p: 2, q: 4}
+    expected: 2
+  - name: example 3 two nodes
+    input: {root: [2, 1], p: 2, q: 1}
+    expected: 2
+  - name: target is the root
+    input: {root: [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], p: 6, q: 9}
+    expected: 6
+  - name: deep targets in one subtree
+    input: {root: [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], p: 3, q: 5}
+    expected: 4
+  - name: split below the root
+    input: {root: [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], p: 0, q: 5}
+    expected: 2
+  - name: argument order reversed
+    input: {root: [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], p: 9, q: 7}
+    expected: 8

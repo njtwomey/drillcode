@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.findMin
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [3, 4, 5, 1, 2]}
+    expected: 1
+  - name: example 2
+    input: {nums: [4, 5, 6, 7, 0, 1, 2]}
+    expected: 0
+  - name: example 3 not rotated
+    input: {nums: [11, 13, 15, 17]}
+    expected: 11
+  - name: two elements rotated
+    input: {nums: [2, 1]}
+    expected: 1
+  - name: two elements sorted
+    input: {nums: [1, 2]}
+    expected: 1
+  - name: single element
+    input: {nums: [5]}
+    expected: 5
+  - name: minimum at the end
+    input: {nums: [2, 3, 1]}
+    expected: 1
+  - name: minimum in the middle of three
+    input: {nums: [3, 1, 2]}
+    expected: 1
+  - name: rotated by one
+    input: {nums: [6, 1, 2, 3, 4, 5]}
+    expected: 1
+  - name: negative values
+    input: {nums: [0, 3, 8, -9, -4, -1]}
+    expected: -9

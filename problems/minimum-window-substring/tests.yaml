@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.minWindow
+scaffolds: []
+args: [s, t]
+cases:
+  - name: example 1
+    input: {s: "ADOBECODEBANC", t: "ABC"}
+    expected: "BANC"
+  - name: example 2
+    input: {s: "a", t: "a"}
+    expected: "a"
+  - name: example 3 t longer than s
+    input: {s: "a", t: "aa"}
+    expected: ""
+  - name: whole string is the answer
+    input: {s: "aa", t: "aa"}
+    expected: "aa"
+  - name: repeated characters in t
+    input: {s: "aaflslflsldkalskaaa", t: "aaa"}
+    expected: "aaa"
+  - name: window in a different order
+    input: {s: "abc", t: "cba"}
+    expected: "abc"
+  - name: no valid window
+    input: {s: "abcdef", t: "xyz"}
+    expected: ""
+  - name: shrinks past duplicate prefix
+    input: {s: "bba", t: "ab"}
+    expected: "ba"
+  - name: extra copies are not enough
+    input: {s: "aab", t: "abb"}
+    expected: ""

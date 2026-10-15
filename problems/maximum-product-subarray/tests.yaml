@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.maxProduct
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [2, 3, -2, 4]}
+    expected: 6
+  - name: example 2 zero in the middle
+    input: {nums: [-2, 0, -1]}
+    expected: 0
+  - name: single negative
+    input: {nums: [-2]}
+    expected: -2
+  - name: two negatives cancel
+    input: {nums: [-2, 3, -4]}
+    expected: 24
+  - name: zero then positive
+    input: {nums: [0, 2]}
+    expected: 2
+  - name: best subarray is a suffix
+    input: {nums: [2, -5, -2, -4, 3]}
+    expected: 24
+  - name: all zeros
+    input: {nums: [0, 0]}
+    expected: 0
+  - name: dropping the first negative
+    input: {nums: [-3, -1, -1]}
+    expected: 3

@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.canPartition
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [1, 5, 11, 5]}
+    expected: true
+  - name: example 2
+    input: {nums: [1, 2, 3, 5]}
+    expected: false
+  - name: single element
+    input: {nums: [1]}
+    expected: false
+  - name: two equal elements
+    input: {nums: [2, 2]}
+    expected: true
+  - name: odd total
+    input: {nums: [1, 2, 4]}
+    expected: false
+  - name: one element equals half the total
+    input: {nums: [100, 1, 99]}
+    expected: true
+  - name: even total but no split
+    input: {nums: [1, 2, 5]}
+    expected: false
+  - name: even total no subset reaches half
+    input: {nums: [2, 2, 3, 5]}
+    expected: false
+  - name: needs a combination
+    input: {nums: [3, 3, 3, 4, 5]}
+    expected: true

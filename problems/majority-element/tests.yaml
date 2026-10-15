@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.majorityElement
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [3, 2, 3]}
+    expected: 3
+  - name: example 2
+    input: {nums: [2, 2, 1, 1, 1, 2, 2]}
+    expected: 2
+  - name: single element
+    input: {nums: [1]}
+    expected: 1
+  - name: majority clustered at the end
+    input: {nums: [1, 1, 2, 2, 2]}
+    expected: 2
+  - name: majority clustered at the start
+    input: {nums: [5, 5, 5, 1, 2]}
+    expected: 5
+  - name: negative majority
+    input: {nums: [-1, 4, -1, 7, -1]}
+    expected: -1
+  - name: minimal margin
+    input: {nums: [6, 5, 5]}
+    expected: 5

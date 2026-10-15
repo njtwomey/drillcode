@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.canFinish
+scaffolds: []
+args: [numCourses, prerequisites]
+cases:
+  - name: example 1
+    input: {numCourses: 2, prerequisites: [[1, 0]]}
+    expected: true
+  - name: example 2 two-cycle
+    input: {numCourses: 2, prerequisites: [[1, 0], [0, 1]]}
+    expected: false
+  - name: no prerequisites
+    input: {numCourses: 3, prerequisites: []}
+    expected: true
+  - name: single course
+    input: {numCourses: 1, prerequisites: []}
+    expected: true
+  - name: self dependency
+    input: {numCourses: 2, prerequisites: [[1, 1]]}
+    expected: false
+  - name: duplicate edges
+    input: {numCourses: 3, prerequisites: [[1, 0], [1, 0], [2, 1]]}
+    expected: true
+  - name: cycle in a disconnected component
+    input: {numCourses: 4, prerequisites: [[1, 0], [2, 3], [3, 2]]}
+    expected: false
+  - name: diamond is acyclic
+    input: {numCourses: 4, prerequisites: [[1, 0], [2, 0], [3, 1], [3, 2]]}
+    expected: true
+  - name: three-cycle
+    input: {numCourses: 3, prerequisites: [[0, 1], [1, 2], [2, 0]]}
+    expected: false
+  - name: cycle reachable from a source
+    input: {numCourses: 4, prerequisites: [[1, 0], [2, 1], [3, 2], [1, 3]]}
+    expected: false

@@ -1,0 +1,22 @@
+kind: operations
+entry: MyQueue
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["MyQueue", []], ["push", [1]], ["push", [2]], ["peek", []], ["pop", []], ["empty", []]]
+    expected: [null, null, null, 1, 1, false]
+  - name: new queue is empty
+    ops: [["MyQueue", []], ["empty", []]]
+    expected: [null, true]
+  - name: drains to empty
+    ops: [["MyQueue", []], ["push", [1]], ["pop", []], ["empty", []]]
+    expected: [null, null, 1, true]
+  - name: interleaved push and pop keeps FIFO order
+    ops: [["MyQueue", []], ["push", [1]], ["push", [2]], ["pop", []], ["push", [3]], ["pop", []], ["peek", []], ["pop", []], ["empty", []]]
+    expected: [null, null, null, 1, null, 2, 3, 3, true]
+  - name: push after peek does not reorder
+    ops: [["MyQueue", []], ["push", [1]], ["push", [2]], ["peek", []], ["push", [3]], ["pop", []], ["pop", []], ["pop", []]]
+    expected: [null, null, null, 1, null, 1, 2, 3]
+  - name: not empty while only out-stack holds items
+    ops: [["MyQueue", []], ["push", [4]], ["push", [5]], ["peek", []], ["empty", []], ["pop", []], ["empty", []]]
+    expected: [null, null, null, 4, false, 4, false]

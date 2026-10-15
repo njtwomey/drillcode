@@ -1,0 +1,31 @@
+kind: function
+entry: Solution.buildTree
+scaffolds: [tree]
+args: [preorder, inorder]
+convert:
+  result: tree
+cases:
+  - name: example 1
+    input: {preorder: [3, 9, 20, 15, 7], inorder: [9, 3, 15, 20, 7]}
+    expected: [3, 9, 20, null, null, 15, 7]
+  - name: example 2 single node
+    input: {preorder: [-1], inorder: [-1]}
+    expected: [-1]
+  - name: fully left skewed
+    input: {preorder: [1, 2, 3], inorder: [3, 2, 1]}
+    expected: [1, 2, null, 3]
+  - name: fully right skewed
+    input: {preorder: [1, 2, 3], inorder: [1, 2, 3]}
+    expected: [1, null, 2, null, 3]
+  - name: complete small tree
+    input: {preorder: [1, 2, 4, 5, 3], inorder: [4, 2, 5, 1, 3]}
+    expected: [1, 2, 3, 4, 5]
+  - name: perfect tree of seven
+    input: {preorder: [1, 2, 3, 4, 5, 6, 7], inorder: [3, 2, 4, 1, 6, 5, 7]}
+    expected: [1, 2, 5, 3, 4, 6, 7]
+  - name: right child of left child
+    input: {preorder: [1, 2, 3], inorder: [2, 3, 1]}
+    expected: [1, 2, null, null, 3]
+  - name: unsorted values
+    input: {preorder: [10, -5, 8, 30], inorder: [8, -5, 10, 30]}
+    expected: [10, -5, 30, 8]

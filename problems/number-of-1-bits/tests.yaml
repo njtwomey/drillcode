@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.hammingWeight
+scaffolds: []
+args: [n]
+cases:
+  - name: example 1
+    input: {n: 11}
+    expected: 3
+  - name: example 2
+    input: {n: 128}
+    expected: 1
+  - name: example 3
+    input: {n: 2147483645}
+    expected: 30
+  - name: zero
+    input: {n: 0}
+    expected: 0
+  - name: all 32 bits set
+    input: {n: 4294967295}
+    expected: 32
+  - name: one
+    input: {n: 1}
+    expected: 1
+  - name: top bit only
+    input: {n: 2147483648}
+    expected: 1

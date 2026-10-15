@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.isValid
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "()"}
+    expected: true
+  - name: example 2
+    input: {s: "()[]{}"}
+    expected: true
+  - name: example 3
+    input: {s: "(]"}
+    expected: false
+  - name: example 4
+    input: {s: "([])"}
+    expected: true
+  - name: example 5 interleaved
+    input: {s: "([)]"}
+    expected: false
+  - name: starts with a closer
+    input: {s: ")("}
+    expected: false
+  - name: unmatched openers left over
+    input: {s: "(("}
+    expected: false
+  - name: single closer
+    input: {s: "]"}
+    expected: false
+  - name: nested deep
+    input: {s: "{[()()]}"}
+    expected: true

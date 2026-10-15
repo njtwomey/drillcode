@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.isSubtree
+scaffolds: [tree]
+args: [root, subRoot]
+convert:
+  root: tree
+  subRoot: tree
+cases:
+  - name: example 1
+    input: {root: [3, 4, 5, 1, 2], subRoot: [4, 1, 2]}
+    expected: true
+  - name: example 2
+    input: {root: [3, 4, 5, 1, 2, null, null, null, null, 0], subRoot: [4, 1, 2]}
+    expected: false
+  - name: subtree equals whole tree
+    input: {root: [1, 2, 3], subRoot: [1, 2, 3]}
+    expected: true
+  - name: single leaf
+    input: {root: [1, 2, 3], subRoot: [3]}
+    expected: true
+  - name: repeated values, match deeper
+    input: {root: [1, 1, null, 2], subRoot: [1, 2]}
+    expected: true
+  - name: matching root value but extra descendants
+    input: {root: [1, 2], subRoot: [1]}
+    expected: false
+  - name: same values different shape
+    input: {root: [1, 2, null, 3], subRoot: [2, null, 3]}
+    expected: false
+  - name: left versus right child
+    input: {root: [1, 2], subRoot: [2, null, 3]}
+    expected: false

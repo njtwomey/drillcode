@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.cloneGraph
+scaffolds: [graph]
+args: [node]
+convert:
+  node: graph
+  result: graph
+compare: validator
+cases:
+  - name: example 1 four-cycle
+    input: {node: [[2, 4], [1, 3], [2, 4], [1, 3]]}
+    expected: [[2, 4], [1, 3], [2, 4], [1, 3]]
+  - name: example 2 single node
+    input: {node: [[]]}
+    expected: [[]]
+  - name: example 3 null input
+    input: {node: []}
+    expected: []
+  - name: two nodes
+    input: {node: [[2], [1]]}
+    expected: [[2], [1]]
+  - name: triangle
+    input: {node: [[2, 3], [1, 3], [1, 2]]}
+    expected: [[2, 3], [1, 3], [1, 2]]
+  - name: star
+    input: {node: [[2, 3, 4, 5], [1], [1], [1], [1]]}
+    expected: [[2, 3, 4, 5], [1], [1], [1], [1]]
+  - name: path
+    input: {node: [[2], [1, 3], [2, 4], [3]]}
+    expected: [[2], [1, 3], [2, 4], [3]]

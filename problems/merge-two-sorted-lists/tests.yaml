@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.mergeTwoLists
+scaffolds: [linked_list]
+args: [list1, list2]
+convert:
+  list1: linked_list
+  list2: linked_list
+  result: linked_list
+cases:
+  - name: example 1
+    input: {list1: [1, 2, 4], list2: [1, 3, 4]}
+    expected: [1, 1, 2, 3, 4, 4]
+  - name: both empty
+    input: {list1: [], list2: []}
+    expected: []
+  - name: first empty
+    input: {list1: [], list2: [0]}
+    expected: [0]
+  - name: second empty
+    input: {list1: [7, 8], list2: []}
+    expected: [7, 8]
+  - name: first entirely smaller
+    input: {list1: [1, 2], list2: [5, 6]}
+    expected: [1, 2, 5, 6]
+  - name: second entirely smaller
+    input: {list1: [5, 6], list2: [1, 2]}
+    expected: [1, 2, 5, 6]
+  - name: different lengths and duplicates
+    input: {list1: [2, 2, 2], list2: [1, 2, 3, 4, 5]}
+    expected: [1, 2, 2, 2, 2, 3, 4, 5]

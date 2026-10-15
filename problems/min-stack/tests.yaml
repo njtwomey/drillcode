@@ -1,0 +1,22 @@
+kind: operations
+entry: MinStack
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["MinStack", []], ["push", [-2]], ["push", [0]], ["push", [-3]], ["getMin", []], ["pop", []], ["top", []], ["getMin", []]]
+    expected: [null, null, null, null, -3, null, 0, -2]
+  - name: duplicate minimums
+    ops: [["MinStack", []], ["push", [2]], ["push", [1]], ["push", [1]], ["pop", []], ["getMin", []], ["pop", []], ["getMin", []]]
+    expected: [null, null, null, null, null, 1, null, 2]
+  - name: pop removes the current min
+    ops: [["MinStack", []], ["push", [5]], ["push", [3]], ["getMin", []], ["pop", []], ["getMin", []], ["top", []]]
+    expected: [null, null, null, 3, null, 5, 5]
+  - name: single element
+    ops: [["MinStack", []], ["push", [7]], ["top", []], ["getMin", []]]
+    expected: [null, null, 7, 7]
+  - name: increasing then decreasing
+    ops: [["MinStack", []], ["push", [1]], ["push", [2]], ["push", [3]], ["getMin", []], ["push", [0]], ["getMin", []], ["pop", []], ["getMin", []], ["top", []]]
+    expected: [null, null, null, null, 1, null, 0, null, 1, 3]
+  - name: negative values
+    ops: [["MinStack", []], ["push", [-5]], ["push", [-10]], ["push", [-7]], ["getMin", []], ["pop", []], ["pop", []], ["getMin", []]]
+    expected: [null, null, null, null, -10, null, null, -5]

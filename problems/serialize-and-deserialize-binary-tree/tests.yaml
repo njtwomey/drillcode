@@ -1,0 +1,33 @@
+kind: function
+entry: Codec
+call: false
+scaffolds: [tree]
+args: [root]
+convert:
+  root: tree
+compare: validator
+cases:
+  - name: example 1
+    input: {root: [1, 2, 3, null, null, 4, 5]}
+    expected: [1, 2, 3, null, null, 4, 5]
+  - name: empty tree
+    input: {root: []}
+    expected: []
+  - name: single node
+    input: {root: [1]}
+    expected: [1]
+  - name: negative and multi-digit values
+    input: {root: [-1000, 25, -300, 1234, null, null, -7]}
+    expected: [-1000, 25, -300, 1234, null, null, -7]
+  - name: left skewed
+    input: {root: [1, 2, null, 3, null, 4]}
+    expected: [1, 2, null, 3, null, 4]
+  - name: right skewed
+    input: {root: [1, null, 2, null, 3, null, 4]}
+    expected: [1, null, 2, null, 3, null, 4]
+  - name: duplicate values and zero
+    input: {root: [0, 0, 0, 0, null, null, 0]}
+    expected: [0, 0, 0, 0, null, null, 0]
+  - name: root with only a right child
+    input: {root: [5, null, 6]}
+    expected: [5, null, 6]

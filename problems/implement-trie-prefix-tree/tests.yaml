@@ -1,0 +1,22 @@
+kind: operations
+entry: Trie
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["Trie", []], ["insert", ["apple"]], ["search", ["apple"]], ["search", ["app"]], ["startsWith", ["app"]], ["insert", ["app"]], ["search", ["app"]]]
+    expected: [null, null, true, false, true, null, true]
+  - name: empty trie
+    ops: [["Trie", []], ["search", ["a"]], ["startsWith", ["a"]]]
+    expected: [null, false, false]
+  - name: stored word is a prefix of a longer word
+    ops: [["Trie", []], ["insert", ["app"]], ["search", ["apple"]], ["startsWith", ["apple"]], ["search", ["app"]]]
+    expected: [null, null, false, false, true]
+  - name: prefix that is also a word
+    ops: [["Trie", []], ["insert", ["apple"]], ["insert", ["app"]], ["search", ["app"]], ["startsWith", ["app"]], ["search", ["appl"]]]
+    expected: [null, null, null, true, true, false]
+  - name: diverging words
+    ops: [["Trie", []], ["insert", ["cat"]], ["insert", ["car"]], ["search", ["ca"]], ["startsWith", ["ca"]], ["search", ["car"]], ["search", ["cab"]], ["startsWith", ["d"]]]
+    expected: [null, null, null, false, true, true, false, false]
+  - name: insert same word twice
+    ops: [["Trie", []], ["insert", ["a"]], ["insert", ["a"]], ["search", ["a"]], ["search", ["aa"]]]
+    expected: [null, null, null, true, false]

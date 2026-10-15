@@ -1,0 +1,22 @@
+kind: operations
+entry: WordDictionary
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["WordDictionary", []], ["addWord", ["bad"]], ["addWord", ["dad"]], ["addWord", ["mad"]], ["search", ["pad"]], ["search", ["bad"]], ["search", [".ad"]], ["search", ["b.."]]]
+    expected: [null, null, null, null, false, true, true, true]
+  - name: empty trie
+    ops: [["WordDictionary", []], ["search", ["a"]], ["search", ["."]]]
+    expected: [null, false, false]
+  - name: pattern of only dots
+    ops: [["WordDictionary", []], ["addWord", ["abc"]], ["search", ["..."]], ["search", [".."]], ["search", ["...."]]]
+    expected: [null, null, true, false, false]
+  - name: pattern longer than stored word
+    ops: [["WordDictionary", []], ["addWord", ["a"]], ["search", ["a."]], ["search", ["aa"]]]
+    expected: [null, null, false, false]
+  - name: prefix is not a word
+    ops: [["WordDictionary", []], ["addWord", ["apple"]], ["search", ["app"]], ["search", ["app.."]], ["addWord", ["app"]], ["search", ["app"]]]
+    expected: [null, null, false, true, null, true]
+  - name: dot must backtrack across branches
+    ops: [["WordDictionary", []], ["addWord", ["at"]], ["addWord", ["and"]], ["addWord", ["an"]], ["addWord", ["add"]], ["search", ["a"]], ["search", [".at"]], ["addWord", ["bat"]], ["search", [".at"]], ["search", ["an."]], ["search", ["a.d."]], ["search", ["b."]], ["search", ["a.d"]], ["search", ["."]]]
+    expected: [null, null, null, null, null, false, false, null, true, true, false, false, true, false]

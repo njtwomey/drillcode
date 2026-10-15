@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.countSubstrings
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "abc"}
+    expected: 3
+  - name: example 2
+    input: {s: "aaa"}
+    expected: 6
+  - name: single character
+    input: {s: "a"}
+    expected: 1
+  - name: two different characters
+    input: {s: "ab"}
+    expected: 2
+  - name: even palindrome
+    input: {s: "abba"}
+    expected: 6
+  - name: odd palindrome
+    input: {s: "aba"}
+    expected: 4
+  - name: racecar
+    input: {s: "racecar"}
+    expected: 10
+  - name: all equal n(n+1)/2
+    input: {s: "aaaaa"}
+    expected: 15
+  - name: overlapping palindromes
+    input: {s: "abab"}
+    expected: 6

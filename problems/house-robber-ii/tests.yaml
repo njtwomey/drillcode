@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.rob
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [2, 3, 2]}
+    expected: 3
+  - name: example 2
+    input: {nums: [1, 2, 3, 1]}
+    expected: 4
+  - name: example 3
+    input: {nums: [1, 2, 3]}
+    expected: 3
+  - name: single house
+    input: {nums: [5]}
+    expected: 5
+  - name: two houses first larger
+    input: {nums: [2, 1]}
+    expected: 2
+  - name: two houses second larger
+    input: {nums: [1, 2]}
+    expected: 2
+  - name: first and last cannot both be taken
+    input: {nums: [200, 3, 140, 20, 10]}
+    expected: 340
+  - name: best uses last house
+    input: {nums: [1, 3, 1, 3, 100]}
+    expected: 103
