@@ -55,7 +55,7 @@
   number: 70
   title: Climbing Stairs
   difficulty: easy
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -601,7 +601,7 @@
   number: 322
   title: Coin Change
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -635,7 +635,7 @@
   number: 377
   title: Combination Sum IV
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -741,7 +741,7 @@
   number: 91
   title: Decode Ways
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -884,7 +884,7 @@
   number: 198
   title: House Robber
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -901,7 +901,7 @@
   number: 213
   title: House Robber II
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -1057,7 +1057,7 @@
   number: 1143
   title: Longest Common Subsequence
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -1092,7 +1092,7 @@
   number: 300
   title: Longest Increasing Subsequence
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags:
   - Binary search
   blind75: true
@@ -1216,7 +1216,7 @@
   number: 152
   title: Maximum Product Subarray
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -1234,7 +1234,7 @@
   number: 53
   title: Maximum Subarray
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -1392,7 +1392,7 @@
   number: 416
   title: Partition Equal Subset Sum
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: false
   premium: false
@@ -1671,7 +1671,7 @@
   number: 62
   title: Unique Paths
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false
@@ -1721,7 +1721,7 @@
   number: 139
   title: Word Break
   difficulty: medium
-  topic: DP
+  topic: Dynamic programming
   tags: []
   blind75: true
   premium: false

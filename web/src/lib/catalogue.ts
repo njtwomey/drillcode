@@ -23,10 +23,28 @@ const harnessFiles = import.meta.glob('../../../problems/_harness/runner.py', {
 export const problems: Problem[] = parse(indexRaw)
 export const bySlug = new Map(problems.map((p) => [p.slug, p]))
 
+/** Alphabetical, so dropdowns are easy to scan. */
 export const TOPICS = [
-  'Array', 'String', 'Hash', 'Two pointers', 'Sliding window', 'Stack', 'Monotonic stack',
-  'Binary search', 'Linked list', 'Tree', 'Trie', 'Heap', 'Graph', 'Intervals', 'Matrix',
-  'DP', 'Greedy', 'Backtracking', 'Bit manipulation', 'Design',
+  'Array',
+  'Backtracking',
+  'Binary search',
+  'Bit manipulation',
+  'Design',
+  'Dynamic programming',
+  'Graph',
+  'Greedy',
+  'Hash',
+  'Heap',
+  'Intervals',
+  'Linked list',
+  'Matrix',
+  'Monotonic stack',
+  'Sliding window',
+  'Stack',
+  'String',
+  'Tree',
+  'Trie',
+  'Two pointers',
 ]
 
 function file(slug: string, name: string): string | undefined {

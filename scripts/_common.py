@@ -9,9 +9,26 @@ ROOT = Path(__file__).resolve().parent.parent
 PROBLEMS = ROOT / "problems"
 
 TOPICS = [
-    "Array", "String", "Hash", "Two pointers", "Sliding window", "Stack", "Monotonic stack",
-    "Binary search", "Linked list", "Tree", "Trie", "Heap", "Graph", "Intervals", "Matrix",
-    "DP", "Greedy", "Backtracking", "Bit manipulation", "Design",
+    "Array",
+    "Backtracking",
+    "Binary search",
+    "Bit manipulation",
+    "Design",
+    "Dynamic programming",
+    "Graph",
+    "Greedy",
+    "Hash",
+    "Heap",
+    "Intervals",
+    "Linked list",
+    "Matrix",
+    "Monotonic stack",
+    "Sliding window",
+    "Stack",
+    "String",
+    "Tree",
+    "Trie",
+    "Two pointers",
 ]
 REQUIRED_FILES = ["solution.py", "skeleton.py", "tests.yaml", "description.md"]
 

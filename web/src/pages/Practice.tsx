@@ -2,6 +2,7 @@ import { Play, RotateCcw, Trash2 } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { MultiSelect } from '@/components/MultiSelect'
+import { StatusToggle } from '@/components/StatusToggle'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,7 +19,7 @@ export function Practice() {
   const { setPracticeConfig, startPractice, discardPractice } = useStore()
 
   const pool = useMemo(
-    () => problems.filter((p) => matchesFilter(p, config) && !(config.skipDone && done[p.slug])),
+    () => problems.filter((p) => matchesFilter(p, config, done)),
     [config, done],
   )
   const count = Math.min(config.count, pool.length)
@@ -77,14 +78,17 @@ export function Practice() {
             columns={2}
           />
         </div>
+        <div className="space-y-1">
+          <Label className="text-xs text-muted-foreground">Which problems</Label>
+          <StatusToggle value={config.status} onChange={(status) => setPracticeConfig({ status })} />
+          <p className="text-xs text-muted-foreground">
+            “Done” draws only problems you have ticked off, which is handy for spaced repetition.
+          </p>
+        </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
           <Label className="gap-2 font-normal">
             <Switch checked={config.blind75Only} onCheckedChange={(blind75Only) => setPracticeConfig({ blind75Only })} />
             Only the Blind 75
-          </Label>
-          <Label className="gap-2 font-normal">
-            <Switch checked={config.skipDone} onCheckedChange={(skipDone) => setPracticeConfig({ skipDone })} />
-            Skip problems I’ve done
           </Label>
         </div>
         <div className="flex flex-wrap items-end gap-4">

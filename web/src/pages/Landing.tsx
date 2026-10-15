@@ -1,8 +1,9 @@
-import { ArrowDown, ArrowUp, ArrowUpDown, Check, ExternalLink, Play, Search, Shuffle, X } from 'lucide-react'
+import { ArrowDown, ArrowUp, ArrowUpDown, Check, Dices, ExternalLink, Search, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { DifficultyBadge } from '@/components/badges'
 import { MultiSelect } from '@/components/MultiSelect'
+import { StatusToggle } from '@/components/StatusToggle'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -47,16 +48,27 @@ function compare(key: SortKey, done: Record<string, true>) {
   }
 }
 
+/** A topic or tag that filters the list when clicked. */
+function TopicLink({ topic, primary }: { topic: string; primary?: boolean }) {
+  const setFilters = useStore((s) => s.setFilters)
+  return (
+    <button onClick={() => setFilters({ topics: [topic] })} title={`Show only ${topic} problems`}>
+      <Badge variant={primary ? 'secondary' : 'outline'} className="cursor-pointer hover:bg-accent hover:text-accent-foreground">
+        {topic}
+      </Badge>
+    </button>
+  )
+}
+
 export function Landing() {
   const navigate = useNavigate()
   const done = useStore((s) => s.done)
   const filters = useStore((s) => s.filters)
   const sort = useStore((s) => s.sort)
-  const queue = useStore((s) => s.queue)
-  const { toggleDone, setFilters, clearFilters, setSort, setQueue, clearQueue } = useStore()
+  const { toggleDone, setFilters, clearFilters, setSort } = useStore()
 
   const filtered = useMemo(() => {
-    const rows = problems.filter((p) => matchesFilter(p, filters) && !(filters.hideDone && done[p.slug]))
+    const rows = problems.filter((p) => matchesFilter(p, filters, done))
     if (!sort.key) return rows
     const sorted = [...rows].sort(compare(sort.key, done))
     return sort.dir === 'desc' ? sorted.reverse() : sorted
@@ -64,7 +76,7 @@ export function Landing() {
 
   const doneInView = filtered.filter((p) => done[p.slug]).length
   const filtering =
-    filters.search || filters.difficulties.length || filters.topics.length || filters.blind75Only || filters.hideDone
+    filters.search || filters.difficulties.length || filters.topics.length || filters.blind75Only || filters.status !== 'all'
 
   function clickHeader(key: SortKey) {
     if (sort.key !== key) setSort({ key, dir: 'asc' })
@@ -72,13 +84,9 @@ export function Landing() {
     else setSort({ key: null, dir: 'asc' })
   }
 
-  function shuffle() {
-    const slugs = filtered.map((p) => p.slug)
-    for (let i = slugs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[slugs[i], slugs[j]] = [slugs[j], slugs[i]]
-    }
-    setQueue(slugs)
+  function randomProblem() {
+    const pick = filtered[Math.floor(Math.random() * filtered.length)]
+    if (pick) navigate(`/p/${pick.slug}`)
   }
 
   return (
@@ -121,13 +129,13 @@ export function Landing() {
           />
         </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">Show</span>
+            <StatusToggle value={filters.status} onChange={(status) => setFilters({ status })} />
+          </div>
           <Label className="gap-2 font-normal">
             <Switch checked={filters.blind75Only} onCheckedChange={(c) => setFilters({ blind75Only: c })} />
             Only the Blind 75
-          </Label>
-          <Label className="gap-2 font-normal">
-            <Switch checked={filters.hideDone} onCheckedChange={(c) => setFilters({ hideDone: c })} />
-            Hide problems I’ve done
           </Label>
           {filtering ? (
             <Button variant="ghost" size="sm" onClick={clearFilters}><X /> Clear filters</Button>
@@ -135,17 +143,9 @@ export function Landing() {
           <span className="ml-auto text-muted-foreground">
             Showing {filtered.length} of {problems.length} · {doneInView} done
           </span>
-          <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" onClick={shuffle} disabled={!filtered.length} title="Put the problems shown here in a random order, then step through them with the next and previous arrows">
-              <Shuffle /> Shuffle these
-            </Button>
-            {queue.length > 0 && (
-              <>
-                <Button size="sm" onClick={() => navigate(`/p/${queue[0]}`)}><Play /> Start ({queue.length})</Button>
-                <Button size="icon" variant="ghost" aria-label="Clear shuffled order" onClick={clearQueue}><X /></Button>
-              </>
-            )}
-          </div>
+          <Button size="sm" variant="outline" onClick={randomProblem} disabled={!filtered.length} title="Open a random problem from the ones shown">
+            <Dices /> Random problem
+          </Button>
         </div>
       </section>
 
@@ -176,8 +176,8 @@ export function Landing() {
               <TableCell className="text-muted-foreground">{p.number}</TableCell>
               <TableCell><Link to={`/p/${p.slug}`} className="font-medium hover:underline">{p.title}</Link></TableCell>
               <TableCell><DifficultyBadge difficulty={p.difficulty} /></TableCell>
-              <TableCell><Badge variant="secondary">{p.topic}</Badge></TableCell>
-              <TableCell className="space-x-1">{p.tags.map((t) => <Badge key={t} variant="outline">{t}</Badge>)}</TableCell>
+              <TableCell><TopicLink topic={p.topic} primary /></TableCell>
+              <TableCell className="space-x-1">{p.tags.map((t) => <TopicLink key={t} topic={t} />)}</TableCell>
               <TableCell className="space-x-1">
                 {p.blind75 && <Badge variant="outline" title="In the Blind 75"><Check className="size-3" />Blind 75</Badge>}
                 {p.premium && <Badge variant="outline" title="Needs a LeetCode subscription">Premium</Badge>}

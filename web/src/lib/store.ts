@@ -2,11 +2,14 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Difficulty, Mode, TestCase } from './types'
 
+/** Which problems to include: everything, only those not done yet, or only those already done (for review). */
+export type StatusFilter = 'all' | 'todo' | 'done'
+
 export interface Filters {
   difficulties: Difficulty[]
   topics: string[]
   blind75Only: boolean
-  hideDone: boolean
+  status: StatusFilter
   search: string
 }
 
@@ -20,7 +23,7 @@ export interface PracticeConfig {
   difficulties: Difficulty[]
   topics: string[]
   blind75Only: boolean
-  skipDone: boolean
+  status: StatusFilter
   count: number
 }
 
@@ -52,8 +55,6 @@ interface State {
   done: Record<string, true>
   filters: Filters
   sort: Sort
-  queue: string[]
-  queuePos: number
   drafts: Record<string, string>
   customCases: Record<string, TestCase[]>
   theme: Theme
@@ -66,9 +67,6 @@ interface State {
   setFilters: (patch: Partial<Filters>) => void
   clearFilters: () => void
   setSort: (sort: Sort) => void
-  setQueue: (queue: string[]) => void
-  setQueuePos: (pos: number) => void
-  clearQueue: () => void
   setDraft: (key: string, source: string) => void
   clearDraft: (key: string) => void
   addCustomCase: (slug: string, testCase: TestCase) => void
@@ -87,7 +85,7 @@ export const draftKey = (slug: string, mode: Mode, variant = 'primary') =>
   mode === 'view' && variant !== 'primary' ? `${slug}:view:${variant}` : `${slug}:${mode}`
 export const practiceDraftKey = (slug: string) => `practice:${slug}`
 
-const DEFAULT_FILTERS: Filters = { difficulties: [], topics: [], blind75Only: false, hideDone: false, search: '' }
+const DEFAULT_FILTERS: Filters = { difficulties: [], topics: [], blind75Only: false, status: 'all', search: '' }
 
 function finished(session: PracticeSession): { session: PracticeSession; record: PracticeRecord } {
   const outcomes = Object.values(session.outcomes)
@@ -108,12 +106,10 @@ export const useStore = create<State>()(
       done: {},
       filters: DEFAULT_FILTERS,
       sort: { key: null, dir: 'asc' },
-      queue: [],
-      queuePos: 0,
       drafts: {},
       customCases: {},
       theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
-      practiceConfig: { difficulties: [], topics: [], blind75Only: false, skipDone: true, count: 5 },
+      practiceConfig: { difficulties: [], topics: [], blind75Only: false, status: 'todo', count: 5 },
       practice: null,
       practiceHistory: [],
       toggleDone: (slug) =>
@@ -128,9 +124,6 @@ export const useStore = create<State>()(
       setFilters: (patch) => set((s) => ({ filters: { ...s.filters, ...patch } })),
       clearFilters: () => set({ filters: DEFAULT_FILTERS }),
       setSort: (sort) => set({ sort }),
-      setQueue: (queue) => set({ queue, queuePos: 0 }),
-      setQueuePos: (queuePos) => set({ queuePos }),
-      clearQueue: () => set({ queue: [], queuePos: 0 }),
       setDraft: (key, source) => set((s) => ({ drafts: { ...s.drafts, [key]: source } })),
       clearDraft: (key) =>
         set((s) => {
@@ -204,6 +197,21 @@ export const useStore = create<State>()(
         }),
       discardPractice: () => set({ practice: null }),
     }),
-    { name: 'leetcode-workbench' },
+    {
+      name: 'leetcode-workbench',
+      version: 2,
+      // v1 had `hideDone` / `skipDone` switches and a shuffle queue; v2 has a three-way status filter.
+      migrate: (persisted) => {
+        const old = persisted as Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+        const { queue: _queue, queuePos: _pos, ...rest } = old // eslint-disable-line @typescript-eslint/no-unused-vars
+        const filters = { ...DEFAULT_FILTERS, ...old.filters }
+        filters.status = old.filters?.hideDone ? 'todo' : (old.filters?.status ?? 'all')
+        delete (filters as Record<string, unknown>).hideDone
+        const config = { ...old.practiceConfig }
+        config.status = old.practiceConfig?.skipDone === false ? 'all' : (old.practiceConfig?.status ?? 'todo')
+        delete config.skipDone
+        return { ...rest, filters, practiceConfig: { difficulties: [], topics: [], blind75Only: false, count: 5, ...config } } as unknown as State
+      },
+    },
   ),
 )

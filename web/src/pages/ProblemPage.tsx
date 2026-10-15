@@ -35,8 +35,7 @@ function ProblemView({ slug }: { slug: string }) {
   const problem = bySlug.get(slug)!
   const navigate = useNavigate()
   const done = useStore((s) => s.done)
-  const queue = useStore((s) => s.queue)
-  const { toggleDone, setDraft, setQueuePos } = useStore()
+  const { toggleDone, setDraft } = useStore()
 
   const [mode, setMode] = useState<Mode>('view')
   const [confirmReveal, setConfirmReveal] = useState(false)
@@ -44,17 +43,10 @@ function ProblemView({ slug }: { slug: string }) {
   const [variantId, setVariantId] = useState('primary')
   const variant = variants.find((v) => v.id === variantId) ?? variants[0]
 
-  const neighbours = useMemo(() => {
-    const inQueue = queue.indexOf(slug)
-    if (inQueue >= 0) return { prev: queue[inQueue - 1], next: queue[inQueue + 1], queued: true }
-    const i = problems.findIndex((p) => p.slug === slug)
-    return { prev: problems[i - 1]?.slug, next: problems[i + 1]?.slug, queued: false }
-  }, [queue, slug])
-  function go(target?: string) {
-    if (!target) return
-    if (neighbours.queued) setQueuePos(queue.indexOf(target))
-    navigate(`/p/${target}`)
-  }
+  // Previous and next follow the catalogue order.
+  const index = problems.findIndex((p) => p.slug === slug)
+  const neighbours = { prev: problems[index - 1]?.slug, next: problems[index + 1]?.slug }
+  const go = (target?: string) => target && navigate(`/p/${target}`)
 
   const viewing = mode === 'view'
   const tips = techniquesForProblem(slug)

@@ -17,7 +17,7 @@ export function Markdown({ source, copyCode }: { source: string; copyCode?: bool
             if (/language-/.test(className ?? '') || text.includes('\n')) return <CodeBlock code={text} copy={copyCode} />
             if (techniqueBySlug.has(text)) {
               return (
-                <Link to={`/tips/${text}`} className="rounded bg-muted px-1 py-0.5 font-mono text-[0.85em] underline-offset-2 hover:underline">
+                <Link to={`/tips/${text}`} className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                   {techniqueBySlug.get(text)!.title}
                 </Link>
               )

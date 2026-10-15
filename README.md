@@ -1,6 +1,6 @@
 # Interview workbench
 
-A local workbench for coding-interview prep: 110 LeetCode problems, each with a Python reference solution and tests. A React app lets you browse, filter and sort the catalogue, read commented solutions, edit Python in the browser, run the tests there (every case is listed with its result), add your own cases, benchmark, and attempt problems from a blank skeleton. A Practice page draws a random set (say, easy to medium arrays) and runs it with no hints, and a Profile page shows completion by difficulty, set and topic.
+A local workbench for coding-interview prep: 110 LeetCode problems, each with a Python reference solution and tests. A React app lets you browse, filter and sort the catalogue, read commented solutions, edit Python in the browser, run the tests there (every case is listed with its result), add your own cases, benchmark, and attempt problems from a blank skeleton. A Practice page draws a random set (say, easy to medium arrays) and runs it with no hints, a Tips page collects techniques and templates for when a problem looks awkward (search it, or start from a signal), and a Profile page (user icon, top right) shows completion by difficulty, set and topic.
 
 In the browser, Python runs as Pyodide (CPython compiled to WebAssembly) inside a Web Worker. There is no server. Progress, drafts and custom cases live in localStorage.
 

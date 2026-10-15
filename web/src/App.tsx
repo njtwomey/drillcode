@@ -1,3 +1,4 @@
+import { CircleUser } from 'lucide-react'
 import { HashRouter, Link, NavLink, Route, Routes } from 'react-router'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useApplyTheme } from '@/lib/useApplyTheme'
@@ -13,7 +14,6 @@ const NAV = [
   { to: '/', label: 'Problems', end: true },
   { to: '/practice', label: 'Practice', end: false },
   { to: '/tips', label: 'Tips', end: false },
-  { to: '/profile', label: 'Profile', end: false },
 ]
 
 export default function App() {
@@ -36,7 +36,19 @@ export default function App() {
             </NavLink>
           ))}
         </nav>
-        <div className="ml-auto"><ThemeToggle /></div>
+        <div className="ml-auto flex items-center gap-1">
+          <NavLink
+            to="/profile"
+            aria-label="Profile"
+            title="Profile: progress and practice history"
+            className={({ isActive }) =>
+              `inline-flex size-9 items-center justify-center rounded-md hover:bg-muted ${isActive ? 'bg-muted' : 'text-muted-foreground hover:text-foreground'}`
+            }
+          >
+            <CircleUser className="size-5" />
+          </NavLink>
+          <ThemeToggle />
+        </div>
       </header>
       <main className="mx-auto w-full max-w-[1800px] p-4">
         <Routes>
