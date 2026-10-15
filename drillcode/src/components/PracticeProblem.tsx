@@ -23,7 +23,7 @@ export function PracticeProblem({ slug, onResults }: { slug: string; onResults: 
       onResults={onResults}
       left={
         <aside className="space-y-4 text-sm">
-          {description && <Description source={description} />}
+          {description && <Description source={description} slug={slug} />}
           <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
             Full statement on LeetCode <ExternalLink className="size-3" />
           </a>

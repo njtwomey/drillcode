@@ -26,6 +26,13 @@ export function formatCase(spec: TestsSpec, c: TestCase): string {
   return `${values.join(', ')} → ${showExpected(c)}`
 }
 
+/** A case with the parameter names shown: `nums = [2,7,11,15], target = 9 → [0,1]`. */
+export function formatNamedCase(spec: TestsSpec, c: TestCase): string {
+  if (spec.kind === 'operations') return formatCase(spec, c)
+  const named = inputNames(spec).map((n) => `${n} = ${show(c.input?.[n])}`)
+  return `${named.join(', ')} → ${showExpected(c)}`
+}
+
 /** Python-ish literals to JSON: True/False/None, single-quoted strings, trailing commas left alone. */
 export function pythonToJson(text: string): string {
   let out = ''

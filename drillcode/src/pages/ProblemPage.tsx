@@ -123,7 +123,7 @@ function ProblemView({ slug, mode }: { slug: string; mode: PageMode }) {
       {mode === 'read' ? (
         <article className="mx-auto max-w-3xl space-y-6">
           <section className="space-y-3 rounded-lg border p-4 text-sm">
-            {description && <Description source={description} />}
+            {description && <Description source={description} slug={slug} />}
             <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <span>Time {problem.complexity.time} · space {problem.complexity.space}</span>
               <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
@@ -150,7 +150,7 @@ function ProblemView({ slug, mode }: { slug: string; mode: PageMode }) {
           <Workspace
             left={
           <aside className="space-y-4 text-sm">
-              {description && <Description source={description} />}
+              {description && <Description source={description} slug={slug} />}
               <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
                 Full statement on LeetCode <ExternalLink className="size-3" />
               </a>
