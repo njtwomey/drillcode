@@ -1,4 +1,12 @@
-"""One pass with a map of value -> index, checking for the complement before inserting.
+"""Two Sum (#1, easy)
+
+Approach: One pass with a map of value → index, checking for the complement before
+    inserting.
+Tricks: Check before inserting, or an element can pair with itself.
+Edge cases:
+  - Duplicates such as [3, 3] with target 6
+  - Negatives
+  - Zero
 
 Time O(n), space O(n).
 """

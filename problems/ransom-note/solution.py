@@ -1,5 +1,11 @@
-"""Count magazine letters in a 26-slot array; spend one per ransom note letter.
-Fail as soon as a count would go negative.
+"""Ransom Note (#383, easy)
+
+Approach: Count magazine letters; decrement per note letter; fail if any count goes
+    negative.
+Tricks: A 26-element array beats a dictionary for lowercase-only input.
+Edge cases:
+  - Empty note (true)
+  - Note longer than magazine
 
 Time O(m + n), space O(1).
 """

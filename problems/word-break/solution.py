@@ -1,7 +1,13 @@
-"""dp[i] is true if some j < i has dp[j] true and s[j:i] in the word set.
+"""Word Break (#139, medium)
 
-Only j within the longest word length of i are tried. Words may be reused.
-Time O(n * L) substring checks (L = longest word), space O(n).
+Approach: dp[i] true if some j < i has dp[j] true and s[j:i] in the dictionary.
+Tricks: Put words in a set; capping j at the longest word length prunes well.
+Edge cases:
+  - Words reusable
+  - s shorter than every word
+  - a word that is a prefix of another
+
+Time O(n · L), space O(n).
 """
 
 

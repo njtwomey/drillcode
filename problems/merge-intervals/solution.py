@@ -1,5 +1,12 @@
-"""Sort by start; extend the last merged interval when the next one overlaps
-(next.start <= last.end, taking the larger end), otherwise append it.
+"""Merge Intervals (#56, medium)
+
+Approach: Sort by start; extend the last merged interval when the next overlaps,
+    otherwise append.
+Tricks: Overlap test is next.start <= last.end; take the larger end when merging.
+Edge cases:
+  - Single interval
+  - Touching intervals [1,4] and [4,5]
+  - One interval inside another
 
 Time O(n log n), space O(n).
 """

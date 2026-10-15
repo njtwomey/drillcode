@@ -1,7 +1,14 @@
-"""Use the first row and first column as zero markers, with flags for whether they held zeros.
+"""Set Matrix Zeroes (#73, medium)
 
-Mark from the inner cells, zero the inner cells, then zero the first row and column last.
-Time O(m*n), space O(1).
+Approach: Use the first row and column as markers, with a separate flag for the first
+    column itself.
+Tricks: O(1) extra space needs the marker trick; zero the first row and column last.
+Edge cases:
+  - Zero in the first row or column
+  - 1x1
+  - All zeros
+
+Time O(m·n), space O(1).
 """
 
 

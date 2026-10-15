@@ -1,7 +1,11 @@
-"""DFS over the digits, appending each letter mapped to the current digit.
+"""Letter Combinations of a Phone Number (#17, medium)
 
-Empty input returns [] rather than [""].
-Time O(4^n * n), space O(n) excluding the output.
+Approach: DFS over the digits, appending each mapped letter.
+Tricks: A digit-to-letters table handles 7 and 9 having four letters.
+Edge cases:
+  - Empty input returns an empty list, not a list containing an empty string
+
+Time O(4^n · n), space O(n).
 """
 
 

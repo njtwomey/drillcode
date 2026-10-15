@@ -1,6 +1,12 @@
-"""Pre-order traversal with explicit "#" null markers, comma-delimited so
-negative and multi-digit values survive. Deserialise by consuming tokens in the
-same order with an iterator.
+"""Serialize and Deserialize Binary Tree (#297, hard)
+
+Approach: Pre-order with explicit null markers; deserialise by consuming tokens in the
+    same order.
+Tricks: Null markers make pre-order alone sufficient; level-order works too.
+Edge cases:
+  - Empty tree
+  - Negative and multi-digit values (delimit tokens)
+  - Single node
 
 Time O(n), space O(n).
 """

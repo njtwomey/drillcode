@@ -1,7 +1,13 @@
-"""Expand around each of the 2n - 1 centres (odd and even), counting every
-successful expansion.
+"""Palindromic Substrings (#647, medium)
 
-Time O(n^2), space O(1).
+Approach: Expand around each of the 2n - 1 centres, counting every successful expansion.
+Tricks: Same technique as Longest Palindromic Substring, counting instead of tracking
+    the max.
+Edge cases:
+  - Single character
+  - All characters equal (n(n+1)/2)
+
+Time O(n²), space O(1).
 """
 
 

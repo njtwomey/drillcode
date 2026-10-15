@@ -1,4 +1,10 @@
-"""Iterative in-order traversal with a stack, stopping at the kth node visited.
+"""Kth Smallest Element in a BST (#230, medium)
+
+Approach: In-order traversal, stopping at the kth node.
+Tricks: Iterative in-order with a stack allows an early exit.
+Edge cases:
+  - k = 1 (leftmost)
+  - k = n (rightmost)
 
 Time O(h + k), space O(h).
 """

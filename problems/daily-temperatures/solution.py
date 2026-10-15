@@ -1,6 +1,12 @@
-"""Monotonic stack of indices with decreasing temperatures.
+"""Daily Temperatures (#739, medium)
 
-Pop while today is warmer and record the index distance (store indices, not values).
+Approach: Stack of indices with decreasing temperatures; pop while the current day is
+    warmer and record the distance.
+Tricks: Store indices, not values, because the answer is a distance.
+Edge cases:
+  - Strictly decreasing input (all zeros)
+  - Last element always 0
+
 Time O(n), space O(n).
 """
 

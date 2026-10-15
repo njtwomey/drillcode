@@ -1,4 +1,10 @@
-"""Both null is equal; exactly one null is not; otherwise compare values and recurse on both sides.
+"""Same Tree (#100, easy)
+
+Approach: Both null → true; one null → false; compare values then recurse on both sides.
+Edge cases:
+  - Both empty
+  - Same shape with different values
+  - Same values with different shape
 
 Time O(n), space O(h).
 """

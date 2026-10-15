@@ -1,7 +1,13 @@
-"""Check edges == n - 1 first, then union-find each edge and fail if both ends share a root.
+"""Graph Valid Tree (#261, medium)
 
-With the edge count right, finding no cycle also proves connectivity.
-Time O(n + E * alpha(n)), space O(n).
+Approach: A tree has exactly n - 1 edges and no cycle; union-find each edge and fail on
+    a shared root.
+Tricks: With the edge count checked first, finding no cycle also proves connectivity.
+Edge cases:
+  - n = 1 with no edges is valid
+  - Too few edges means disconnected even with no cycle
+
+Time O(n + E · α(n)), space O(n).
 """
 
 

@@ -1,7 +1,13 @@
-"""DFS choosing candidates from index i onward, allowing the same index to be reused.
+"""Combination Sum (#39, medium)
 
-Passing the start index prevents duplicate orderings; sorting lets us prune once a candidate exceeds the remainder.
-Time O(N^(T/M)), space O(T/M) recursion depth.
+Approach: DFS choosing candidates from index i onward, allowing the same index to be
+    reused.
+Tricks: Passing the start index prevents duplicate orderings; prune when the remainder
+    goes negative.
+Edge cases:
+  - Target smaller than every candidate (empty result)
+
+Time O(N^(T/M)), space O(T/M).
 """
 
 

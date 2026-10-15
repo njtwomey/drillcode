@@ -1,6 +1,13 @@
-"""DFS passing an exclusive (low, high) range down; None means unbounded, so integer limits are safe.
+"""Validate Binary Search Tree (#98, medium)
 
-Bounds come from all ancestors, not just the parent. Duplicates are invalid.
+Approach: DFS passing an allowed (min, max) range downward, or in-order traversal
+    checking strictly increasing values.
+Tricks: Comparing only with the immediate parent is wrong; the bounds must come from all
+    ancestors.
+Edge cases:
+  - Duplicates are invalid
+  - Values at the integer limits, so use None or infinity as bounds
+
 Time O(n), space O(h).
 """
 

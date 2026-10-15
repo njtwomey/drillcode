@@ -1,6 +1,12 @@
-"""Min-heap of (value, list index, node); pop the smallest and push its successor.
-The list index breaks ties so ListNode objects are never compared.
-(Pairwise divide-and-conquer merging is the alternative.)
+"""Merge k Sorted Lists (#23, hard)
+
+Approach: Min-heap of (value, list index, node); pop the smallest and push its successor.
+Tricks: The list index in the tuple is a tiebreaker so nodes are never compared;
+    pairwise divide-and-conquer merging is the alternative.
+Edge cases:
+  - Empty lists among the k
+  - k = 0
+  - All lists empty
 
 Time O(N log k), space O(k).
 """

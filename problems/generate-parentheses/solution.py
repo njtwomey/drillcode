@@ -1,7 +1,11 @@
-"""DFS building the string, adding '(' while opens < n and ')' while closes < opens.
+"""Generate Parentheses (#22, medium)
 
-The closes < opens rule alone keeps every prefix valid, so no stack is needed.
-Time O(4^n / sqrt(n)), space O(n) excluding the output.
+Approach: DFS adding '(' while opens < n and ')' while closes < opens.
+Tricks: The closes < opens rule alone guarantees validity; no stack needed.
+Edge cases:
+  - n = 1
+
+Time O(4^n / √n), space O(n).
 """
 
 

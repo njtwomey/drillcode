@@ -1,5 +1,11 @@
-"""Post-order DFS returning whichever target is found below. A node with hits on
-both sides is the LCA; if only one side hits, pass that result up unchanged.
+"""Lowest Common Ancestor of a Binary Tree (#236, medium)
+
+Approach: Post-order DFS returning whichever target is found below; a node with hits on
+    both sides is the LCA.
+Tricks: If only one side returns non-null, pass it up unchanged.
+Edge cases:
+  - One target is an ancestor of the other
+  - Targets in different subtrees of the root
 
 Time O(n), space O(h).
 """

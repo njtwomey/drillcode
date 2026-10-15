@@ -1,7 +1,14 @@
-"""Multi-source BFS: seed the queue with every rotten orange, spread one level per minute.
+"""Rotting Oranges (#994, medium)
 
-Count fresh oranges up front; if any remain after the BFS, return -1.
-Time O(m*n), space O(m*n).
+Approach: Multi-source BFS seeded with every rotten orange, counting levels.
+Tricks: Seed the queue with all sources before starting; count fresh oranges to detect
+    any left unreachable.
+Edge cases:
+  - No fresh oranges (0)
+  - Unreachable fresh orange (-1)
+  - Fresh present but nothing rotten
+
+Time O(m·n), space O(m·n).
 """
 from collections import deque
 

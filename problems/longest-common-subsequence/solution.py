@@ -1,6 +1,13 @@
-"""2D DP: dp[i][j] = dp[i-1][j-1] + 1 on a match, else max(dp[i-1][j], dp[i][j-1]).
+"""Longest Common Subsequence (#1143, medium)
 
-Time O(m * n), space O(m * n).
+Approach: 2D DP: dp[i][j] = dp[i-1][j-1] + 1 on a match, else max(dp[i-1][j],
+    dp[i][j-1]).
+Tricks: Subsequence, not substring, so the else branch carries values forward.
+Edge cases:
+  - One string empty
+  - No characters in common
+
+Time O(m · n), space O(m · n).
 """
 
 

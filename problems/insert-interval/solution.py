@@ -1,5 +1,12 @@
-"""One pass over the sorted input: emit intervals ending before the new one, merge every
-overlapping interval into it, then emit the rest.
+"""Insert Interval (#57, medium)
+
+Approach: Emit intervals ending before the new one; merge every overlapping interval
+    into it; emit the rest.
+Tricks: Input is already sorted, so one pass suffices.
+Edge cases:
+  - Insert at the start or end
+  - New interval swallows everything
+  - Empty list
 
 Time O(n), space O(n).
 """

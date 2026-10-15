@@ -1,6 +1,12 @@
-"""Transpose, then reverse each row (clockwise rotation, in place).
+"""Rotate Image (#48, medium)
 
-Time O(n^2), space O(1).
+Approach: Transpose, then reverse each row, for clockwise.
+Tricks: Counter-clockwise is transpose then reverse each column.
+Edge cases:
+  - 1x1
+  - 2x2
+
+Time O(n²), space O(1).
 """
 
 

@@ -1,6 +1,13 @@
-"""Expand around each centre, both odd (i, i) and even (i, i + 1), keeping the longest span.
+"""Longest Palindromic Substring (#5, medium)
 
-Time O(n^2), space O(1).
+Approach: Expand around each centre, both odd (i, i) and even (i, i + 1).
+Tricks: Two centre types per index; Manacher's exists but is rarely expected.
+Edge cases:
+  - Single character
+  - Whole string is a palindrome
+  - All characters equal
+
+Time O(n²), space O(1).
 """
 
 

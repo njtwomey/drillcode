@@ -1,7 +1,13 @@
-"""dp[t] = sum of dp[t - n] over nums, dp[0] = 1, with the target loop outermost.
+"""Combination Sum IV (#377, medium)
 
-That order counts ordered sequences (Coin Change II swaps the loops to count unordered ones).
-Time O(target * n), space O(target).
+Approach: dp[t] = sum over nums of dp[t - n], dp[0] = 1, with the target loop outermost.
+Tricks: This counts ordered sequences; Coin Change II puts the coin loop outermost to
+    count unordered ones.
+Edge cases:
+  - Target 0
+  - Large counts (fit in 32 bits by the constraints)
+
+Time O(target · n), space O(target).
 """
 
 

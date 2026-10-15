@@ -1,8 +1,14 @@
-"""Build a trie from the words, then DFS from every cell following trie edges,
-collecting a word when its end marker is reached. The marker is cleared once
-found (no duplicates) and exhausted trie branches are pruned.
+"""Word Search II (#212, hard)
 
-Time O(m*n*3^L), space O(total chars).
+Approach: Build a trie from the words; DFS the grid following trie edges, collecting
+    words at end markers.
+Tricks: Clear a word's end flag once found to avoid duplicates and prune later searches.
+Edge cases:
+  - Words sharing prefixes
+  - a word that is a prefix of another
+  - Words longer than the grid
+
+Time O(m·n·3^L), space O(total chars).
 """
 
 

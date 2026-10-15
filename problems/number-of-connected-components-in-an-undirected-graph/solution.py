@@ -1,7 +1,14 @@
-"""Union-find with path compression and union by size. Start with n components
-and decrement on every edge that merges two different sets.
+"""Number of Connected Components in an Undirected Graph (#323, medium)
 
-Time O(n + E * alpha(n)), space O(n).
+Approach: Start with n components; union each edge and decrement on every successful
+    merge.
+Tricks: Path compression and union by rank keep each operation near O(1).
+Edge cases:
+  - No edges (answer n)
+  - Self-loops
+  - Duplicate edges
+
+Time O(n + E · α(n)), space O(n).
 """
 
 

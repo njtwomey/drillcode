@@ -1,7 +1,11 @@
-"""Sort by start time; any meeting starting before the previous one ends is a conflict.
-Touching intervals (end == next start) are fine.
+"""Meeting Rooms (#252, easy)
 
-Time O(n log n), space O(1) beyond the sort.
+Approach: Sort by start; check each start is not before the previous end.
+Edge cases:
+  - Single meeting
+  - Touching intervals (end == next start) do not conflict
+
+Time O(n log n), space O(1).
 """
 
 

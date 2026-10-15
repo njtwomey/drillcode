@@ -1,4 +1,11 @@
-"""Dummy head; repeatedly splice in the smaller front node, then attach the remainder.
+"""Merge Two Sorted Lists (#21, easy)
+
+Approach: Dummy head; take the smaller node each step, then append whatever remains.
+Tricks: The dummy head removes the special case for the first node.
+Edge cases:
+  - One list empty
+  - Both empty
+  - One list entirely smaller than the other
 
 Time O(m + n), space O(1).
 """

@@ -1,6 +1,13 @@
-"""Pointers at both ends; move the shorter side inward each step.
+"""Container With Most Water (#11, medium)
 
-Moving the taller side can never increase the area, so the greedy step is safe.
+Approach: Pointers at both ends; move the shorter side inward each step.
+Tricks: Moving the taller side can never increase the area, which is what makes the
+    greedy step safe.
+Edge cases:
+  - Two elements
+  - All heights equal
+  - Zero height at an end
+
 Time O(n), space O(1).
 """
 

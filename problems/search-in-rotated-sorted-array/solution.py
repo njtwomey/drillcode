@@ -1,6 +1,14 @@
-"""Binary search; at each step one of [lo, mid] or [mid, hi] is sorted.
+"""Search in Rotated Sorted Array (#33, medium)
 
-Check whether the target lies within the sorted half's bounds and discard the other half.
+Approach: Binary search; decide which of [lo, mid] or [mid, hi] is sorted and whether
+    the target lies in it.
+Tricks: Exactly one half is sorted at every step; test the target against that half's
+    bounds.
+Edge cases:
+  - Not rotated
+  - Single element
+  - Target at the pivot
+
 Time O(log n), space O(1).
 """
 

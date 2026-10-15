@@ -1,7 +1,12 @@
-"""One pass with sets per row, column and 3x3 box; any repeated digit means invalid.
+"""Valid Sudoku (#36, medium)
 
-Box index is (r // 3) * 3 + c // 3. Only placed digits are checked, not solvability.
-Time O(1) (fixed 81 cells), space O(1).
+Approach: Sets per row, column and 3x3 box; fail on any repeat.
+Tricks: Box index is (r // 3) * 3 + c // 3.
+Edge cases:
+  - Empty board is valid
+  - Only placed digits are checked, not solvability
+
+Time O(1), space O(1).
 """
 
 

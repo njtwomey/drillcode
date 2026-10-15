@@ -1,4 +1,10 @@
-"""Level-order traversal, recording the last node of each level.
+"""Binary Tree Right Side View (#199, medium)
+
+Approach: Level-order traversal, recording the last node of each level.
+Tricks: DFS visiting right before left and recording the first node seen at each depth
+    also works.
+Edge cases:
+  - Left subtree deeper than the right, so left nodes appear in the view
 
 Time O(n), space O(n).
 """

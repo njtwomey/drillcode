@@ -1,4 +1,9 @@
-"""dp[i] = max(dp[i-1], dp[i-2] + nums[i]), kept in two rolling variables.
+"""House Robber (#198, medium)
+
+Approach: dp[i] = max(dp[i-1], dp[i-2] + nums[i]) with two rolling variables.
+Edge cases:
+  - One house
+  - Two houses
 
 Time O(n), space O(1).
 """

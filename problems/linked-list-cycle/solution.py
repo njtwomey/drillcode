@@ -1,6 +1,12 @@
-"""Floyd's tortoise and hare: slow moves one step, fast moves two; they meet iff there is a cycle.
+"""Linked List Cycle (#141, easy)
 
-Check both fast and fast.next for None each step.
+Approach: Floyd's tortoise and hare: slow moves 1, fast moves 2, cycle if they meet.
+Tricks: Check both fast and fast.next for null each step.
+Edge cases:
+  - Empty list
+  - Single node pointing to itself
+  - No cycle
+
 Time O(n), space O(1).
 """
 

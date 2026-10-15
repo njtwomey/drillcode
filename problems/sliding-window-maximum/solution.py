@@ -1,6 +1,12 @@
-"""Monotonic deque of indices whose values decrease. On each push, pop smaller
-values from the back; drop the front once its index leaves the window. The
-front is always the window maximum.
+"""Sliding Window Maximum (#239, hard)
+
+Approach: Deque of indices with decreasing values; pop smaller values from the back on
+    push, drop the front once it leaves the window.
+Tricks: Store indices so expiry is a position check.
+Edge cases:
+  - k = 1 (output equals input)
+  - k = n
+  - All values equal
 
 Time O(n), space O(k).
 """

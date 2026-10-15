@@ -1,7 +1,15 @@
-"""Hash map plus doubly linked list with sentinel head and tail nodes.
+"""LRU Cache (#146, medium)
 
-A hit moves the node to the front; put evicts from the tail when over capacity.
-All operations O(1); space O(capacity).
+Approach: Hash map plus doubly linked list; move a node to the front on access, evict
+    from the tail.
+Tricks: Sentinel head and tail nodes remove null checks; OrderedDict in Python does the
+    same job.
+Edge cases:
+  - Capacity 1
+  - Put of an existing key updates and refreshes it
+  - Get of a missing key
+
+Time O(1) per operation, space O(capacity).
 """
 
 

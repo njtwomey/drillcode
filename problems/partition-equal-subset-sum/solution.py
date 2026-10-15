@@ -1,7 +1,15 @@
-"""Subset-sum DP for target = total / 2 using a 1D boolean array iterated from
-high to low so each number is used at most once. An odd total is an immediate false.
+"""Partition Equal Subset Sum (#416, medium)
 
-Time O(n * sum), space O(sum).
+Approach: Subset-sum DP for target = total / 2 with a 1D boolean array iterated from
+    high to low.
+Tricks: Iterating downward uses each number at most once; an odd total is an immediate
+    false.
+Edge cases:
+  - Odd total
+  - Single element
+  - One element equal to half the total
+
+Time O(n · sum), space O(sum).
 """
 
 

@@ -1,6 +1,14 @@
-"""For every node of the main tree, run a same-tree check against subRoot.
+"""Subtree of Another Tree (#572, easy)
 
-Time O(m*n), space O(h).
+Approach: For every node of the main tree, run a sameTree check against the subtree.
+Tricks: O(m·n); serialising both with null markers and doing a substring search is the
+    faster alternative.
+Edge cases:
+  - Subtree equal to the whole tree
+  - Subtree is a single leaf
+  - Repeated values in the main tree
+
+Time O(m·n), space O(h).
 """
 
 

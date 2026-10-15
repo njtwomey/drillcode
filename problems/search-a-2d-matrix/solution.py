@@ -1,7 +1,13 @@
-"""Treat the matrix as one sorted array of rows*cols items and binary search it.
+"""Search a 2D Matrix (#74, medium)
 
-Index mid maps to row mid // cols, column mid % cols.
-Time O(log(m*n)), space O(1).
+Approach: Treat the matrix as one sorted array; row = mid // cols, col = mid % cols.
+Tricks: One binary search over rows × cols, not two nested ones.
+Edge cases:
+  - Single row
+  - Single column
+  - Target below the first element
+
+Time O(log(m·n)), space O(1).
 """
 
 

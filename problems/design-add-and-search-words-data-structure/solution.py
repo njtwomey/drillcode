@@ -1,6 +1,12 @@
-"""Trie insert; search is a DFS that branches to every child on '.'.
+"""Design Add and Search Words Data Structure (#211, medium)
 
-Ordinary characters follow a single edge; only '.' fans out.
+Approach: Trie insert; search is a DFS that branches to every child on '.'.
+Tricks: Only '.' branches; ordinary characters follow one edge.
+Edge cases:
+  - Pattern of only dots
+  - Pattern longer than any stored word
+  - Empty trie
+
 Time O(L) add, O(26^L) worst-case search, space O(total chars).
 """
 

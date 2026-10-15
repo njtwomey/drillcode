@@ -1,7 +1,14 @@
-"""Unbounded knapsack: dp[a] = min over coins of dp[a - c] + 1, with dp[0] = 0.
+"""Coin Change (#322, medium)
 
-Initialised with amount + 1 (an unreachable sentinel) instead of infinity.
-Time O(amount * coins), space O(amount).
+Approach: dp[a] = min over coins of dp[a - c] + 1, with dp[0] = 0.
+Tricks: Unbounded knapsack; initialise with amount + 1 rather than infinity to simplify
+    the final check.
+Edge cases:
+  - Amount 0 (answer 0)
+  - Impossible amount (answer -1)
+  - Every coin larger than the amount
+
+Time O(amount · coins), space O(amount).
 """
 
 

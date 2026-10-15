@@ -1,5 +1,10 @@
-"""Find the middle with slow/fast pointers, reverse the second half, cut the
-first half's tail to null, then interleave the two halves in place.
+"""Reorder List (#143, medium)
+
+Approach: Find the middle, reverse the second half, then interleave the halves.
+Tricks: Cut the first half's tail to null before interleaving to avoid a cycle.
+Edge cases:
+  - Even and odd lengths
+  - One or two nodes
 
 Time O(n), space O(1).
 """

@@ -1,5 +1,12 @@
-"""The circle makes the first and last houses mutually exclusive, so run linear House Robber
-on nums[:-1] and nums[1:] and take the larger; a single house is returned directly.
+"""House Robber II (#213, medium)
+
+Approach: Run House Robber on houses 0..n-2 and on 1..n-1; take the larger.
+Tricks: The circle makes the first and last house mutually exclusive, so split into two
+    linear problems.
+Edge cases:
+  - Single house (neither run covers it
+  - Return it directly)
+  - Two houses
 
 Time O(n), space O(1).
 """

@@ -1,6 +1,11 @@
-"""Two pointers at both ends of the sorted array: move left up if the sum is too small, right down if too large.
+"""Two Sum II - Input Array Is Sorted (#167, medium)
 
-Returns 1-indexed positions.
+Approach: Pointers at both ends; move left if the sum is too small, right if too large.
+Tricks: Sorted input removes the need for a hash map and gives O(1) space.
+Edge cases:
+  - Answer uses the first and last elements
+  - Output is 1-indexed
+
 Time O(n), space O(1).
 """
 

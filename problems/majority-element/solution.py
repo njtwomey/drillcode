@@ -1,6 +1,12 @@
-"""Boyer-Moore voting: keep a candidate and a count, decrement on mismatch, replace at zero.
+"""Majority Element (#169, easy)
 
-Correct only because a majority element is guaranteed to exist.
+Approach: Boyer-Moore voting: keep a candidate and a count, decrement on mismatch,
+    replace at zero.
+Tricks: Correct only because a majority element is guaranteed to exist.
+Edge cases:
+  - Single element
+  - Majority element clustered at the end
+
 Time O(n), space O(1).
 """
 

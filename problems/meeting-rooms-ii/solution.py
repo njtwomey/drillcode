@@ -1,5 +1,11 @@
-"""Sort by start and keep a min-heap of end times. Reuse a room (pop) when the
-earliest end is <= the next start; the answer is the largest heap size.
+"""Meeting Rooms II (#253, medium)
+
+Approach: Sort by start; min-heap of end times; pop when the earliest end is <= the next
+    start; answer is the largest heap size.
+Tricks: Alternative: sort starts and ends separately and sweep with two pointers.
+Edge cases:
+  - Touching meetings share a room
+  - All meetings overlap
 
 Time O(n log n), space O(n).
 """

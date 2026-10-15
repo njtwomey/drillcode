@@ -1,4 +1,9 @@
-"""Insert into a set and return True on the first repeat.
+"""Contains Duplicate (#217, easy)
+
+Approach: Insert into a set, return true on the first repeat.
+Tricks: Sorting gives O(n log n) with no extra memory if that is asked for.
+Edge cases:
+  - Empty or single element array
 
 Time O(n), space O(n).
 """

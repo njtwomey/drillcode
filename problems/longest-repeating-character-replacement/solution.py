@@ -1,6 +1,13 @@
-"""Sliding window; it is valid while length - maxCount <= k, otherwise shrink from the left.
+"""Longest Repeating Character Replacement (#424, medium)
 
-maxCount is never decremented: a stale value cannot produce a wrong answer.
+Approach: Window valid while length - maxCount <= k; shrink from the left when it is not.
+Tricks: maxCount need not be decremented when shrinking; a stale value never yields a
+    wrong answer.
+Edge cases:
+  - k = 0
+  - k >= length (whole string)
+  - Single character
+
 Time O(n), space O(1).
 """
 

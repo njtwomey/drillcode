@@ -1,5 +1,11 @@
-"""Walk down from the root using BST order: both targets smaller go left,
-both larger go right, otherwise the current node splits them and is the LCA.
+"""Lowest Common Ancestor of a Binary Search Tree (#235, medium)
+
+Approach: From the root: go left if both targets are smaller, right if both larger,
+    otherwise the current node is the LCA.
+Tricks: Use the BST ordering; the general LCA is unnecessary.
+Edge cases:
+  - One target is an ancestor of the other
+  - a target is the root
 
 Time O(h), space O(1).
 """

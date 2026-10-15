@@ -1,6 +1,12 @@
-"""Binary search for the first index where isBadVersion is true.
+"""First Bad Version (#278, easy)
 
-When mid is bad keep it (hi = mid) so the answer is never discarded.
+Approach: Binary search for the first index where isBad is true.
+Tricks: Set hi = mid, not mid - 1, when mid is bad, so the answer is never discarded.
+Edge cases:
+  - n = 1
+  - First version bad
+  - Last version bad
+
 Time O(log n), space O(1).
 """
 

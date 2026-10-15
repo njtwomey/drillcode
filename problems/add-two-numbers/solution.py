@@ -1,7 +1,12 @@
-"""Walk both lists with a carry, appending digit nodes to a dummy head.
+"""Add Two Numbers (#2, medium)
 
-Loop while either list or the carry is non-zero.
-Time O(max(m, n)), space O(1) beyond the output.
+Approach: Walk both lists with a carry, building the result from a dummy head.
+Tricks: Loop while either list or the carry is non-zero.
+Edge cases:
+  - Different lengths
+  - Final carry producing an extra node (e.g. 5 + 5)
+
+Time O(max(m, n)), space O(1).
 """
 
 

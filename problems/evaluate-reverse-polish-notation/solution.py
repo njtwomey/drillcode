@@ -1,6 +1,13 @@
-"""Push numbers on a stack; on an operator pop two, apply, push the result.
+"""Evaluate Reverse Polish Notation (#150, medium)
 
-Pop the right operand first (matters for - and /); division truncates toward zero.
+Approach: Push numbers; on an operator, pop two and push the result.
+Tricks: Operand order matters for - and /; division truncates toward zero (int(a / b) in
+    Python).
+Edge cases:
+  - Negative numbers
+  - Division such as 6 / -132
+  - Single token
+
 Time O(n), space O(n).
 """
 

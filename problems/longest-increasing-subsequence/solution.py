@@ -1,7 +1,13 @@
-"""Maintain a tails array (tails[i] = smallest tail of an increasing run of length i + 1);
-binary search the first tail >= x and replace it, or append if none.
+"""Longest Increasing Subsequence (#300, medium)
 
-The length of tails is the answer, but its contents are not the subsequence.
+Approach: O(n²) DP over earlier elements, or O(n log n) with a tails array and binary
+    search.
+Tricks: In the tails array replace the first element >= x; its length is the answer but
+    its contents are not the subsequence.
+Edge cases:
+  - Strictly decreasing input (answer 1)
+  - Duplicates do not extend a strictly increasing run
+
 Time O(n log n), space O(n).
 """
 from bisect import bisect_left

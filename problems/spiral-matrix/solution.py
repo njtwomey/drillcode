@@ -1,7 +1,15 @@
-"""Walk the four boundaries (top, bottom, left, right), shrinking each after its edge.
+"""Spiral Matrix (#54, medium)
 
-Re-check top <= bottom and left <= right before the bottom and left edges.
-Time O(m*n), space O(1) beyond the output.
+Approach: Four boundaries; traverse each edge then shrink the boundary.
+Tricks: Re-check top <= bottom and left <= right before the bottom and left edges, or
+    single rows and columns are visited twice.
+Edge cases:
+  - Single row
+  - Single column
+  - 1x1
+  - Non-square
+
+Time O(m·n), space O(1).
 """
 
 

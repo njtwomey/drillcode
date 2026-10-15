@@ -1,4 +1,9 @@
-"""dp[i] = dp[i >> 1] + (i & 1), filled in increasing order from dp[0] = 0.
+"""Counting Bits (#338, easy)
+
+Approach: dp[i] = dp[i >> 1] + (i & 1), filled in order from 0.
+Tricks: dp[i] = dp[i & (i - 1)] + 1 also works: drop the lowest set bit and add one.
+Edge cases:
+  - n = 0
 
 Time O(n), space O(n).
 """

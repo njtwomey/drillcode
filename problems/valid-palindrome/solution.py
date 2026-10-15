@@ -1,4 +1,10 @@
-"""Two pointers moving inward, skipping non-alphanumeric characters and comparing case-insensitively.
+"""Valid Palindrome (#125, easy)
+
+Approach: Two pointers moving inward, skipping non-alphanumeric characters, comparing
+    case-insensitively.
+Tricks: Skip inside the loop rather than building a filtered copy, if space matters.
+Edge cases:
+  - Empty string and all-punctuation strings count as palindromes
 
 Time O(n), space O(1).
 """

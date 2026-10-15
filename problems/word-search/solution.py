@@ -1,6 +1,15 @@
-"""DFS from every cell matching word[0]; mark the cell '#' while exploring and restore on return.
+"""Word Search (#79, medium)
 
-Time O(m*n*3^L), space O(L) recursion.
+Approach: DFS from each cell matching the next character, marking cells visited and
+    restoring on return.
+Tricks: Mark the cell in the grid itself (e.g. '#') and restore it after recursing,
+    instead of a visited set.
+Edge cases:
+  - Word longer than the grid has cells
+  - 1x1 grid
+  - Repeated letters in the word
+
+Time O(m·n·3^L), space O(L).
 """
 
 

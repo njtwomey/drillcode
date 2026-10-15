@@ -1,6 +1,12 @@
-"""Nodes with a children dict and an end-of-word flag; all operations walk the prefix.
+"""Implement Trie (Prefix Tree) (#208, medium)
 
-search and startsWith share the same walk, differing only in the final flag check.
+Approach: Node with a children map and an end-of-word flag; insert, search and
+    startsWith walk the tree.
+Tricks: search and startsWith share the same walk; only the final flag check differs.
+Edge cases:
+  - Prefix that is also a word
+  - Word that is a prefix of a longer stored word
+
 Time O(L) per operation, space O(total chars).
 """
 

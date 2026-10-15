@@ -1,7 +1,13 @@
-"""For each unvisited land cell, flood the island (iterative DFS) by marking
-cells '0' in place, and count the starts. Diagonals are not connected.
+"""Number of Islands (#200, medium)
 
-Time O(m*n), space O(m*n) for the DFS stack in the worst case.
+Approach: For each unvisited land cell, flood the island and count the start.
+Tricks: Marking cells in place ('1' to '0') avoids a visited set.
+Edge cases:
+  - All water
+  - All land
+  - Diagonal cells are not connected
+
+Time O(m·n), space O(m·n).
 """
 
 

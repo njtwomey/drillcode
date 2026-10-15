@@ -1,7 +1,14 @@
-"""Treat each value as a next pointer; Floyd's cycle detection finds the cycle entrance.
+"""Find the Duplicate Number (#287, medium)
 
-The duplicate is the entrance, not the meeting point: after the pointers meet, restart one at index 0.
-Time O(n), space O(1), array not modified.
+Approach: Treat each value as a next pointer; Floyd's cycle detection finds the cycle
+    entrance.
+Tricks: The duplicate is the entrance, not the meeting point; phase two restarts one
+    pointer at index 0.
+Edge cases:
+  - Duplicate appearing more than twice
+  - Duplicate at index 0
+
+Time O(n), space O(1).
 """
 
 

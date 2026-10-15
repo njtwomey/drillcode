@@ -1,5 +1,11 @@
-"""Two pointers from a dummy head: advance the lead n + 1 steps, then move both
-until the lead falls off the end; the trailer is just before the target.
+"""Remove Nth Node From End of List (#19, medium)
+
+Approach: Two pointers n + 1 apart from a dummy head; when the lead reaches the end, the
+    trailer is before the target.
+Tricks: The dummy head handles removal of the first node.
+Edge cases:
+  - n equals the list length (remove the head)
+  - Single node
 
 Time O(n), space O(1).
 """

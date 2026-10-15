@@ -1,6 +1,11 @@
-"""DP over a single row: each cell is the cell above (old value) plus the cell to its left.
+"""Unique Paths (#62, medium)
 
-Time O(m*n), space O(n).
+Approach: dp[i][j] = dp[i-1][j] + dp[i][j-1], or one row updated in place.
+Tricks: Closed form C(m + n - 2, m - 1) is a one-liner.
+Edge cases:
+  - 1xN or Nx1 grid (answer 1)
+
+Time O(m·n), space O(n).
 """
 
 

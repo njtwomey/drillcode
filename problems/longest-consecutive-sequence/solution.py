@@ -1,6 +1,13 @@
-"""Put values in a set; only from values with no predecessor (n - 1 absent) count upward.
+"""Longest Consecutive Sequence (#128, medium)
 
-Starting only at sequence starts is what keeps it linear.
+Approach: Put values in a set; for each value with no predecessor in the set, count
+    upward.
+Tricks: Starting counts only from sequence starts (n - 1 absent) is what keeps it O(n).
+Edge cases:
+  - Empty array
+  - Duplicates
+  - Negative numbers
+
 Time O(n), space O(n).
 """
 

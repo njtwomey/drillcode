@@ -1,7 +1,13 @@
-"""Sort, then for each i run two pointers on the remainder looking for -nums[i].
+"""3Sum (#15, medium)
 
-Skip duplicate values at i, left and right so each triplet appears once.
-Time O(n^2), space O(1) beyond the output (ignoring sort space).
+Approach: Sort; for each i, run two pointers on the remainder looking for -nums[i].
+Tricks: Skip duplicate values at i, left and right to avoid repeated triplets.
+Edge cases:
+  - All zeros
+  - Fewer than three elements
+  - No valid triplet
+
+Time O(n²), space O(1).
 """
 
 

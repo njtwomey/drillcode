@@ -1,6 +1,12 @@
-"""Prefix each string with its length and a delimiter, e.g. "4#word".
+"""Encode and Decode Strings (#271, medium)
 
-Length-prefixing copes with any character, including '#' and digits inside the strings.
+Approach: Prefix each string with its length and a delimiter, e.g. "4#word".
+Tricks: Length-prefixing copes with any character, including the delimiter.
+Edge cases:
+  - Empty strings in the list
+  - Empty list
+  - Strings containing '#'
+
 Time O(n), space O(n).
 """
 

@@ -1,4 +1,9 @@
-"""XOR every index 0..n with every value; pairs cancel and the missing number remains.
+"""Missing Number (#268, easy)
+
+Approach: XOR all indices and values, or subtract the sum from n(n+1)/2.
+Tricks: XOR avoids any overflow concern; the sum version is easier to explain.
+Edge cases:
+  - Missing number is 0 or n
 
 Time O(n), space O(1).
 """

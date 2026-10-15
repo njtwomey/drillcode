@@ -1,4 +1,8 @@
-"""Depth is 1 + max(depth(left), depth(right)); an empty tree has depth 0.
+"""Maximum Depth of Binary Tree (#104, easy)
+
+Approach: 1 + max(depth(left), depth(right)).
+Edge cases:
+  - Empty tree is depth 0
 
 Time O(n), space O(h).
 """

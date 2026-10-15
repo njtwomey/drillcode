@@ -1,6 +1,11 @@
-"""Two stacks: push onto the in-stack, pop/peek from the out-stack.
+"""Implement Queue using Stacks (#232, easy)
 
-Transfer from in to out only when the out-stack is empty, so each element moves at most once.
+Approach: Two stacks: push onto the in-stack, pop from the out-stack, transferring only
+    when the out-stack is empty.
+Tricks: Each element moves across at most once, so operations are amortised O(1).
+Edge cases:
+  - Pop or peek when the out-stack is empty but the in-stack is not
+
 Time O(1) amortised, space O(n).
 """
 

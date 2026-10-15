@@ -1,6 +1,13 @@
-"""Preorder gives each subtree's root; its position in inorder splits left and right.
+"""Construct Binary Tree from Preorder and Inorder Traversal (#105, medium)
 
-A value -> inorder index map avoids an O(n) search per node (values are unique).
+Approach: Preorder gives the root; its position in inorder splits the left and right
+    subtrees; recurse.
+Tricks: A map from value to inorder index avoids an O(n) search at each node; values are
+    unique.
+Edge cases:
+  - Single node
+  - Fully left-skewed tree
+
 Time O(n), space O(n).
 """
 

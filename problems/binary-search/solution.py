@@ -1,4 +1,12 @@
-"""Standard lo/hi loop with inclusive bounds, comparing the target with the middle element.
+"""Binary Search (#704, easy)
+
+Approach: Standard lo/hi loop comparing the target with mid.
+Tricks: Be consistent about whether hi is inclusive; lo + (hi - lo) // 2 avoids overflow
+    in fixed-width languages.
+Edge cases:
+  - Empty array
+  - Target below the first or above the last element
+  - Single element
 
 Time O(log n), space O(1).
 """

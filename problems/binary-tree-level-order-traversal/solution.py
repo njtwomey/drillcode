@@ -1,4 +1,11 @@
-"""BFS with a queue, snapshotting the queue length at the start of each level.
+"""Binary Tree Level Order Traversal (#102, medium)
+
+Approach: BFS with a queue, taking a snapshot of the queue length at the start of each
+    level.
+Tricks: Reading len(queue) before the inner loop separates levels without sentinels.
+Edge cases:
+  - Empty tree
+  - Single node
 
 Time O(n), space O(n).
 """

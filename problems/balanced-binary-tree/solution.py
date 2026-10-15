@@ -1,6 +1,13 @@
-"""Post-order DFS returning the subtree height, or -1 as soon as any subtree is unbalanced.
+"""Balanced Binary Tree (#110, easy)
 
-The balance check is folded into the height return value, so each node is visited once.
+Approach: Post-order DFS returning height, or -1 once an imbalance is found.
+Tricks: Fold the balance check into the height return value; a separate height call per
+    node is O(n²).
+Edge cases:
+  - Empty tree is balanced
+  - Single node
+  - Long skewed chain
+
 Time O(n), space O(h).
 """
 

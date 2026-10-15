@@ -1,6 +1,13 @@
-"""Binary search the speed in [1, max(piles)]; feasible when sum(ceil(pile / speed)) <= h.
+"""Koko Eating Bananas (#875, medium)
 
-Feasibility is monotonic in speed, so we search the answer space.
+Approach: Binary search the speed in [1, max(piles)]; feasible if sum of ceil(pile /
+    speed) <= h.
+Tricks: Feasibility is monotonic in speed, so search the answer space rather than the
+    input.
+Edge cases:
+  - h equals the number of piles (answer is the largest pile)
+  - Single pile
+
 Time O(n log m), space O(1).
 """
 

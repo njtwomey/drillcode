@@ -1,6 +1,15 @@
-"""dp[i] = dp[i-1] if s[i-1] != '0', plus dp[i-2] if the two-digit value is in 10..26.
+"""Decode Ways (#91, medium)
 
-Only the last two dp values are kept.
+Approach: dp[i] = dp[i-1] if s[i] != '0', plus dp[i-2] if the two-character value is in
+    10..26.
+Tricks: '0' can only attach to a preceding 1 or 2; it contributes nothing on its own.
+Edge cases:
+  - Leading zero (0 ways)
+  - "10"
+  - "20"
+  - "27"
+  - "100"
+
 Time O(n), space O(1).
 """
 

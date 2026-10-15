@@ -1,7 +1,13 @@
-"""Greedy: sort by end, keep an interval only if it starts at or after the last
-kept end, and count the rest as removals. Sorting by end makes the choice optimal.
+"""Non-overlapping Intervals (#435, medium)
 
-Time O(n log n), space O(1) beyond the sort.
+Approach: Sort by end; keep an interval only if it starts at or after the last kept end;
+    count the rest.
+Tricks: Sorting by end, not start, is what makes the greedy choice correct.
+Edge cases:
+  - Touching intervals do not overlap
+  - Single interval
+
+Time O(n log n), space O(1).
 """
 
 

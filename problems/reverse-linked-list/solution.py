@@ -1,4 +1,11 @@
-"""Iterate with prev and curr, saving next before pointing each node backwards.
+"""Reverse Linked List (#206, easy)
+
+Approach: Iterate with prev and curr, saving next before re-pointing each node backwards.
+Tricks: Save next before overwriting curr.next; the recursive version is a common
+    follow-up.
+Edge cases:
+  - Empty list
+  - Single node
 
 Time O(n), space O(1).
 """

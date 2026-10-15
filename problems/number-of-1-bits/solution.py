@@ -1,6 +1,12 @@
-"""n &= n - 1 clears the lowest set bit, so count iterations until n is zero.
+"""Number of 1 Bits (#191, easy)
 
-Time O(k) for k set bits, space O(1).
+Approach: Loop n &= n - 1, counting iterations.
+Tricks: n & (n - 1) clears the lowest set bit, so the loop runs once per set bit.
+Edge cases:
+  - n = 0
+  - All 32 bits set (treat as unsigned)
+
+Time O(k), space O(1).
 """
 
 

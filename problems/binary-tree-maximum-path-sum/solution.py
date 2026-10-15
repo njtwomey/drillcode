@@ -1,6 +1,11 @@
-"""Post-order DFS returning the best downward path from each node,
-node + max(0, left, right). Child gains are clamped at 0 so negative subtrees
-are dropped; a global best is updated with node + left + right.
+"""Binary Tree Maximum Path Sum (#124, hard)
+
+Approach: Post-order DFS returning the best downward path (node + max(0, left, right));
+    update a global max with node + left + right.
+Tricks: Clamp each child's contribution at 0 so negative subtrees are dropped.
+Edge cases:
+  - All negative values (answer is the largest single node)
+  - Single node
 
 Time O(n), space O(h).
 """

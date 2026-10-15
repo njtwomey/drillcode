@@ -1,6 +1,12 @@
-"""Expand right until every required count is met, then shrink left while the
-window stays valid, recording the best. A `missing` counter of still-unsatisfied
-characters makes the validity check O(1).
+"""Minimum Window Substring (#76, hard)
+
+Approach: Expand right until every required count is met, then shrink left while still
+    valid, recording the best.
+Tricks: A counter of satisfied characters makes the validity check O(1).
+Edge cases:
+  - t longer than s
+  - Repeated characters in t
+  - The whole of s is the answer
 
 Time O(m + n), space O(alphabet).
 """

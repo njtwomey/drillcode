@@ -1,4 +1,12 @@
-"""Write pointer marks the next non-zero slot; swap each non-zero into it, keeping order.
+"""Move Zeroes (#283, easy)
+
+Approach: Write pointer for the next non-zero slot; copy non-zeros forward, then fill
+    with zeros.
+Tricks: Swapping instead of copying keeps it to a single pass and preserves order.
+Edge cases:
+  - All zeros
+  - No zeros
+  - Single element
 
 Time O(n), space O(1).
 """

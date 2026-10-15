@@ -1,6 +1,13 @@
-"""Max-heap (negated) for the lower half, min-heap for the upper half.
-Push to the lower heap, move its top to the upper, then rebalance so the lower
-heap is never smaller than the upper and exceeds it by at most one.
+"""Find Median from Data Stream (#295, hard)
+
+Approach: Max-heap for the lower half, min-heap for the upper; keep sizes within 1 of
+    each other.
+Tricks: Push to one heap then pop its top into the other to preserve ordering; Python
+    needs negated values for a max-heap.
+Edge cases:
+  - Even count (average of the two tops)
+  - Single element
+  - Many duplicates
 
 Time O(log n) add, O(1) median, space O(n).
 """

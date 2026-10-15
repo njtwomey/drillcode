@@ -1,4 +1,11 @@
-"""BFS with a map from original node to its copy; the copy is registered before its neighbours are wired.
+"""Clone Graph (#133, medium)
+
+Approach: DFS or BFS with a map from original node to its copy.
+Tricks: Insert the copy in the map before recursing into neighbours, or cycles recurse
+    forever.
+Edge cases:
+  - Null input
+  - Single node with no neighbours
 
 Time O(V + E), space O(V).
 """

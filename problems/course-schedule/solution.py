@@ -1,6 +1,13 @@
-"""Kahn's algorithm: count in-degrees, repeatedly take zero-in-degree courses.
+"""Course Schedule (#207, medium)
 
-A cycle exists exactly when not every course gets processed.
+Approach: Kahn's algorithm: in-degree counts, repeatedly take zero-in-degree nodes; a
+    cycle exists if not all are processed.
+Tricks: DFS with three states (unvisited, in progress, done) also detects cycles.
+Edge cases:
+  - No prerequisites
+  - Self-dependency [a, a]
+  - Duplicate edges
+
 Time O(V + E), space O(V + E).
 """
 from collections import deque

@@ -1,7 +1,11 @@
-"""Backtracking DFS: build a path, tracking used elements, and emit a copy of
-the path when it reaches full length.
+"""Permutations (#46, medium)
 
-Time O(n * n!), space O(n) beyond the output.
+Approach: DFS building a path and tracking used elements; emit at full length.
+Tricks: The swap-in-place variant avoids the used array.
+Edge cases:
+  - Single element
+
+Time O(n · n!), space O(n).
 """
 
 

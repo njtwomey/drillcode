@@ -1,6 +1,13 @@
-"""Post-order DFS returning height; at each node update a running max of left + right heights.
+"""Diameter of Binary Tree (#543, easy)
 
-The longest path need not pass through the root, so the max is a side effect of the recursion.
+Approach: Post-order DFS returning height; update a running max of left + right heights
+    at each node.
+Tricks: The longest path need not pass through the root, so the max is a side effect of
+    the height recursion.
+Edge cases:
+  - Single node (diameter 0)
+  - Longest path entirely inside one subtree
+
 Time O(n), space O(h).
 """
 

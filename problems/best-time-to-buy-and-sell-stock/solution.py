@@ -1,4 +1,11 @@
-"""One pass tracking the lowest price seen so far and the best profit selling today.
+"""Best Time to Buy and Sell Stock (#121, easy)
+
+Approach: One pass tracking the minimum price so far and the best profit.
+Tricks: Profit is always price[i] minus an earlier minimum, so no pair enumeration is
+    needed.
+Edge cases:
+  - Strictly decreasing prices (answer 0)
+  - Single price
 
 Time O(n), space O(1).
 """

@@ -1,7 +1,14 @@
-"""Iterative DFS from the start pixel, recolouring 4-connected cells that match the original colour.
+"""Flood Fill (#733, easy)
 
-Return early when the new colour equals the old one, otherwise the fill would never terminate.
-Time O(m*n), space O(m*n).
+Approach: DFS or BFS from the start pixel, recolouring cells that match the original
+    colour.
+Tricks: Return early when the new colour equals the old one, otherwise the fill never
+    terminates.
+Edge cases:
+  - Start pixel already the target colour
+  - 1x1 image
+
+Time O(m·n), space O(m·n).
 """
 
 

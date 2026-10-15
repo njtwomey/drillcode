@@ -1,6 +1,13 @@
-"""Each stack entry stores (value, minimum so far), so the min is always on top.
+"""Min Stack (#155, medium)
 
-All operations O(1); space O(n).
+Approach: Store (value, min so far) per entry, or keep a parallel min stack.
+Tricks: Push to the min stack only when the value is <= the current min, and pop it in
+    step.
+Edge cases:
+  - Duplicate minimums
+  - Pop that removes the current min
+
+Time O(1) per operation, space O(n).
 """
 
 

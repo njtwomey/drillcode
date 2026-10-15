@@ -1,8 +1,14 @@
-"""Compare adjacent words; the first differing letters give an edge a -> b.
-Every letter seen is a node. Kahn's topological sort; a cycle or a word followed
-by its own proper prefix means no valid order, so return "".
+"""Alien Dictionary (#269, hard)
 
-Time O(C) over total characters, space O(1) (alphabet-bounded graph).
+Approach: Build an edge from the first differing character of each adjacent word pair;
+    topological sort; a cycle means no valid order.
+Tricks: Every letter that appears is a node, including those with no edges.
+Edge cases:
+  - A word followed by its own prefix ("abc", "ab") is invalid
+  - Unconstrained letters may go in any order
+  - Single word
+
+Time O(C) total characters, space O(1) alphabet.
 """
 from collections import deque
 

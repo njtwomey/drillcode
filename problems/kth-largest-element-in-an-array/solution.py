@@ -1,6 +1,12 @@
-"""Min-heap of size k; after scanning, its root is the kth largest.
+"""Kth Largest Element in an Array (#215, medium)
 
-Quickselect would give average O(n), but the heap is simpler and deterministic.
+Approach: Min-heap of size k, or quickselect for average O(n).
+Tricks: Quickselect partitions like quicksort but recurses into one side only.
+Edge cases:
+  - k = 1
+  - k = n
+  - Duplicates
+
 Time O(n log k), space O(k).
 """
 import heapq

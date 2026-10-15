@@ -1,7 +1,13 @@
-"""Reverse the flow: DFS inward from each ocean's border cells, moving only to
-equal or higher cells. The answer is the intersection of the two reachable sets.
+"""Pacific Atlantic Water Flow (#417, medium)
 
-Time O(m*n), space O(m*n).
+Approach: DFS inward from each ocean's border cells, moving only to equal or higher
+    cells; answer is the intersection.
+Tricks: Reverse the flow: start from the oceans, not from every cell.
+Edge cases:
+  - Single row or column (every cell qualifies)
+  - Plateau of equal heights
+
+Time O(m·n), space O(m·n).
 """
 
 

@@ -1,6 +1,13 @@
-"""Dutch national flag: low/mid/high pointers; swap 0s to the front and 2s to the back.
+"""Sort Colors (#75, medium)
 
-Do not advance mid after swapping with high, since the swapped-in value is unexamined.
+Approach: Dutch national flag: low, mid, high pointers; swap 0s to low and 2s to high.
+Tricks: Do not advance mid after a swap with high, since the swapped-in value is
+    unexamined.
+Edge cases:
+  - Already sorted
+  - Single colour
+  - Two elements
+
 Time O(n), space O(1).
 """
 

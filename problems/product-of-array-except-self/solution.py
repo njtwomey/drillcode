@@ -1,7 +1,14 @@
-"""Write prefix products into the output array, then multiply by a running
-suffix product in a second pass. No division, so zeros need no special case.
+"""Product of Array Except Self (#238, medium)
 
-Time O(n), space O(1) extra (output excluded).
+Approach: Prefix products into the output array, then multiply by a running suffix
+    product in a second pass.
+Tricks: No division; the suffix pass needs only one variable, keeping extra space O(1).
+Edge cases:
+  - One zero
+  - Two zeros
+  - Negative numbers
+
+Time O(n), space O(1).
 """
 
 

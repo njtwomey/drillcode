@@ -1,6 +1,14 @@
-"""Group words in a dict keyed by a 26-slot letter-count tuple (no sorting needed).
+"""Group Anagrams (#49, medium)
 
-Time O(n * k), space O(n * k).
+Approach: Map from a canonical key (sorted string or 26-count tuple) to its list of
+    words.
+Tricks: The count tuple avoids sorting, which matters for long words.
+Edge cases:
+  - Empty strings
+  - Single word
+  - Identical words
+
+Time O(n · k), space O(n · k).
 """
 from collections import defaultdict
 

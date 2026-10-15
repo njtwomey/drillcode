@@ -1,6 +1,14 @@
-"""Binary search: if nums[mid] > nums[hi] the minimum is right of mid, else it is at mid or left.
+"""Find Minimum in Rotated Sorted Array (#153, medium)
 
-Comparing with hi (not lo) handles the unrotated case with no special branch.
+Approach: If nums[mid] > nums[hi] the minimum is right of mid, otherwise it is at mid or
+    left.
+Tricks: Comparing with hi rather than lo handles the unrotated case without a special
+    branch.
+Edge cases:
+  - Not rotated
+  - Two elements
+  - Single element
+
 Time O(log n), space O(1).
 """
 

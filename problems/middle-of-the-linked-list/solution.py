@@ -1,5 +1,10 @@
-"""Slow and fast pointers; when fast reaches the end, slow is at the middle.
-For even length this lands on the second middle node, as the problem requires.
+"""Middle of the Linked List (#876, easy)
+
+Approach: Slow and fast pointers; slow is at the middle when fast reaches the end.
+Tricks: For even length this gives the second middle, which is what the problem wants.
+Edge cases:
+  - Single node
+  - Two nodes
 
 Time O(n), space O(1).
 """

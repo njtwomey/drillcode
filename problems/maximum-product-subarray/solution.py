@@ -1,5 +1,12 @@
-"""Track the max and min product of a subarray ending at each index, since a
-negative number swaps them. Starting each candidate from nums[i] itself handles zeros.
+"""Maximum Product Subarray (#152, medium)
+
+Approach: Track both the max and min product ending at each index, since a negative
+    swaps them.
+Tricks: Including nums[i] itself as a candidate handles zeros without a special reset.
+Edge cases:
+  - Single negative
+  - Zeros
+  - Two negatives that cancel
 
 Time O(n), space O(1).
 """

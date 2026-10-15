@@ -1,6 +1,12 @@
-"""XOR gives the sum without carry; (a & b) << 1 is the carry. Repeat until no carry remains.
+"""Sum of Two Integers (#371, medium)
 
-Python ints are unbounded, so mask to 32 bits and sign-convert the result.
+Approach: Loop: carry = (a & b) << 1; a = a ^ b; b = carry; until b is 0.
+Tricks: XOR is the sum without carry and AND-shift is the carry; mask to 32 bits in
+    Python.
+Edge cases:
+  - Negatives (two's complement handling in Python)
+  - a + b = 0
+
 Time O(1), space O(1).
 """
 

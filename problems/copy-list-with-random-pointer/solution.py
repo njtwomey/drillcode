@@ -1,6 +1,15 @@
-"""Two passes with a map: first create a copy of each node, then wire next and random through the map.
+"""Copy List with Random Pointer (#138, medium)
 
-Time O(n), space O(n). (The O(1)-space trick interleaves copies after originals, then splits them.)
+Approach: First pass maps each node to its copy; second pass wires next and random
+    through the map.
+Tricks: The O(1) space version interleaves copies after originals, then splits them
+    apart.
+Edge cases:
+  - Random pointing to itself
+  - Random null
+  - Empty list
+
+Time O(n), space O(n).
 """
 
 
