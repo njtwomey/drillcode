@@ -5,6 +5,9 @@ import { bySlug, definitions, descriptionSource, skeletonSource } from '@/lib/ca
 import { practiceDraftKey } from '@/lib/store'
 import type { CaseResult } from '@/lib/types'
 
+/** In practice only the first two catalogue cases are shown; the rest are hidden cases that just report pass or fail. */
+const VISIBLE_EXAMPLES = 2
+
 /** One problem in practice mode: description and judge notes only (no approach, no hints), a blank skeleton, hidden tests. */
 export function PracticeProblem({ slug, onResults }: { slug: string; onResults: (results: CaseResult[]) => void }) {
   const problem = bySlug.get(slug)!
@@ -14,7 +17,7 @@ export function PracticeProblem({ slug, onResults }: { slug: string; onResults: 
     <Workspace
       key={slug}
       slug={slug}
-      practice
+      visibleExamples={VISIBLE_EXAMPLES}
       draftKey={practiceDraftKey(slug)}
       originalSource={skeletonSource(slug)}
       onResults={onResults}

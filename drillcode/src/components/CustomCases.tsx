@@ -34,13 +34,13 @@ const isStrType = (type?: string) => (type ?? '').replace(/\s+/g, '').replace(/^
 /** How a stored value reads back in its field: bare text for `str`, JSON for everything else. */
 const valueText = (v: unknown, type?: string) => (typeof v === 'string' && isStrType(type) ? v : JSON.stringify(v))
 
-/** The add-a-case panel. */
-export function CustomCases({ slug, spec, allowReference }: { slug: string; spec: TestsSpec; allowReference: boolean }) {
+/** The add-a-case card: always open, at the top of the tests column. */
+export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
   return (
-    <div className="space-y-3 text-sm">
-      <h3 className="font-medium">Add your own test case</h3>
-      <CaseForm slug={slug} spec={spec} allowReference={allowReference} />
-    </div>
+    <section className="space-y-3 rounded-md border p-3">
+      <h3 className="text-sm font-medium">Add your own test case</h3>
+      <CaseForm slug={slug} spec={spec} />
+    </section>
   )
 }
 
@@ -49,13 +49,15 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
  * With `initial` it edits that case in place (keeping its name and place in the list) instead of adding a new one.
  */
 export function CaseForm({
-  slug, spec, allowReference, initial, onDone,
-}: { slug: string; spec: TestsSpec; allowReference: boolean; initial?: TestCase; onDone?: () => void }) {
+  slug, spec, initial, onDone,
+}: { slug: string; spec: TestsSpec; initial?: TestCase; onDone?: () => void }) {
   const cases = useStore((s) => s.customCases[slug]) ?? NONE
   const { addCustomCase, updateCustomCase } = useStore()
   const names = useMemo(() => inputNames(spec), [spec])
   const types = useMemo(() => parameterTypes(slug, spec.entry), [slug, spec.entry])
   const isOps = spec.kind === 'operations'
+  // The reference solution can fill in a blank expected value unless the answer is not the function's return value.
+  const allowReference = spec.call !== false
   const example = spec.cases[0]
 
   // Editing: the fields start from the case. A value that came from the reference is left blank so it is worked out again.
@@ -178,7 +180,7 @@ export function CaseForm({
           )
           const typeText = type && <span className="font-mono font-normal text-muted-foreground">{type}</span>
           if (!allowReference) {
-            // Required here (practice, or the answer is not the return value): always visible.
+            // Required here (the answer is not the function's return value): always visible.
             return (
               <div className="space-y-1">
                 <Label htmlFor="cc-expected" className="gap-1.5 text-xs"><span className="font-mono font-medium">expected</span>{typeText}</Label>

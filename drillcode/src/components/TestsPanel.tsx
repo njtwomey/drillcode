@@ -24,20 +24,20 @@ interface Props {
   onEdit?: (name: string | null) => void
   onDelete?: (name: string) => void
   renderEditor?: (c: TestCase) => ReactNode
-  /** Practice mode: only the first `hideAfter` catalogue cases are shown by name and input; the rest are hidden cases that cannot be opened. */
-  hideAfter?: number
+  /** Exposure: only the first `visibleExamples` catalogue cases are shown by name and input; the rest are hidden cases that cannot be opened. Undefined shows everything. */
+  visibleExamples?: number
 }
 
 const show = (v: unknown) => JSON.stringify(v)
-/** A hidden practice case: a catalogue case past the first `hideAfter`. It shows a status only and cannot be opened. */
-function isHiddenCase(spec: TestsSpec, hideAfter: number | undefined, c: TestCase): boolean {
-  return hideAfter !== undefined && !c.custom && spec.cases.findIndex((x) => x.name === c.name) >= hideAfter
+/** A hidden case: a catalogue case past the first `visibleExamples`. It shows a status only and cannot be opened. */
+function isHiddenCase(spec: TestsSpec, visibleExamples: number | undefined, c: TestCase): boolean {
+  return visibleExamples !== undefined && !c.custom && spec.cases.findIndex((x) => x.name === c.name) >= visibleExamples
 }
 
 const hasOutput = (r?: CaseResult) => !!r && !!(r.stdout.trim() || r.stderr.trim())
 
 /** Every test case: tick the ones to run, open one to see its input, result and console output, or run it alone. */
-export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, hideAfter }: Props) {
+export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, visibleExamples }: Props) {
   const [open, setOpen] = useState<Record<string, boolean>>({})
   // Failures open themselves once per run, so the reason is on screen; the reader can still close them.
   const autoOpened = useRef(new Set<string>())
@@ -45,7 +45,7 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
     const opened: Record<string, boolean> = {}
     for (const c of cases) {
       const r = results[c.name]
-      const bad = !!r && r.status !== 'pass' && r.status !== 'skipped' && !isHiddenCase(spec, hideAfter, c)
+      const bad = !!r && r.status !== 'pass' && r.status !== 'skipped' && !isHiddenCase(spec, visibleExamples, c)
       if (bad && !autoOpened.current.has(c.name)) {
         autoOpened.current.add(c.name)
         opened[c.name] = true
@@ -53,9 +53,9 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
       if (!bad) autoOpened.current.delete(c.name)
     }
     if (Object.keys(opened).length) setOpen((o) => ({ ...o, ...opened }))
-  }, [results, cases, spec, hideAfter])
+  }, [results, cases, spec, visibleExamples])
 
-  const openable = cases.filter((c) => !isHiddenCase(spec, hideAfter, c))
+  const openable = cases.filter((c) => !isHiddenCase(spec, visibleExamples, c))
   const setAll = (value: boolean) => setOpen(Object.fromEntries(openable.map((c) => [c.name, value])))
   const hasMine = cases.some((c) => c.custom)
 
@@ -79,11 +79,11 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
       <ul className="divide-y rounded-md border text-sm">
         {cases.map((c) => {
           const r = results[c.name]
-          const hidden = isHiddenCase(spec, hideAfter, c)
+          const hidden = isHiddenCase(spec, visibleExamples, c)
           const failed = !!r && r.status !== 'pass' && r.status !== 'skipped'
           const isEditing = editing === c.name
           const isOpen = !hidden && (isEditing || !!open[c.name])
-          const label = hidden ? `Hidden case ${spec.cases.findIndex((x) => x.name === c.name) - hideAfter! + 1}` : c.name
+          const label = hidden ? `Hidden case ${spec.cases.findIndex((x) => x.name === c.name) - visibleExamples! + 1}` : c.name
           if (hidden) {
             return (
               <li key={c.name} className="flex items-center gap-1.5 px-2 py-1.5">
@@ -142,14 +142,14 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                     {isEditing && renderEditor ? renderEditor(c) : (<>
                     <div className="break-all font-mono text-xs text-muted-foreground">{formatCase(spec, c)}</div>
                     {r?.status === 'fail' && (
-                      <div className="grid gap-2 rounded-md bg-muted/50 p-2 font-mono text-xs sm:grid-cols-2">
+                      <div className="grid gap-1 rounded-md bg-muted/50 p-2 font-mono text-xs">
                         <div className="break-all">
                           <span className="text-muted-foreground">expected </span>{show(r.expected)}
                           {(c.derived || r.expected_source === 'reference') && <span className="ml-1 font-sans text-muted-foreground">(from the reference solution)</span>}
                         </div>
                         <div className="break-all"><span className="text-muted-foreground">got </span>{show(r.actual)}</div>
                         {r.message && r.message !== 'Output does not match expected' && (
-                          <div className="break-all text-muted-foreground sm:col-span-2">{r.message}</div>
+                          <div className="break-all text-muted-foreground">{r.message}</div>
                         )}
                       </div>
                     )}

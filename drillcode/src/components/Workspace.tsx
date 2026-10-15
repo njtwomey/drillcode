@@ -32,13 +32,11 @@ interface Props {
   left: ReactNode
   /** Extra toolbar controls (approach picker, walkthrough, Reveal). */
   toolbar?: ReactNode
-  /** Practice: hide case names after the examples, no benchmark. */
-  practice?: boolean
+  /** Exposure, the only thing that differs between views: how many catalogue cases are shown. The rest stay hidden. Undefined shows all. */
+  visibleExamples?: number
   /** Called only after a run that covered every test case. */
   onResults?: (results: CaseResult[]) => void
 }
-
-const EXAMPLES_SHOWN = 2
 
 /** What makes a case's run result stale: its input and its expected value. */
 const fingerprint = (c: TestCase) => JSON.stringify([c.input, c.ops, c.expected])
@@ -47,7 +45,7 @@ const fingerprint = (c: TestCase) => JSON.stringify([c.input, c.ops, c.expected]
  * Three columns: notes | code | tests. The side columns collapse and drag. Each test can be ticked,
  * run alone, opened, and carries its own console output; Run runs whatever is ticked.
  */
-export function Workspace({ slug, draftKey, originalSource, left, toolbar, practice, onResults }: Props) {
+export function Workspace({ slug, draftKey, originalSource, left, toolbar, visibleExamples, onResults }: Props) {
   const spec = testsSpec(slug)!
   const drafts = useStore((s) => s.drafts)
   const theme = useStore((s) => s.theme)
@@ -87,8 +85,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
       subset.forEach((c) => delete next[c.name])
       return next
     })
-    // Practice never gets the reference solution's answers: a blank expected value stays blank there.
-    const referenceSource = practice ? undefined : solutionVariants(slug)[0].source
+    const referenceSource = solutionVariants(slug)[0].source
     const job = { solutionSource: source, validatorSource: validatorSource(slug), referenceSource, spec }
     const out = await pyRunner.runCases(job, subset, (partial) =>
       setResults((prev) => ({ ...prev, ...Object.fromEntries(partial.map((r) => [r.name, r])) })),
@@ -166,8 +163,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
       <div className="h-[min(66vh,760px)] min-h-[420px]">
         <CodeEditor value={source} dark={theme === 'dark'} onChange={(v) => setDraft(draftKey, v)} onRun={run} />
       </div>
-      {!practice && (
-        <Collapsible className="rounded-md border">
+      <Collapsible className="rounded-md border">
           <CollapsibleTrigger className="group flex w-full items-center gap-1.5 px-3 py-2 text-sm font-medium">
             <ChevronRight className="size-4 group-data-[state=open]:hidden" />
             <ChevronDown className="hidden size-4 group-data-[state=open]:block" />
@@ -180,13 +176,13 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
               runSuite={async () => runNames(cases.filter((c) => selected.has(c.name)).map((c) => c.name))}
             />
           </CollapsibleContent>
-        </Collapsible>
-      )}
+      </Collapsible>
     </div>
   )
 
   const testsColumn = (
     <div className="min-w-0 space-y-4">
+      <CustomCases slug={slug} spec={spec} />
       <section className="space-y-2">
         <h2 className="text-sm font-medium">
           Test cases
@@ -213,13 +209,10 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
             removeCustomCase(slug, name)
           }}
           renderEditor={(c) => (
-            <CaseForm slug={slug} spec={spec} allowReference={!practice && spec.call !== false} initial={c} onDone={() => setEditing(null)} />
+            <CaseForm slug={slug} spec={spec} initial={c} onDone={() => setEditing(null)} />
           )}
-          hideAfter={practice ? EXAMPLES_SHOWN : undefined}
+          visibleExamples={visibleExamples}
         />
-      </section>
-      <section className="rounded-md border p-3">
-        <CustomCases slug={slug} spec={spec} allowReference={!practice && spec.call !== false} />
       </section>
     </div>
   )
