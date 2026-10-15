@@ -10,8 +10,10 @@ problems:
   - diameter-of-binary-tree
   - balanced-binary-tree
   - binary-tree-maximum-path-sum
+  - symmetric-tree
   - lowest-common-ancestor-of-a-binary-tree
-related: [tree-bfs-by-level, bst-invariant]
+  - flatten-binary-tree-to-linked-list
+related: [tree-bfs-by-level, bst-invariant, tree-dp-states, tree-top-down-state]
 ---
 ## Reach for it when
 
@@ -67,11 +69,14 @@ It removes the second pass. Computing the height at every node by a separate cal
 - `maximum-depth-of-binary-tree`: only a return value, `1 + max(left, right)`. There is no `best`.
 - `same-tree`: two nodes at once. Both `None` is true, exactly one `None` or unequal values is false, otherwise both pairs of children must match.
 - `invert-binary-tree`: return the node after swapping `root.left, root.right = invert(root.right), invert(root.left)`.
+- `symmetric-tree`: the same two-node walk, but the pairs are crossed. `mirror(a, b)` is true for two `None`s, false if exactly one is `None` or the values differ, otherwise `mirror(a.left, b.right) and mirror(a.right, b.left)`. The root call starts at `root.left, root.right`. Comparing each level's values for a palindrome misses shape differences.
 - `subtree-of-another-tree`: for each node of the main tree, run the same-tree check against the subtree. O(m * n). The solution uses a helper `_same` for it.
 - `diameter-of-binary-tree`: return the height; record `left + right`.
 - `balanced-binary-tree`: return the height, or `-1` once any subtree is unbalanced. The `-1` passes up without exploring the right side.
 - `binary-tree-maximum-path-sum`: return `node.val + max(left, right)` with both clamped at 0; record `node.val + left + right`.
 - `lowest-common-ancestor-of-a-binary-tree`: return the node if it is `p` or `q`. If both children return something, the node is the answer; otherwise return whichever child returned something, with `left or right`.
+- `flatten-binary-tree-to-linked-list`: not a return-value recursion, but the same rewiring thinking. A `curr` walks down the right spine. If `curr.left` exists, `tail` runs to the rightmost node of the left subtree, `tail.right = curr.right` splices the old right subtree on, then `curr.right = curr.left` and `curr.left = None`. O(1) space. Do the splice before overwriting `curr.right`, or the right subtree is lost.
+- When the quantity a node needs is a small set of states rather than one number, return a tuple: see `tree-dp-states` (`house-robber-iii`, `binary-tree-cameras`). When the state flows down instead, see `tree-top-down-state`.
 
 ## Worked example
 

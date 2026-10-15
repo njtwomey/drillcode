@@ -6,6 +6,8 @@ problems:
   - clone-graph
   - copy-list-with-random-pointer
   - course-schedule
+  - is-graph-bipartite
+  - evaluate-division
 related: [topological-sort, union-find, grid-traversal, bfs-shortest-paths]
 ---
 ## Reach for it when
@@ -56,6 +58,7 @@ def clone(start):
 ## Pitfalls
 - Storing the copy after recursing into the neighbours. A cycle creates a second copy of the same node, or recurses forever.
 - Forgetting the second direction of an undirected edge. Half the nodes look unreachable.
+- Searching from one node only. A disconnected graph needs a start from every unvisited node (`is-graph-bipartite` loops over all `start` values; an odd cycle in a later component is missed otherwise).
 - Self-loops and duplicate edges in the input. A self-loop is a cycle of length one; duplicates inflate an in-degree count unless guarded.
 - Cloning only the node and not its neighbour list. The copy then still points at original nodes.
 - Cycle detection on a directed graph with a single visited set. Reaching a finished node is fine; only reaching a node still in progress is a cycle. Use three states, or count in-degrees as `course-schedule` does.
@@ -65,6 +68,8 @@ def clone(start):
 - Clone by BFS: `clone-graph` keeps `copies` and a queue. Its version is iterative, so there is no recursion to overflow. The mark on first sighting is the `copies` entry.
 - Clone by two passes: `copy-list-with-random-pointer` is a graph with two edges per node. Pass 1 creates a copy per node, pass 2 wires `next` and `random` through the map.
 - Build then process: `course-schedule` builds `graph` and `indegree` from the pairs, then runs Kahn's algorithm. See `topological-sort`.
+- Two-colouring: `is-graph-bipartite` keeps `colour`, a dict from node to 0 or 1, which is also the visited set. It starts a BFS from every node not yet coloured, because the graph may be disconnected, gives each new neighbour `1 - colour[curr]`, and returns `False` when an already-coloured neighbour has the same colour as `curr`. An odd cycle is the only way this happens.
+- Weighted edges: `evaluate-division` stores `graph[a][b] = v` and `graph[b][a] = 1 / v`, then runs a BFS per query carrying `product`. A variable missing from `graph` gives `-1.0` even for `x / x`; different components also give `-1.0`.
 - Components and cycles in an undirected graph: `union-find` does it without a walk.
 - The O(1) space version of the list copy interleaves copies after the originals. The catalogue solution uses the map.
 

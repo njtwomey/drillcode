@@ -5,7 +5,10 @@ topics: [Graph]
 problems:
   - number-of-connected-components-in-an-undirected-graph
   - graph-valid-tree
-related: [graph-building-and-dfs, grid-traversal, topological-sort]
+  - number-of-provinces
+  - redundant-connection
+  - accounts-merge
+related: [minimum-spanning-tree, graph-building-and-dfs, grid-traversal, topological-sort]
 ---
 ## Reach for it when
 - The question is about connectivity or the number of components.
@@ -56,11 +59,17 @@ def count_components(n, edges):
 - Skipping the shared-root check. A duplicate edge, a self-loop or a cycle then decrements `components` and the count is too low.
 - Skipping compression. The answer stays correct, but a chain of unions makes `find` linear, which is slow on large inputs.
 - In graph valid tree, forgetting the edge count. Fewer than `n - 1` edges cannot connect the graph even with no cycle, so check `len(edges) != n - 1` first.
+- Keying by name or label that is not unique. In `accounts-merge` two people can share a name; the email is the identity.
+- Allocating `parent` too small when nodes are labelled from 1. Use `n + 1` entries.
 - Using it where direction matters. Union-find only answers undirected connectivity.
 
 ## Variants
 - Count components: `number-of-connected-components-in-an-undirected-graph` starts `components` at `n`, skips edges whose roots match, and merges by size.
 - Cycle test: `graph-valid-tree` returns `False` the moment two endpoints share a root. After the edge count check, no cycle also proves connectivity. It links `parent[ra] = rb` with no size list, which is fine with path halving.
+- Components from a matrix: `number-of-provinces` starts `count = n` and loops over the upper triangle `j > i` of `isConnected`, since the matrix is symmetric. It decrements `count` when the roots differ and joins with `parent[root_i] = root_j`.
+- First edge that closes a cycle: `redundant-connection` processes `edges` in order and returns `[a, b]` when `root_a == root_b`. `parent` has `len(edges) + 1` entries because nodes start at 1. The input is a tree plus one edge, so the first such edge is the answer.
+- Union by key, not by index: `accounts-merge` has `parent` as a dict keyed by email and `owner` mapping email to name. Each email joins the account's first email with `parent[find(email)] = find(emails[0])`. Groups are collected by `find` and the name is looked up from `owner[root]`, since equal names do not mean the same person.
+- Kruskal: `minimum-spanning-tree` uses the same cycle test to take edges in order of weight.
 - The same structure works on grid cells by numbering them `r * cols + c`; the catalogue solves its grid problems with a traversal instead (see `grid-traversal`).
 
 ## Worked example

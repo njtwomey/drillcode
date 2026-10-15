@@ -9,12 +9,20 @@ problems:
   - merge-k-sorted-lists
   - find-median-from-data-stream
   - meeting-rooms-ii
-related: [interval-patterns, dummy-head, design-structures]
+  - last-stone-weight
+  - top-k-frequent-words
+  - find-k-pairs-with-smallest-sums
+  - reorganize-string
+  - task-scheduler
+  - sliding-window-median
+related: [interval-patterns, dummy-head, design-structures, sliding-window, greedy-one-pass-invariants]
 ---
 ## Reach for it when
 
 - The statement says "k-th largest", "top k", "k closest" or "k most frequent".
 - k sorted sources must be merged into one ordered stream.
+- The two largest (or most frequent) items must be taken repeatedly, with the remainder put back.
+- A schedule or arrangement must separate equal items by a gap.
 - A running median or other order statistic is needed while data keeps arriving.
 - The next thing to handle is always the earliest-ending (or smallest, or nearest) of many pending things, as in room allocation.
 - Sorting everything would work but costs O(n log n) when O(n log k) is wanted.
@@ -26,6 +34,7 @@ related: [interval-patterns, dummy-head, design-structures]
 - Entries that carry data: use tuples `(key, i, item)`. Tuples compare element by element, so a unique `i` before any object that cannot be compared (a `ListNode`) means the objects are never reached.
 - Top k: bound the heap to size `k`. Invariant after each step: the heap holds the k best seen so far, and its root is the worst of them, which is the one to evict.
 - Two heaps: `low` is a max-heap (negated) for the smaller half and `high` is a min-heap for the larger half. Invariant: every value in `low` is at most every value in `high`, and the sizes differ by at most one.
+- Counts as heap keys: push `(-count, item)` so the most frequent item pops first and ties fall back to the item. Invariant: each entry holds the count still unused.
 - `best` or a running maximum of `len(heap)` if the answer is a peak count.
 
 ## Template
@@ -60,6 +69,9 @@ def top_k_largest(items, k):
 - Pushing to the wrong heap. If a new value goes straight into `high` without passing through `low`, a value smaller than `low`'s top breaks the ordering and the median is wrong.
 - Forgetting the rebalance step. Sizes drift apart and `low[0]` is no longer a middle value.
 - Comparing the heap size with `k` before pushing in some places and after in others, giving a heap of size k + 1 or k - 1. Pick one form.
+- Pushing a spent item back. In `reorganize-string`, a letter whose count reached zero must not return to the heap, or the loop emits it again.
+- Taking only one item per round where two are needed, or leaving a lone last letter unhandled. `reorganize-string` ends with at most one entry in the heap and must append it.
+- Using the formula `(most - 1) * (n + 1) + tied` without the floor. `task-scheduler` with many distinct tasks and a small `n` gives a number below `len(tasks)`; the answer is the larger of the two.
 - Treating the heap as sorted. Only `heap[0]` is guaranteed; iterating the list does not give sorted order.
 
 ## Variants
@@ -70,6 +82,12 @@ def top_k_largest(items, k):
 - k-way merge, `merge-k-sorted-lists`: seed the heap with `(node.val, i, node)` for each non-empty list, pop the smallest, attach it, and push its successor. This is the case where the tiebreaker matters.
 - Two heaps, `find-median-from-data-stream`: to add a value, push it into `low`, move `low`'s top to `high`, then move one back if `high` is larger. The median is `low`'s top for an odd count, otherwise the average of both tops. This solution keeps the extra element in `low`.
 - Earliest finishing, `meeting-rooms-ii`: a min-heap of end times of meetings holding a room. If the smallest end is at or before the next start, reuse that room with `heapreplace`; otherwise push. The largest heap size seen is the answer. See `interval-patterns`.
+- Repeated max with put-back, `last-stone-weight`: store `-stone`, pop two, and push `-(first - second)` only if they differ. The answer is `-heap[0]`, or 0 for an empty heap.
+- Top k with a composite key, `top-k-frequent-words`: no explicit heap code. `heapq.nsmallest(k, count, key=lambda word: (-count[word], word))` orders by higher count, then alphabetically. It is O(n log k).
+- Lazy k-way merge of an implicit grid, `find-k-pairs-with-smallest-sums`: each `i` is a sorted row of sums `nums1[i] + nums2[j]`. Seed `(sum, i, 0)` for the first `min(k, len(nums1))` rows, pop, then push `(i, j + 1)`. Rows past k can never reach the top k.
+- Pair the two largest, `reorganize-string`: return `""` when the top count exceeds `(len(s) + 1) // 2`. Otherwise pop two `(-count, letter)` entries each round, append both letters, and push back those with count left.
+- A formula in place of a heap, `task-scheduler`: the most frequent task fixes `(most - 1)` frames of length `n + 1`, plus a last row of `tied` tasks. The answer is `max(len(tasks), frames)`. A heap simulation gives the same answer in more code.
+- Order statistic of a window, `sliding-window-median`: the catalogue solution keeps `window` as a sorted list, removing the outgoing value with `bisect_left` and adding the new one with `insort`. It is O(n * k) because of the shifting, but simple. Two heaps with lazy deletion are the O(n log k) alternative. See `sliding-window`.
 
 ## Worked example
 

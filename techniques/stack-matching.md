@@ -7,13 +7,16 @@ problems:
   - evaluate-reverse-polish-notation
   - min-stack
   - implement-queue-using-stacks
-related: [monotonic-stack, design-structures]
+  - asteroid-collision
+related: [monotonic-stack, design-structures, stack-expression-parsing]
 ---
 ## Reach for it when
 - The input has brackets or other nesting.
 - The wording is "most recent unmatched" or "last in, first out".
 - The input is a postfix or prefix expression.
 - You need undo, or a queue built from stacks.
+- Items meet only in a particular order and annihilate or merge on contact (a right-mover then a left-mover).
+- The expression has operators with precedence, or nested repeats: see `stack-expression-parsing`.
 
 ## Setup
 - `stack = []`: the openers (or operands) still waiting. Invariant: the top is the most recent unmatched item.
@@ -44,11 +47,13 @@ It removes the repeated search for the nearest unmatched opener: LIFO order puts
 - In RPN, using `a // b` for division: it floors, so `-7 / 2` gives -4 instead of -3. Use `int(a / b)`.
 - In `implement-queue-using-stacks`, refilling `out_stack` while it is not empty: newer items end up under older ones and FIFO order breaks.
 - In the same problem, `empty` checking only one stack.
+- In `asteroid-collision`, pushing the newcomer without a survival flag: after it destroys the top it must keep fighting, and after it loses it must not be pushed. Compare magnitudes with `-asteroid`, and treat equal sizes as both exploding.
 
 ## Variants
 - Bracket matching (`valid-parentheses`): the template.
 - Postfix evaluation (`evaluate-reverse-polish-notation`): push numbers, and on an operator pop two and push the result. A valid expression leaves one value.
 - Stack with a running minimum (`min-stack`): the solution stores `(val, current_min)` tuples on one stack, so the minimum is restored on `pop` with no search. A parallel stack that gets a push only when the value is `<=` the current minimum also works, but the solution does not use it.
+- Collisions (`asteroid-collision`): `stack` holds survivors in order. Only a negative `asteroid` meeting a positive `stack[-1]` collides. A `while alive and ...` loop pops smaller tops, pops an equal top and clears `alive`, or clears `alive` for a larger top. If `alive` is still true, the asteroid is pushed.
 - Two-stack queue (`implement-queue-using-stacks`): push to `in_stack`, pop from `out_stack`, and refill `out_stack` from `in_stack` only when it is empty.
 
 ## Worked example

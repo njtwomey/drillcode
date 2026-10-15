@@ -5,7 +5,9 @@ topics: [Tree]
 problems:
   - binary-tree-level-order-traversal
   - binary-tree-right-side-view
-related: [tree-recursion-return-and-best, bfs-shortest-paths]
+  - binary-tree-zigzag-level-order-traversal
+  - minimum-depth-of-binary-tree
+related: [tree-recursion-return-and-best, bfs-shortest-paths, tree-top-down-state]
 ---
 ## Reach for it when
 
@@ -60,6 +62,8 @@ It removes sentinels and stored depths. Reading the length before the inner loop
 - `binary-tree-level-order-traversal`: collect each level's values into a list.
 - `binary-tree-right-side-view`: keep only the last node of each level (`i == size - 1`). Keeping the first gives the left side view. The number of outer iterations is the depth.
 - DFS alternative for the side view: the solution's `rightSideViewDFS` visits right before left and records the first node seen at each depth (`depth == len(result)`).
+- `binary-tree-zigzag-level-order-traversal`: the solution uses a plain list `level` instead of a deque. Each pass builds `values = [node.val for node in level]`, calls `values.reverse()` when the flag `reverse` is set, then flips `reverse`. The next `level` is always built left to right; only the recorded row is reversed. Reversing the traversal order instead scrambles the next level.
+- `minimum-depth-of-binary-tree`: `level` and `nxt` lists with a counter `depth`. Return `depth` at the first node with no children, so the search stops early. A node with one child is not a leaf, so only the existing child is followed. A recursive `1 + min(left, right)` goes wrong on a chain, where the missing side reports 0.
 
 ## Worked example
 

@@ -4,8 +4,10 @@ area: Binary search
 topics: [Binary search]
 problems:
   - koko-eating-bananas
+  - capacity-to-ship-packages-within-d-days
+  - split-array-largest-sum
   - longest-increasing-subsequence
-related: [binary-search-shapes, dp-space-and-loop-order]
+related: [binary-search-shapes, dp-space-and-loop-order, greedy-one-pass-invariants]
 ---
 ## Reach for it when
 
@@ -43,12 +45,16 @@ It removes searching the input or trying every candidate answer. The check costs
 - `lo` too small is harmless but wasteful; `lo = 0` can divide by zero inside the check.
 - A predicate that is not monotone. If feasibility flips back and forth, this is the wrong tool and the search returns a wrong answer on some inputs.
 - Integer ceiling: `(pile + mid - 1) // mid` is `ceil(pile / mid)`. Using `pile // mid` undercounts the hours for a partial pile.
+- Wrong lower bound when the pieces are indivisible: for `capacity-to-ship-packages-within-d-days` and `split-array-largest-sum`, `lo` must be `max(...)`, not 1. A capacity below the heaviest item cannot carry it, and the greedy count would be meaningless.
+- Greedy check that resets `load` to 0 and then forgets to add the current item: the item that overflowed is dropped. Both solutions reset first and add after.
 - LIS: the `tails` list is not the subsequence. Only its length is meaningful.
 - LIS: `bisect_right` instead of `bisect_left` lets equal values extend the run, which is wrong for a strictly increasing subsequence (`[2, 2]` would give 2).
 
 ## Variants
 
 - `koko-eating-bananas`: search the speed. The check sums `ceil(pile / speed)` over the piles and compares it with `h`.
+- `capacity-to-ship-packages-within-d-days`: search the capacity over `[max(weights), sum(weights)]`. `days_needed(cap)` loads packages in order, starting a new day (`count += 1`) when `load + weight > cap`. Feasible when `days_needed(mid) <= days`.
+- `split-array-largest-sum`: the same problem in other words. Search the largest piece sum over `[max(nums), sum(nums)]`. `pieces_needed(cap)` is the identical greedy, with `total` for `load`. Feasible when it is `<= k`. Fewer pieces than `k` is fine, because a piece can always be split further.
 - `longest-increasing-subsequence`: a different use of binary search, on a list the algorithm builds. `tails[i]` is the smallest possible last value of an increasing subsequence of length `i + 1`. For each `num`, `bisect_left(tails, num)` finds the first tail `>= num`. Replace it, or append when none is found. `tails` stays sorted, which is why it can be searched. The length of `tails` is the answer. The solution also keeps an O(n^2) DP version as `lengthOfLISQuadratic`.
 
 ## Worked example

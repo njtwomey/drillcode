@@ -10,7 +10,8 @@ problems:
   - encode-and-decode-strings
   - implement-trie-prefix-tree
   - design-add-and-search-words-data-structure
-related: [dummy-head, heap-patterns, trie-patterns, stack-matching]
+  - lfu-cache
+related: [dummy-head, heap-patterns, trie-patterns, stack-matching, fenwick-tree]
 ---
 ## Reach for it when
 
@@ -27,6 +28,7 @@ related: [dummy-head, heap-patterns, trie-patterns, stack-matching]
   - a stack of `(value, min so far)` pairs, or a stack plus a parallel min stack. Invariant: the second element is the minimum of everything at or below that entry.
   - `in_stack` and `out_stack`. Invariant: `out_stack` has the oldest element on top, and it is refilled only when empty.
   - `low` (max-heap) and `high` (min-heap). Invariant: every value in `low` is at most every value in `high`, and `len(low)` is `len(high)` or one more.
+  - `values`, `freq` and `buckets` for frequency order. Invariant: `buckets[f]` is an `OrderedDict` of the keys used exactly `f` times, oldest first, and `min_freq` is the lowest non-empty `f`.
 - Write small private helpers once (`_unlink`, `_push_front`, `_shift`) and build every public operation from them.
 - Tests for these problems use the operations format: a list of method names with arguments, replayed against a fresh object.
 
@@ -91,6 +93,8 @@ After `get, put = make_cache(2)`, the calls `put(1, 1)`, `put(2, 2)`, `get(1)`, 
 - Popping a separate min stack out of step with the main stack, or pushing to it only on strictly smaller values. Duplicate minimums then pop the min too early. Storing `(value, min)` pairs avoids both.
 - Refilling `out_stack` while it still holds items. Newer items go under older ones and order breaks. Refill only when empty, and make `empty()` check both stacks.
 - Reading `peek` or `pop` without shifting first when `out_stack` is empty and `in_stack` is not.
+- In `lfu-cache`, forgetting to move `min_freq` when `_touch` empties the lowest bucket, or to reset it to 1 when a new key is added. The next eviction then looks in an empty bucket and raises `KeyError`.
+- In `lfu-cache`, accepting a `put` with capacity 0, or evicting before checking whether the key exists. Capacity 0 must store nothing; an existing key is a use, not a new entry.
 - Splitting an encoded string on the delimiter. A string containing `#` breaks it. Read the length, then slice exactly that many characters.
 
 ## Variants
@@ -101,6 +105,8 @@ After `get, put = make_cache(2)`, the calls `put(1, 1)`, `put(2, 2)`, `get(1)`, 
 - Two heaps, `find-median-from-data-stream`: max-heap for the lower half, min-heap for the upper, rebalanced after each add. See `heap-patterns`.
 - Length-prefixed encoding, `encode-and-decode-strings`: write `len(s)#s` for each string. The decoder finds the first `#` after position `i`, reads the length, slices that many characters and jumps past them. Empty strings and strings containing `#` work.
 - Tries as the data structure, `implement-trie-prefix-tree` and `design-add-and-search-words-data-structure`: the design is the trie itself. See `trie-patterns`.
+- Frequency buckets, `lfu-cache`: three dicts, `values`, `freq` and `buckets`, where each bucket is an `OrderedDict` used as an ordered set. `_touch` moves a key from bucket `f` to `f + 1` and bumps `min_freq` only if it emptied bucket `min_freq`. Eviction is `buckets[min_freq].popitem(last=False)`, which gives least frequent, then least recent. Every operation is O(1).
+- Prefix structure for updates, `range-sum-query-mutable`: a Fenwick tree. See `fenwick-tree`.
 - Dict plus list with swap-and-pop gives constant-time insert, delete and random element. It is not in this catalogue.
 
 ## Worked example

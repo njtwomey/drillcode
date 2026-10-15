@@ -7,6 +7,8 @@ problems:
   - linked-list-cycle
   - remove-nth-node-from-end-of-list
   - reorder-list
+  - palindrome-linked-list
+  - linked-list-cycle-ii
   - find-the-duplicate-number
 related: [dummy-head, in-place-reversal]
 ---
@@ -74,6 +76,8 @@ A second pass or extra memory. Finding the middle would otherwise need the lengt
 - Cycle test: `linked-list-cycle` returns `True` when `slow is fast`. The gap inside the cycle shrinks by one per step, so `fast` must land on `slow`.
 - Fixed gap: `remove-nth-node-from-end-of-list` starts both at a dummy node and advances `fast` n + 1 steps, so `slow` stops before the target. See `dummy-head`.
 - Middle as a split: `reorder-list` cuts at the first middle with `slow.next = None`, then reverses the second half. See `in-place-reversal`.
+- Middle as a split, then compare: `palindrome-linked-list` uses the same loop as `middle-of-the-linked-list`, so `slow` is the second middle, or the middle node itself on an odd length. It reverses from `slow` onward, then walks `left = head` and `right = prev` while `right` is not `None`. The shared middle node compares equal to itself. See `in-place-reversal`.
+- Cycle entry in a list: `linked-list-cycle-ii` runs the `linked-list-cycle` loop and, on `slow is fast`, resets `slow = head` and moves both one step until they meet. It returns that node, or `None` when `fast` falls off the end.
 - Cycle entry: `find-the-duplicate-number` treats `nums[i]` as the next pointer of index `i`. Phase one finds a meeting point. Phase two restarts `slow` at `nums[0]` and advances both one step; they meet at the duplicate.
 
 ## Worked example

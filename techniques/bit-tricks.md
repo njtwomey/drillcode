@@ -9,7 +9,11 @@ problems:
   - reverse-bits
   - sum-of-two-integers
   - subsets
-related: [backtracking-template, dp-space-and-loop-order]
+  - single-number
+  - bitwise-and-of-numbers-range
+  - maximum-xor-of-two-numbers-in-an-array
+  - partition-to-k-equal-sum-subsets
+related: [backtracking-template, dp-space-and-loop-order, trie-patterns]
 ---
 ## Reach for it when
 
@@ -17,6 +21,9 @@ related: [backtracking-template, dp-space-and-loop-order]
 - It forbids arithmetic operators such as `+`.
 - Every value appears twice except one, or one value in a range is missing, and O(1) extra space is required.
 - The input is a small set (about 20 elements or fewer) and every subset must be visited.
+- A range of consecutive integers is combined with AND or OR.
+- A maximum XOR of two values is wanted.
+- A subset of up to about 16 items is a state, and the answer for it follows from the answer for the same subset minus one item.
 - An answer for `i` follows from the answer for a smaller number with fewer bits.
 
 ## Setup
@@ -25,6 +32,8 @@ related: [backtracking-template, dp-space-and-loop-order]
 - `count = 0` for set bits. Invariant: `count` is the number of bits already cleared from `n`.
 - `result = 0` for an XOR accumulator or a rebuilt number. Invariant: for XOR, `result` is the XOR of everything seen; for a rebuilt number, it holds the bits read so far in their final positions.
 - `mask` as a loop variable over `range(1 << n)` for subsets. Invariant: bit `i` of `mask` says whether element `i` is included, and each mask in the range is a distinct subset.
+- `shift = 0`, for common-prefix problems. Invariant: the number of low bits dropped from both values so far.
+- `fill`, a table indexed by `mask`, for subset DP. Invariant: `fill[mask]` describes the best layout of exactly the items in `mask`, and `-1` marks an unreachable mask.
 - The facts the loops lean on:
   - `n & (n - 1)` clears the lowest set bit.
   - `n & -n` isolates the lowest set bit.
@@ -61,6 +70,10 @@ def bit_tricks(n):
 - Operator precedence. `mask >> i & 1` parses as `(mask >> i) & 1`, which is what is wanted, but `n & 1 == 0` parses as `n & (1 == 0)`. Parenthesise comparisons.
 - Starting the missing-number XOR at 0 instead of `len(nums)`. The answer is wrong when the missing number is `n`, since no index equals it.
 - Using `n & (n - 1) == 0` for a power-of-two test without excluding `n == 0`.
+- Using a plain XOR fold when a value may appear three times, or two values are unpaired. `single-number` relies on every other value appearing exactly twice.
+- In `bitwise-and-of-numbers-range`, looping over the whole range. It is too slow for ranges up to 2^31 - 1; shift until `left == right` instead. Forgetting to shift back at the end returns the prefix, not the answer.
+- In `maximum-xor-of-two-numbers-in-an-array`, building the trie to a fixed 32 levels, which wastes time, or to fewer levels than `max(nums).bit_length()`, which loses the top bit. Walk from the highest bit down.
+- In subset DP, testing the mask bit with `mask >> i & 1` but setting it with `mask | i`. The set form is `mask | 1 << i`.
 - Treating the input as signed when the problem says unsigned. The count loop on a Python negative never ends; in this catalogue inputs are non-negative.
 
 ## Variants
@@ -71,6 +84,10 @@ def bit_tricks(n):
 - Fixed-width reversal, `reverse-bits`: 32 rounds of `result = (result << 1) | (n & 1)` then `n >>= 1`.
 - Addition without `+`, `sum-of-two-integers`: `a ^ b` is the sum without carries, `(a & b) << 1` is the carry; repeat until the carry is zero, masking to 32 bits each round.
 - Enumerate subsets, `subsets`: for each `mask` in `range(1 << n)`, include `nums[i]` when `mask >> i & 1`. The include/exclude recursion in the same file is the backtracking form; see `backtracking-template`.
+- Fold with XOR, `single-number`: `result ^= num` over the array. Pairs cancel in any order and the lone value is left. No extra memory.
+- Common prefix, `bitwise-and-of-numbers-range`: while `left != right`, shift both right and add one to `shift`. The AND of the range is `left << shift`, since every bit below the first difference is 0 somewhere in the range.
+- Binary trie, `maximum-xor-of-two-numbers-in-an-array`: insert each number's bits from the top, as nested dicts `{bit: child}`. For each number walk the opposite bit when it exists and set that bit in `current`. A higher 1 outweighs all lower bits, so the greedy walk is exact. See `trie-patterns`.
+- Subset DP over masks, `partition-to-k-equal-sum-subsets`: `fill[mask]` is the sum of the chosen numbers modulo `target`, or -1 if the subset cannot be laid out as full buckets plus one partly filled bucket. Add `nums[i]` when `fill[mask] + nums[i] <= target`; reaching `target` wraps to 0, which starts a new bucket. The answer is `fill[(1 << n) - 1] == 0`. Check `total % k` and `max(nums) > target` first.
 
 ## Worked example
 

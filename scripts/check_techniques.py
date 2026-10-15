@@ -17,9 +17,24 @@ from _common import PROBLEMS, ROOT, TOPICS, load_index
 
 TECHNIQUES = ROOT / "techniques"
 AREAS = [
-    "Linked lists", "Pointers and windows", "Hashing and counting", "Stacks", "Binary search", "Trees",
-    "Graphs", "Backtracking", "Heaps", "Intervals", "Dynamic programming", "Greedy", "Matrices", "Bits",
-    "Tries", "Design",
+    "Linked lists",
+    "Pointers and windows",
+    "Hashing and counting",
+    "Stacks",
+    "Binary search",
+    "Trees",
+    "Graphs",
+    "Backtracking",
+    "Divide and conquer",
+    "Heaps",
+    "Intervals",
+    "Dynamic programming",
+    "Greedy",
+    "Matrices",
+    "Math",
+    "Bits",
+    "Tries",
+    "Design",
 ]
 HEADINGS = [
     "Reach for it when", "Setup", "Template", "What it removes", "Pitfalls", "Variants", "Worked example",

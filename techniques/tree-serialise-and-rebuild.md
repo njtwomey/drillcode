@@ -5,6 +5,7 @@ topics: [Tree, Design]
 problems:
   - serialize-and-deserialize-binary-tree
   - construct-binary-tree-from-preorder-and-inorder-traversal
+  - construct-binary-tree-from-inorder-and-postorder-traversal
 related: [tree-recursion-return-and-best, bst-invariant]
 ---
 ## Reach for it when
@@ -63,6 +64,7 @@ It removes index bookkeeping and slicing. A shared iterator hands out tokens in 
 
 - `serialize-and-deserialize-binary-tree`: pre-order with `#` for nulls and commas between tokens. The `Codec` serialises with a stack and deserialises with a recursive `build()`. Level order also works.
 - `construct-binary-tree-from-preorder-and-inorder-traversal`: the next unused preorder value is the root; its position `mid = index[val]` splits the inorder range into left and right. Build left first, then right, over `(lo, mid - 1)` and `(mid + 1, hi)`.
+- `construct-binary-tree-from-inorder-and-postorder-traversal`: the mirror image. Postorder is left, right, root, so `post = iter(reversed(postorder))` yields root, right, left. Each `build(lo, hi)` takes `val = next(post)`, finds `mid = index[val]`, and builds `node.right` over `(mid + 1, hi)` before `node.left` over `(lo, mid - 1)`. Building left first consumes the right subtree's values and gives a wrong tree.
 - Subtree comparison by serialisation: `subtree-of-another-tree` is solved in the catalogue by repeated `same-tree` checks, not by serialisation. Serialising both trees with null markers and a leading delimiter, then a substring search, is the faster alternative the solution mentions. See `tree-recursion-return-and-best`.
 
 ## Worked example

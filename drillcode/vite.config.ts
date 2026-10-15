@@ -11,5 +11,5 @@ export default defineConfig({
   server: { fs: { allow: [fileURLToPath(new URL('..', import.meta.url))] } },
   worker: { format: 'es' },
   // The bundle embeds every problem's source text, so it is bigger than the default 500 kB.
-  build: { chunkSizeWarningLimit: 2500 },
+  build: { chunkSizeWarningLimit: 4000 },
 })

@@ -8,7 +8,9 @@ problems:
   - non-overlapping-intervals
   - meeting-rooms
   - meeting-rooms-ii
-related: [heap-patterns, greedy-one-pass-invariants]
+  - interval-list-intersections
+  - minimum-number-of-arrows-to-burst-balloons
+related: [heap-patterns, greedy-one-pass-invariants, opposite-ends]
 ---
 ## Reach for it when
 
@@ -24,6 +26,7 @@ related: [heap-patterns, greedy-one-pass-invariants]
 - `result = []`: the merged or kept intervals. Invariant: it is sorted and disjoint, so a new interval can only touch `result[-1]`.
 - `last_end`: the end of the last kept interval, for the by-end greedy. Invariant: everything kept so far ends at or before it.
 - A heap `ends` of end times, for counting rooms. Invariant: it holds the end times of the meetings currently running; its size is the number in use.
+- Two sorted, disjoint lists need no sort: two indexes `i` and `j`, one per list. Invariant: everything before `i` and `j` has been matched against all it can overlap.
 - Overlap test for two intervals: `a[0] <= b[1] and b[0] <= a[1]`. After sorting by start, only `next.start <= last.end` is needed.
 - Decide the touching rule from the problem, not by habit. `[1, 4]` and `[4, 5]` merge in merge-intervals, but back-to-back meetings do not conflict.
 
@@ -54,6 +57,9 @@ def merge_overlapping(intervals):
 - The wrong touching rule. `<` where `<=` is needed leaves `[1, 4]` and `[4, 5]` unmerged; `<=` where `<` is needed reports back-to-back meetings as conflicts.
 - Assigning the end instead of taking `max` when merging. `[[1, 10], [2, 3]]` shrinks to `[1, 3]`.
 - Empty input. Indexing `intervals[0]` fails; guard it if the constraints allow zero intervals.
+- Advancing the wrong pointer when intersecting two lists. Move the interval that ends first; moving the other can skip an overlap with the next interval. Advancing both on every step misses `[[1, 10]]` against `[[2, 3], [4, 5]]`.
+- Testing `lo < hi` for an intersection. Intervals that touch at one point, such as `[1, 2]` and `[2, 3]`, then lose the overlap `[2, 2]`.
+- Using `>=` where `>` is needed in the arrows count. Balloons `[1, 2]` and `[2, 3]` share an arrow at 2, so a new arrow is needed only when `start > arrow_x`; with `>=` the answer is one too high.
 - Using `<` in the sweep with separate sorted starts and ends when the touching rule says an ending meeting frees its room. Use `s >= ends[j]`.
 
 ## Variants
@@ -63,6 +69,8 @@ def merge_overlapping(intervals):
 - Keep the most, `non-overlapping-intervals`: sort by end, keep an interval when `start >= last_end` and update `last_end`, otherwise count a removal. Touching is fine here.
 - Detect any conflict, `meeting-rooms`: sort by start and compare each start with the previous end. Strict `<`, since back-to-back is allowed.
 - Count the peak, `meeting-rooms-ii`: sort by start and keep a min-heap of end times; reuse the room whose end is at or before the next start. Or sort starts and ends separately and sweep with two pointers, since only the count of open meetings matters. See `heap-patterns`.
+- Intersect two sorted lists, `interval-list-intersections`: no sort. `lo = max(starts)`, `hi = min(ends)`; if `lo <= hi` append `[lo, hi]`. Then advance `i` when `firstList[i][1] < secondList[j][1]`, else `j`. One pass, O(m + n).
+- Stab all intervals with the fewest points, `minimum-number-of-arrows-to-burst-balloons`: sort by end, as in `non-overlapping-intervals`. Shoot at the first balloon's end (`arrow_x = end`); every later balloon with `start <= arrow_x` is already hit. A balloon with `start > arrow_x` needs a new arrow. Touching counts as hit, the opposite of the removal count in `non-overlapping-intervals`, where touching is fine to keep.
 
 ## Worked example
 

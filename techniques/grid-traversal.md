@@ -9,6 +9,8 @@ problems:
   - rotting-oranges
   - word-search
   - word-search-ii
+  - max-area-of-island
+  - surrounded-regions
 related: [bfs-shortest-paths, backtracking-template, trie-patterns, graph-building-and-dfs]
 ---
 ## Reach for it when
@@ -57,12 +59,15 @@ def count_regions(grid):
 - Recursive DFS on a large grid. A grid that is one big island overflows the recursion limit; use a stack or BFS.
 - Indexing before the bounds test. Row `-1` wraps around in Python and gives a wrong answer instead of an error.
 - Counting diagonal neighbours when the problem says four directions.
+- Marking at pop needs a re-check on pop. `surrounded-regions` does this with `board[r][c] != "O"` after popping; without it a duplicate entry is processed twice.
 - Word search without restoring the cell after recursing. Later paths see a `"#"` where a letter should be and miss valid words.
 
 ## Variants
 - Count components: `number-of-islands` sinks each island as it is found and counts the starts.
 - Fill from one start: `flood-fill` recolours matching cells. The new colour doubles as the visited marker.
 - Reverse search: `pacific-atlantic-water-flow` starts from each ocean's border cells and steps only to cells that are equal or higher. The answer is the intersection of the two reached sets. It uses a `seen` set because heights must not be changed.
+- Measure each component: `max-area-of-island` sinks cells as they are pushed, adds one to `area` per pop, and keeps `best = max(best, area)` per start. Its stack avoids recursion limits on one huge island. Diagonal land cells are separate islands because only four neighbours are used.
+- Reverse search from the border: `surrounded-regions` seeds `stack` with every border `"O"`, marks reached cells `"S"` and then sweeps once: leftover `"O"` becomes `"X"` and `"S"` goes back to `"O"`. Searching inward from the edge avoids testing each region for escape. It pushes the four neighbours unchecked and tests bounds and `"O"` on pop, so the marker is written at pop, not push. That is correct here, but the stack can hold duplicates.
 - Multi-source BFS: `rotting-oranges` seeds the queue with every rotten orange and counts levels. See `bfs-shortest-paths`.
 - Backtracking on the grid: `word-search` writes `"#"` into the cell, recurses in four directions and restores the cell. It is recursive and short-circuits with `or`.
 - Backtracking guided by a trie: `word-search-ii` only steps to a neighbour that is a child of the current trie node, and deletes exhausted trie branches. See `trie-patterns`.

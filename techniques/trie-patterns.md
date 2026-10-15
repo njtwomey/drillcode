@@ -6,10 +6,12 @@ problems:
   - implement-trie-prefix-tree
   - design-add-and-search-words-data-structure
   - word-search-ii
-related: [backtracking-template, design-structures, grid-traversal]
+  - maximum-xor-of-two-numbers-in-an-array
+related: [backtracking-template, design-structures, grid-traversal, bit-tricks]
 ---
 ## Reach for it when
 
+- The keys are integers and the question is about their bits, such as a maximum XOR.
 - Many words are stored and queried by prefix.
 - A search pattern has wildcards such as `.`.
 - A grid must be searched for many words at once, where a separate search per word would repeat the same paths.
@@ -21,6 +23,7 @@ related: [backtracking-template, design-structures, grid-traversal]
 - A node is a mapping from character to child node, plus a marker that a word ends here. Two ways to hold it:
   - a class with `children = {}` and a flag such as `is_word`;
   - nested dicts, where a reserved key such as `"$"` marks the end. Storing the whole word under the marker means a search needs no reconstruction.
+- For integers, the characters are bits `0` and `1`, read from the highest position down. Invariant: all numbers share the same depth, `max(nums).bit_length()`, so a path of that length is a whole number.
 - `node = root` before every walk, then `node = node.get(ch)` for each character. Invariant: after processing `k` characters, `node` is the node for the first `k` characters, or `None` if there is none.
 - For grid search, the DFS carries the current trie node as an argument. Invariant: the cell being visited holds a letter that is a child of that node.
 
@@ -63,6 +66,7 @@ def trie_demo(words, word, prefix):
 - Walking the trie for letters that are not children. Check `board[nr][nc] in node` before recursing, or the DFS wanders through the board with no word to match.
 - Forgetting to restore the board cell after the recursive call, so later start cells see `"#"`.
 - Never pruning exhausted branches. Correct but slow on dense boards, since later searches walk dead subtrees.
+- A binary trie that is shorter than the longest number or starts below its top bit. The top bits of the XOR are lost and the answer is too small.
 - A pattern of only dots, or one longer than any stored word. The wildcard branch must return false when the word ends or children run out.
 
 ## Variants
@@ -70,6 +74,7 @@ def trie_demo(words, word, prefix):
 - Plain trie, `implement-trie-prefix-tree`: a node class with `children` and `is_word`. A private `_walk(prefix)` returns the end node or `None`. `search` is `node is not None and node.is_word`, `startsWith` is `node is not None`.
 - Wildcard search, `design-add-and-search-words-data-structure`: nodes are nested dicts. On a letter, follow the one edge. On `.`, try every child except the `"$"` marker and return true if any succeeds. `dfs(node, i)` asks whether `word[i:]` matches below `node`. Worst case is the whole trie, but plain letters follow one path.
 - Grid search for many words, `word-search-ii`: build the trie with the word stored under `"$"`. The DFS marks the cell `"#"`, collects `node.pop("$", None)`, recurses into neighbours whose letter is a child, restores the cell, and deletes the child from its parent when the node is empty. See `backtracking-template` for the choose-recurse-undo shape.
+- Binary trie, `maximum-xor-of-two-numbers-in-an-array`: nodes are dicts keyed by the bit, no end marker, because every path has the same length. Query each number by walking `1 - bit` when that key is in `node`, else `bit`, and build `current` with `current |= 1 << shift`. `best` is the largest `current`. See `bit-tricks`.
 
 ## Worked example
 

@@ -9,9 +9,24 @@ const files = import.meta.glob('../../../techniques/*.md', {
 }) as Record<string, string>
 
 export const AREAS = [
-  'Linked lists', 'Pointers and windows', 'Hashing and counting', 'Stacks', 'Binary search', 'Trees',
-  'Graphs', 'Backtracking', 'Heaps', 'Intervals', 'Dynamic programming', 'Greedy', 'Matrices', 'Bits',
-  'Tries', 'Design',
+  'Linked lists',
+  'Pointers and windows',
+  'Hashing and counting',
+  'Stacks',
+  'Binary search',
+  'Trees',
+  'Graphs',
+  'Backtracking',
+  'Divide and conquer',
+  'Heaps',
+  'Intervals',
+  'Dynamic programming',
+  'Greedy',
+  'Matrices',
+  'Math',
+  'Bits',
+  'Tries',
+  'Design',
 ] as const
 
 export interface Section {

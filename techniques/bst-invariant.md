@@ -6,7 +6,9 @@ problems:
   - validate-binary-search-tree
   - kth-smallest-element-in-a-bst
   - lowest-common-ancestor-of-a-binary-search-tree
-related: [tree-recursion-return-and-best, binary-search-shapes]
+  - delete-node-in-a-bst
+  - recover-binary-search-tree
+related: [tree-recursion-return-and-best, binary-search-shapes, tree-top-down-state]
 ---
 ## Reach for it when
 
@@ -58,6 +60,9 @@ It removes searching both subtrees. In a BST, comparing with the node's value pi
 - `validate-binary-search-tree`: pass `(low, high)` down. The solution pushes `(node.left, low, node.val)` and `(node.right, node.val, high)` on a `stack`. An in-order traversal that checks strictly increasing values also works.
 - `kth-smallest-element-in-a-bst`: iterative in-order with a `stack`. Push the left spine, pop and count, then go right. Stop at `k == 0`. Time is O(h + k).
 - `lowest-common-ancestor-of-a-binary-search-tree`: if both values are smaller than `node.val`, go left. If both are larger, go right. Otherwise `node` is the answer, including when one target equals `node`.
+- `delete-node-in-a-bst`: recursive; each call returns the root of its subtree after deletion so the parent relinks with `root.left = self.deleteNode(root.left, key)`. Smaller key goes left, larger goes right. On a match with one child (or none), return the other child. With two children, `successor` walks left from `root.right`, its value is copied into `root`, and the successor's old node is deleted from `root.right`. The successor has no left child, so that second delete is the easy case. Forgetting to relink, or returning `None` instead of the surviving child, drops a subtree.
+- `recover-binary-search-tree`: in-order walk with `stack`, `curr` and `prev`. A descent is `prev.val > curr.val`. `first` is `prev` at the first descent, `second` is `curr` at the latest descent. Adjacent swaps give one descent, so `second` is set from that same one. At the end swap the two `val` fields, not the nodes. O(h) space; a Morris traversal would make it O(1).
+- Bounds passed down are also top-down state; see `tree-top-down-state`.
 
 ## Worked example
 

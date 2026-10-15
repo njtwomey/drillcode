@@ -9,6 +9,7 @@ problems:
   - group-anagrams
   - ransom-note
   - longest-consecutive-sequence
+  - isomorphic-strings
   - valid-sudoku
   - top-k-frequent-elements
 related: [prefix-and-suffix-passes, heap-patterns]
@@ -54,6 +55,7 @@ The inner loop that compares each element with every other. A hash lookup is O(1
 - Using a list as a dict key. It raises `TypeError`; freeze it as a `tuple`, as in `group-anagrams`.
 - Wrong sudoku box index. It is `(r // 3) * 3 + c // 3`; `r // 3 + c // 3` collides.
 - Counting from every value in `longest-consecutive-sequence`. A run of length n is then walked n times and the work is O(n^2).
+- Checking only one direction of a mapping in `isomorphic-strings`. Two characters of `s` may then map to the same character of `t` (`"badc"` against `"baba"` returns `True`).
 - Forgetting that a set drops duplicates. Counts need a dict or a `Counter`.
 
 ## Variants
@@ -62,6 +64,7 @@ The inner loop that compares each element with every other. A hash lookup is O(1
 - Membership test: `contains-duplicate` returns on the first repeat. Sorting and comparing neighbours is the O(1) space alternative.
 - Frequency comparison: `valid-anagram` compares two `Counter`s.
 - Canonical key: `group-anagrams` keys a dict by a 26-count `tuple`. `''.join(sorted(word))` also works but costs O(L log L) per word.
+- Two maps, one per direction: `isomorphic-strings` keeps `s_to_t` and `t_to_s`. For each pair `a, b` it fails if `s_to_t.get(a, b) != b` or `t_to_s.get(b, a) != a`, then records both. The default makes an unseen key agree with itself. One map is not enough, since `"badc"` and `"baba"` would pass.
 - Spend a budget: `ransom-note` counts the magazine into 26 slots, then decrements per note letter. A count below zero means failure.
 - Run starts: `longest-consecutive-sequence` puts values in a set and counts upward only from values whose predecessor `num - 1` is absent, so each run is walked once.
 - One set per unit: `valid-sudoku` keeps a set for each row, column and box, and fails when a digit is already in any of its three.

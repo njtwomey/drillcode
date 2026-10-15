@@ -13,7 +13,14 @@ problems:
   - unique-paths
   - maximum-subarray
   - maximum-product-subarray
-related: [dp-finding-the-state, greedy-one-pass-invariants]
+  - coin-change-ii
+  - target-sum
+  - perfect-squares
+  - minimum-path-sum
+  - triangle
+  - burst-balloons
+  - longest-palindromic-subsequence
+related: [dp-finding-the-state, knapsack-patterns, two-string-dp, grid-dp, greedy-one-pass-invariants]
 ---
 ## Reach for it when
 - The recurrence is clear but the table is larger than needed: `dp[i]` uses only the last one or two entries, or one row of a grid.
@@ -61,6 +68,7 @@ def count_sequences(nums, target):
 - The circular split in `house-robber-ii`: run the linear DP on `nums[:-1]` and `nums[1:]`. With one house both slices are empty and give 0, so return `nums[0]` first.
 - Kadane with the reset outside the `max`. The reset is inside it: `curr = max(num, curr + num)`.
 - Products need both max and min ending here, because a negative number swaps them. Using only the max fails on `[-2, 3, -4]`. Including `num` itself as a candidate handles zeros without a special case.
+- Row-major order on an interval table. Symptom: `longest-palindromic-subsequence` reads zeros for `dp[i + 1][j - 1]` and returns too small an answer. Order the loops by what each cell reads.
 - Reading the rolling variables in the wrong order. `prev, curr = curr, max(curr, prev + num)` assigns both from old values in one statement; two separate lines would not.
 
 ## Variants
@@ -69,7 +77,10 @@ def count_sequences(nums, target):
 - 0/1 knapsack, downward: `partition-equal-subset-sum`.
 - Unbounded, upward or target-outer: `coin-change` (amounts outer, coins inner, minimum), `combination-sum-iv` (target outer, ordered count).
 - Full 2D table: `longest-common-subsequence` keeps the `(m + 1) x (n + 1)` table with zero padding. A one-row version exists but the catalogue solution keeps the table.
-- One row for a grid: `unique-paths`.
+- One row for a grid: `unique-paths`; `minimum-path-sum` (virtual start `dp[0] = 0`, rest infinity); `triangle` goes bottom-up on a copy of the last row so the answer is `dp[0]`. More in `grid-dp`.
+- Unbounded counting, coins outer: `coin-change-ii` (`for coin in coins`, then `a` upward) counts combinations. Unbounded minimum: `perfect-squares` over `squares`.
+- 0/1 counting with a reduction: `target-sum` counts subsets reaching `goal = (total + target) // 2`, downward. See `knapsack-patterns`.
+- Fill order set by dependencies, not row-major: `longest-palindromic-subsequence` has `dp[i][j]` read `dp[i + 1][j - 1]`, `dp[i + 1][j]` and `dp[i][j - 1]`, so `i` runs backwards and `j` forwards. `burst-balloons` fills by interval length `gap`, because `dp[l][k]` and `dp[k][r]` are shorter.
 - Kadane: `maximum-subarray`; max and min pair: `maximum-product-subarray`.
 
 ## Worked example

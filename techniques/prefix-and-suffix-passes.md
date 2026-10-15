@@ -5,7 +5,7 @@ topics: [Array]
 problems:
   - product-of-array-except-self
   - best-time-to-buy-and-sell-stock
-related: [seen-before-insert, opposite-ends]
+related: [seen-before-insert, opposite-ends, prefix-sums-and-hashing]
 ---
 
 ## Reach for it when
@@ -57,6 +57,7 @@ The O(n^2) loop that recomputes the left and right aggregates for every position
 
 - Excluding the current element: `product-of-array-except-self` writes `prefix` into `result[i]` before folding in `nums[i]`, in both passes.
 - Running minimum as a prefix pass: `best-time-to-buy-and-sell-stock` keeps `lowest`, the minimum of the earlier prices, and takes `price - lowest` at each step. It needs one pass because only the left side matters.
+- Prefix sums for range queries: when queries ask for a sum over `nums[left..right]`, store every prefix and subtract. See `prefix-sums-and-hashing` for `range-sum-query-immutable` and for combining prefixes with a hash map.
 - Both sides at once: `trapping-rain-water` needs the tallest bar on each side. Its catalogue solution uses two pointers and running `left_max` and `right_max` instead of two arrays. See `opposite-ends`.
 
 ## Worked example

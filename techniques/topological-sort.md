@@ -4,7 +4,9 @@ area: Graphs
 topics: [Graph]
 problems:
   - course-schedule
+  - course-schedule-ii
   - alien-dictionary
+  - minimum-height-trees
 related: [graph-building-and-dfs, bfs-shortest-paths, union-find]
 ---
 ## Reach for it when
@@ -59,7 +61,9 @@ def topo_order(n, edges):
 
 ## Variants
 - Feasibility only: `course-schedule` counts taken courses in `done` and returns `done == numCourses`. It names the arrays `graph` and `indegree` and the neighbour `nxt`.
+- Order of courses: `course-schedule-ii` is the same loop with a `result` list in place of the `done` counter. It returns `result` if `len(result) == numCourses`, else `[]`.
 - Recover the order: `alien-dictionary` builds the graph from adjacent word pairs, then fills `result`. It returns `""` when `len(result) != len(edges)` or when a prefix is out of order. Letters with no constraints come out in queue order, which is one valid answer.
+- Leaf trimming on an undirected tree: `minimum-height-trees` is Kahn's idea with degree 1 in place of in-degree 0. `leaves` is the current layer, and `remaining` counts nodes left. Each pass removes the layer, pops the one neighbour of each leaf with `adj[leaf].pop()`, removes the leaf from that neighbour's set, and the neighbour joins `next_leaves` when its degree drops to 1. The loop stops when `remaining <= 2`, and the survivors are the centres. It handles `n <= 2` before building `adj`. There is no cycle check, since the input is a tree.
 - The solutions use dicts and sets for the alien graph and lists for the course graph. The loop is the same.
 
 ## Worked example

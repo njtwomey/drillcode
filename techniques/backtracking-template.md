@@ -10,6 +10,12 @@ problems:
   - generate-parentheses
   - word-search
   - word-search-ii
+  - subsets-ii
+  - combination-sum-ii
+  - permutations-ii
+  - palindrome-partitioning
+  - restore-ip-addresses
+  - n-queens
 related: [trie-patterns, bit-tricks, grid-traversal, dp-finding-the-state]
 ---
 ## Reach for it when
@@ -25,6 +31,8 @@ related: [trie-patterns, bit-tricks, grid-traversal, dp-finding-the-state]
 - `path = []`: the choices made so far. Invariant: on entry to a call it holds exactly the decisions above this call, and on exit it is back to that same state.
 - `start`, for subsets and combinations: the first index this call may choose from. Invariant: indices below `start` are never chosen again, so `[2, 3]` and `[3, 2]` are not both produced.
 - `used`, for permutations: `used[i]` is true while `nums[i]` is in `path`. Invariant: it is set before the recursive call and cleared right after.
+- `count = Counter(nums)`, for permutations of a multiset. Invariant: `count[value]` is the number of copies not yet in `path`; it is decremented before the recursive call and incremented right after.
+- `cols`, `diag`, `anti`, for placing pieces row by row. Invariant: they hold the columns, the `row - col` values and the `row + col` values of the pieces in `path`, so a conflict test is three set lookups.
 - An inner `def dfs(...)` closes over `result` and `path`, so only the state that changes per call (`start`, `remaining`, `i`, `opens`, `closes`) is passed as arguments.
 - The loop body is always the same three lines: `path.append(choice)`, recurse, `path.pop()`.
 
@@ -70,6 +78,8 @@ This is combinations without reuse of an element and without duplicate answers, 
 - Recursing with a start index in letter combinations. There the recursion index is the digit position and advances by one per call; looping over later digits' letters produces wrong strings.
 - Skipping duplicates with `nums[i] == nums[i - 1]` without sorting first, or with `i > 0` instead of `i > start`. The first form lets duplicate answers through; the second also drops `[1, 1, 6]` because the second `1` is never allowed at depth two.
 - `break` where `continue` is needed. `break` is only correct when the candidates are sorted and every later one is at least as large.
+- Undoing `path` but not the sets (or the counts) that went with the choice. In `n-queens` all three of `cols`, `diag` and `anti` must be removed, or later rows see phantom queens and solutions vanish.
+- In `restore-ip-addresses`, using `continue` for an invalid piece. A longer piece from the same start only gets worse, so `break`; with `continue` the result is the same but work is wasted.
 - Returning `[""]` for empty input in letter combinations when the problem wants `[]`.
 
 ## Variants
@@ -81,6 +91,13 @@ This is combinations without reuse of an element and without duplicate answers, 
 - Constraint as the choice rule, `generate-parentheses`: no loop at all. Two guarded branches, `(` while `opens < n` and `)` while `closes < opens`. These two rules make every leaf valid, so no stack or final check is needed.
 - Grid, `word-search`: the choice is a neighbouring cell. Overwrite the cell with `"#"` before recursing and restore the saved letter afterwards. The mark replaces a visited set, and the letter test rejects marked cells for free. Return a boolean with `or` so the search stops at the first success.
 - Trie-guided grid, `word-search-ii`: the recursion also carries the current trie node and only enters a neighbour whose letter is a child. The end marker is popped when a word is found, and exhausted branches are deleted. See `trie-patterns`.
+- Skipping duplicates in subsets, `subsets-ii`: sort, record `path[:]` at every call, and skip `nums[i]` when `i > start and nums[i] == nums[i - 1]`. Only the first copy of a value may begin a branch at a given depth; later copies are reached one level deeper.
+- Skipping duplicates with a sum, `combination-sum-ii`: the same `i > start` skip, recursion on `i + 1` for single use, and `break` once a sorted candidate exceeds `remaining`. The `break` check comes before the skip.
+- Skipping duplicates in permutations, `permutations-ii`: no sort and no `used`. A `Counter` named `count` is looped over by distinct value; skip a value whose `count[value]` is 0, decrement, recurse, restore. A value is never tried twice at one position.
+- Choosing a cut, `palindrome-partitioning`: `backtrack(start)` tries every `end`, takes `piece = s[start:end]`, and recurses on `end` only when `piece == piece[::-1]`. Record when `start == len(s)`.
+- Choosing a cut with a length limit, `restore-ip-addresses`: four pieces of 1 to 3 digits. Prune when the leftover length is outside `parts_left` to `3 * parts_left`, and `break` at a piece with a leading zero or a value above 255.
+- Constraint sets as the choice rule, `n-queens`: one queen per row, so `path[row]` is the column. A column is allowed when `col`, `row - col` and `row + col` are absent from `cols`, `diag` and `anti`. Add all three before recursing, remove all three after.
+- Bucket filling, `partition-to-k-equal-sum-subsets`: the catalogue solution does not backtrack. It is a bitmask DP, see `bit-tricks`. The backtracking form would fill one bucket at a time with the same choose, recurse, undo shape.
 
 ## Worked example
 
