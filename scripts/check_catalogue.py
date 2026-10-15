@@ -71,6 +71,9 @@ def main():
         for topic in [entry.get("topic")] + list(entry.get("tags") or []):
             if topic not in TOPICS:
                 errors.append(f"{slug}: topic/tag {topic!r} is not on the fixed list")
+        cases = (load_spec(slug) or {}).get("cases") or []
+        if cases and not str(cases[0].get("name", "")).startswith("example"):
+            errors.append(f"{slug}: the first test case must be a LeetCode example named 'example 1 ...' (the app lists it under the description)")
         if not str(entry.get("leetcode", "")).endswith(f"/problems/{slug}/"):
             errors.append(f"{slug}: leetcode link does not match slug")
         if slug not in dirs:

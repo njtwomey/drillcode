@@ -1,6 +1,6 @@
-import { Fragment, type ReactNode } from 'react'
+import { Fragment, type ReactNode, useMemo } from 'react'
 import { testsSpec } from '@/lib/catalogue'
-import { formatNamedCase } from '@/lib/caseFormat'
+import { EXAMPLES_SHOWN, formatNamedCase } from '@/lib/caseFormat'
 
 /** Inline `code` spans. */
 function inline(text: string): ReactNode[] {
@@ -42,10 +42,10 @@ const MAX_EXAMPLE = 160
 
 /** The statement's examples: of the first two catalogue cases (the ones Practice shows), those named "example ...". */
 function Examples({ slug }: { slug: string }) {
-  const spec = testsSpec(slug)
+  const spec = useMemo(() => testsSpec(slug), [slug])
   // Where the harness checks behaviour itself (`call: false`) the expected value is a bare pass flag, which says nothing.
   if (!spec || spec.call === false) return null
-  const shown = spec.cases.slice(0, 2).filter((c) => c.name.startsWith('example') && c.expected !== undefined)
+  const shown = spec.cases.slice(0, EXAMPLES_SHOWN).filter((c) => c.name.startsWith('example') && c.expected !== undefined)
   if (shown.length === 0) return null
   return (
     <>

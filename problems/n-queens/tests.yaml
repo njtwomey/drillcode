@@ -4,12 +4,12 @@ scaffolds: []
 args: [n]
 compare: unordered
 cases:
-  - name: single square
-    input: {n: 1}
-    expected: [["Q"]]
   - name: example 1 four queens
     input: {n: 4}
     expected: [[".Q..", "...Q", "Q...", "..Q."], ["..Q.", "Q...", "...Q", ".Q.."]]
+  - name: single square
+    input: {n: 1}
+    expected: [["Q"]]
   - name: n = 2 has no solution
     input: {n: 2}
     expected: []

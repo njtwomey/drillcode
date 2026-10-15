@@ -2,11 +2,9 @@ import { ExternalLink } from 'lucide-react'
 import { Description } from '@/components/Description'
 import { Workspace } from '@/components/Workspace'
 import { bySlug, definitions, descriptionSource, skeletonSource } from '@/lib/catalogue'
+import { EXAMPLES_SHOWN } from '@/lib/caseFormat'
 import { practiceDraftKey } from '@/lib/store'
 import type { CaseResult } from '@/lib/types'
-
-/** In practice only the first two catalogue cases are shown; the rest are hidden cases that just report pass or fail. */
-const VISIBLE_EXAMPLES = 2
 
 /** One problem in practice mode: description and judge notes only (no approach, no hints), a blank skeleton, hidden tests. */
 export function PracticeProblem({ slug, onResults }: { slug: string; onResults: (results: CaseResult[]) => void }) {
@@ -17,7 +15,7 @@ export function PracticeProblem({ slug, onResults }: { slug: string; onResults: 
     <Workspace
       key={slug}
       slug={slug}
-      visibleExamples={VISIBLE_EXAMPLES}
+      visibleExamples={EXAMPLES_SHOWN}
       draftKey={practiceDraftKey(slug)}
       originalSource={skeletonSource(slug)}
       onResults={onResults}

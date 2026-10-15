@@ -1,5 +1,8 @@
 import type { TestCase, TestsSpec } from './types'
 
+/** How many catalogue cases are public examples: listed under the description, and the only ones Practice shows. */
+export const EXAMPLES_SHOWN = 2
+
 const ARROW = /->|=>|→/g
 
 /** Names of the values a case line holds, in order: the call arguments, then converter extras (e.g. `pos`). */
