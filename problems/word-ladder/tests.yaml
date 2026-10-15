@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.ladderLength
+scaffolds: []
+args: [beginWord, endWord, wordList]
+cases:
+  - name: example 1
+    input: {beginWord: hit, endWord: cog, wordList: [hot, dot, dog, lot, log, cog]}
+    expected: 5
+  - name: example 2 end word missing
+    input: {beginWord: hit, endWord: cog, wordList: [hot, dot, dog, lot, log]}
+    expected: 0
+  - name: begin word is in the list
+    input: {beginWord: hot, endWord: dog, wordList: [hot, dot, dog]}
+    expected: 3
+  - name: single step
+    input: {beginWord: a, endWord: c, wordList: [a, b, c]}
+    expected: 2
+  - name: longer branches exist
+    input: {beginWord: red, endWord: tax, wordList: [ted, tex, red, tax, tad, den, rex, pee]}
+    expected: 4
+  - name: end in list but unreachable
+    input: {beginWord: aaa, endWord: ccc, wordList: [aab, ccc]}
+    expected: 0
+  - name: one letter words
+    input: {beginWord: a, endWord: b, wordList: [b]}
+    expected: 2

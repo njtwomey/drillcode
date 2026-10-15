@@ -1,0 +1,36 @@
+kind: function
+entry: Solution.deleteNode
+scaffolds: [tree]
+args: [root, key]
+convert:
+  root: tree
+  result: tree
+compare: validator
+cases:
+  - name: example 1 node with two children
+    input: {root: [5, 3, 6, 2, 4, null, 7], key: 3}
+    expected: [5, 4, 6, 2, null, null, 7]
+  - name: example 2 key absent
+    input: {root: [5, 3, 6, 2, 4, null, 7], key: 0}
+    expected: [5, 3, 6, 2, 4, null, 7]
+  - name: example 3 empty tree
+    input: {root: [], key: 0}
+    expected: []
+  - name: delete the only node
+    input: {root: [1], key: 1}
+    expected: []
+  - name: delete a leaf
+    input: {root: [5, 3, 6, 2, 4, null, 7], key: 7}
+    expected: [5, 3, 6, 2, 4]
+  - name: node with only a left child
+    input: {root: [5, 3, 6, 2], key: 3}
+    expected: [5, 2, 6]
+  - name: node with only a right child
+    input: {root: [5, 3, 6, null, 4], key: 3}
+    expected: [5, 4, 6]
+  - name: delete root, successor has a right child
+    input: {root: [5, 3, 8, null, null, 6, 9, null, 7], key: 5}
+    expected: [6, 3, 8, null, null, 7, 9]
+  - name: delete root with only a right child
+    input: {root: [1, null, 2, null, 3], key: 1}
+    expected: [2, null, 3]

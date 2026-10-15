@@ -1,0 +1,34 @@
+kind: function
+entry: Solution.minCameraCover
+scaffolds: [tree]
+args: [root]
+convert:
+  root: tree
+cases:
+  - name: example 1
+    input: {root: [0, 0, null, 0, 0]}
+    expected: 1
+  - name: example 2
+    input: {root: [0, 0, null, 0, null, 0, null, null, 0]}
+    expected: 2
+  - name: single node
+    input: {root: [0]}
+    expected: 1
+  - name: two nodes
+    input: {root: [0, 0]}
+    expected: 1
+  - name: root with two leaves
+    input: {root: [0, 0, 0]}
+    expected: 1
+  - name: left chain of four
+    input: {root: [0, 0, null, 0, null, 0]}
+    expected: 2
+  - name: left chain of seven
+    input: {root: [0, 0, null, 0, null, 0, null, 0, null, 0, null, 0]}
+    expected: 3
+  - name: perfect tree of seven
+    input: {root: [0, 0, 0, 0, 0, 0, 0]}
+    expected: 2
+  - name: perfect tree of fifteen
+    input: {root: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+    expected: 5

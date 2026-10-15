@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.mySqrt
+scaffolds: []
+args: [x]
+cases:
+  - name: example 1 perfect square
+    input: {x: 4}
+    expected: 2
+  - name: example 2 rounds down
+    input: {x: 8}
+    expected: 2
+  - name: zero
+    input: {x: 0}
+    expected: 0
+  - name: one
+    input: {x: 1}
+    expected: 1
+  - name: two
+    input: {x: 2}
+    expected: 1
+  - name: just below a square
+    input: {x: 15}
+    expected: 3
+  - name: exact square
+    input: {x: 16}
+    expected: 4
+  - name: largest int
+    input: {x: 2147483647}
+    expected: 46340
+  - name: largest perfect square in range
+    input: {x: 2147395600}
+    expected: 46340

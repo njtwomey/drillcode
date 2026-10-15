@@ -1,0 +1,38 @@
+kind: function
+entry: Solution.calculate
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1 precedence
+    input: {s: "3+2*2"}
+    expected: 7
+  - name: example 2 spaces
+    input: {s: " 3/2 "}
+    expected: 1
+  - name: example 3 spaces inside
+    input: {s: " 3+5 / 2 "}
+    expected: 5
+  - name: single number
+    input: {s: "42"}
+    expected: 42
+  - name: multi-digit numbers
+    input: {s: "100*2+12"}
+    expected: 212
+  - name: subtraction then division
+    input: {s: "14-3/2"}
+    expected: 13
+  - name: division truncates toward zero on a negative term
+    input: {s: "10-8/3"}
+    expected: 8
+  - name: negative result
+    input: {s: "0-2147483647"}
+    expected: -2147483647
+  - name: chained multiplication then division
+    input: {s: "2*3*4/5"}
+    expected: 4
+  - name: lots of spaces
+    input: {s: " 12 *  12 - 100 /   7 "}
+    expected: 130
+  - name: subtraction of a product
+    input: {s: "1-2*3+4"}
+    expected: -1

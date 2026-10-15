@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.jump
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [2, 3, 1, 1, 4]}
+    expected: 2
+  - name: example 2
+    input: {nums: [2, 3, 0, 1, 4]}
+    expected: 2
+  - name: single element
+    input: {nums: [0]}
+    expected: 0
+  - name: two elements
+    input: {nums: [1, 2]}
+    expected: 1
+  - name: all ones
+    input: {nums: [1, 1, 1, 1]}
+    expected: 3
+  - name: first jump reaches the end
+    input: {nums: [10, 1, 1, 1, 1]}
+    expected: 1
+  - name: increasing steps
+    input: {nums: [1, 2, 3, 4, 5]}
+    expected: 3
+  - name: greedy must pick the farthest reach
+    input: {nums: [5, 9, 3, 2, 1, 0, 2, 3, 3, 1, 0, 0]}
+    expected: 3
+  - name: long run of ones
+    input: {nums: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
+    expected: 29

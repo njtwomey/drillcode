@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.sortedSquares
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1 mixed signs
+    input: {nums: [-4, -1, 0, 3, 10]}
+    expected: [0, 1, 9, 16, 100]
+  - name: example 2 mixed signs
+    input: {nums: [-7, -3, 2, 3, 11]}
+    expected: [4, 9, 9, 49, 121]
+  - name: single element
+    input: {nums: [-5]}
+    expected: [25]
+  - name: all negative
+    input: {nums: [-9, -5, -2, -1]}
+    expected: [1, 4, 25, 81]
+  - name: all non-negative
+    input: {nums: [0, 2, 3, 6]}
+    expected: [0, 4, 9, 36]
+  - name: equal magnitudes both signs
+    input: {nums: [-3, -3, 3, 3]}
+    expected: [9, 9, 9, 9]
+  - name: negative end dominates
+    input: {nums: [-10, -9, 1, 2]}
+    expected: [1, 4, 81, 100]
+  - name: two elements
+    input: {nums: [-2, 1]}
+    expected: [1, 4]
+  - name: all zeros
+    input: {nums: [0, 0, 0]}
+    expected: [0, 0, 0]

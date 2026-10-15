@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.intervalIntersection
+scaffolds: []
+args: [firstList, secondList]
+cases:
+  - name: example 1
+    input: {firstList: [[0, 2], [5, 10], [13, 23], [24, 25]], secondList: [[1, 5], [8, 12], [15, 24], [25, 26]]}
+    expected: [[1, 2], [5, 5], [8, 10], [15, 23], [24, 24], [25, 25]]
+  - name: example 2 one list empty
+    input: {firstList: [[1, 3], [5, 9]], secondList: []}
+    expected: []
+  - name: first list empty
+    input: {firstList: [], secondList: [[4, 8], [10, 12]]}
+    expected: []
+  - name: partial overlap
+    input: {firstList: [[1, 7]], secondList: [[3, 10]]}
+    expected: [[3, 7]]
+  - name: touching endpoints give a point
+    input: {firstList: [[1, 2]], secondList: [[2, 3]]}
+    expected: [[2, 2]]
+  - name: disjoint
+    input: {firstList: [[1, 2]], secondList: [[3, 4]]}
+    expected: []
+  - name: one interval contains many
+    input: {firstList: [[1, 10]], secondList: [[2, 3], [5, 6], [8, 9]]}
+    expected: [[2, 3], [5, 6], [8, 9]]
+  - name: one interval spans two
+    input: {firstList: [[1, 5], [6, 10]], secondList: [[2, 7]]}
+    expected: [[2, 5], [6, 7]]
+  - name: identical intervals
+    input: {firstList: [[1, 3], [5, 6]], secondList: [[2, 3], [5, 6]]}
+    expected: [[2, 3], [5, 6]]

@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.numRescueBoats
+scaffolds: []
+args: [people, limit]
+cases:
+  - name: example 1
+    input: {people: [1, 2], limit: 3}
+    expected: 1
+  - name: example 2
+    input: {people: [3, 2, 2, 1], limit: 3}
+    expected: 3
+  - name: example 3
+    input: {people: [3, 5, 3, 4], limit: 5}
+    expected: 4
+  - name: single person
+    input: {people: [3], limit: 3}
+    expected: 1
+  - name: two lightest do not pair best
+    input: {people: [5, 1, 4, 2], limit: 6}
+    expected: 2
+  - name: everyone equal and pairs fit
+    input: {people: [1, 1, 1, 1], limit: 2}
+    expected: 2
+  - name: nobody can pair
+    input: {people: [5, 5, 5], limit: 5}
+    expected: 3
+  - name: pair just over the limit
+    input: {people: [2, 4], limit: 5}
+    expected: 2
+  - name: odd count pairs leave one
+    input: {people: [2, 2, 2], limit: 6}
+    expected: 2

@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.topKFrequent
+scaffolds: []
+args: [words, k]
+cases:
+  - name: example 1
+    input: {words: ["i", "love", "leetcode", "i", "love", "coding"], k: 2}
+    expected: ["i", "love"]
+  - name: example 2
+    input: {words: ["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], k: 4}
+    expected: ["the", "is", "sunny", "day"]
+  - name: ties broken alphabetically
+    input: {words: ["b", "a", "c"], k: 2}
+    expected: ["a", "b"]
+  - name: single word
+    input: {words: ["solo"], k: 1}
+    expected: ["solo"]
+  - name: shorter word is not preferred over lexicographic order
+    input: {words: ["aaa", "aa", "a"], k: 1}
+    expected: ["a"]
+  - name: frequency beats alphabet
+    input: {words: ["a", "b", "b", "c", "c", "c"], k: 3}
+    expected: ["c", "b", "a"]
+  - name: k equals number of distinct words
+    input: {words: ["x", "y", "y", "x", "z", "z"], k: 3}
+    expected: ["x", "y", "z"]
+  - name: prefix ordering
+    input: {words: ["app", "apple", "app", "apple", "ape"], k: 3}
+    expected: ["app", "apple", "ape"]

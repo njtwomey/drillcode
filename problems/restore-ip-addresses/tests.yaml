@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.restoreIpAddresses
+scaffolds: []
+args: [s]
+compare: unordered
+cases:
+  - name: example 1
+    input: {s: "25525511135"}
+    expected: ["255.255.11.135", "255.255.111.35"]
+  - name: example 2 all zeros
+    input: {s: "0000"}
+    expected: ["0.0.0.0"]
+  - name: example 3
+    input: {s: "101023"}
+    expected: ["1.0.10.23", "1.0.102.3", "10.1.0.23", "10.10.2.3", "101.0.2.3"]
+  - name: shortest valid length
+    input: {s: "1111"}
+    expected: ["1.1.1.1"]
+  - name: too short
+    input: {s: "111"}
+    expected: []
+  - name: too long
+    input: {s: "1234567890123"}
+    expected: []
+  - name: segments above 255
+    input: {s: "256256256256"}
+    expected: []
+  - name: leading zeros rule out segments
+    input: {s: "010010"}
+    expected: ["0.10.0.10", "0.100.1.0"]

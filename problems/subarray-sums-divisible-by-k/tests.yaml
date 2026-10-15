@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.subarraysDivByK
+scaffolds: []
+args: [nums, k]
+cases:
+  - name: example 1
+    input: {nums: [4, 5, 0, -2, -3, 1], k: 5}
+    expected: 7
+  - name: example 2
+    input: {nums: [5], k: 9}
+    expected: 0
+  - name: single element divisible
+    input: {nums: [5], k: 5}
+    expected: 1
+  - name: negative and positive
+    input: {nums: [-1, 2, 9], k: 2}
+    expected: 2
+  - name: all zeros
+    input: {nums: [0, 0, 0], k: 3}
+    expected: 6
+  - name: all negative multiples
+    input: {nums: [-5, -5], k: 5}
+    expected: 3
+  - name: negative prefixes with same remainder
+    input: {nums: [-1, -1, -1], k: 2}
+    expected: 2
+  - name: small positives
+    input: {nums: [1, 2, 3], k: 3}
+    expected: 3

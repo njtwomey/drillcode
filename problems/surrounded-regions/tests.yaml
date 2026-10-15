@@ -1,0 +1,60 @@
+kind: function
+entry: Solution.solve
+scaffolds: []
+args: [board]
+compare: in_place:board
+cases:
+  - name: example 1
+    input:
+      board:
+        - ["X", "X", "X", "X"]
+        - ["X", "O", "O", "X"]
+        - ["X", "X", "O", "X"]
+        - ["X", "O", "X", "X"]
+    expected:
+      - ["X", "X", "X", "X"]
+      - ["X", "X", "X", "X"]
+      - ["X", "X", "X", "X"]
+      - ["X", "O", "X", "X"]
+  - name: example 2 single X
+    input: {board: [["X"]]}
+    expected: [["X"]]
+  - name: single O on the border
+    input: {board: [["O"]]}
+    expected: [["O"]]
+  - name: single row is all border
+    input: {board: [["O", "X", "O", "O"]]}
+    expected: [["O", "X", "O", "O"]]
+  - name: all O is connected to the border
+    input: {board: [["O", "O", "O"], ["O", "O", "O"], ["O", "O", "O"]]}
+    expected: [["O", "O", "O"], ["O", "O", "O"], ["O", "O", "O"]]
+  - name: lone interior O
+    input: {board: [["X", "X", "X"], ["X", "O", "X"], ["X", "X", "X"]]}
+    expected: [["X", "X", "X"], ["X", "X", "X"], ["X", "X", "X"]]
+  - name: diagonal link to the border does not count
+    input: {board: [["X", "X", "X"], ["X", "O", "X"], ["O", "X", "X"]]}
+    expected: [["X", "X", "X"], ["X", "X", "X"], ["O", "X", "X"]]
+  - name: border chain keeps an inner branch
+    input:
+      board:
+        - ["X", "O", "X", "X"]
+        - ["X", "O", "O", "X"]
+        - ["X", "X", "O", "X"]
+    expected:
+      - ["X", "O", "X", "X"]
+      - ["X", "O", "O", "X"]
+      - ["X", "X", "O", "X"]
+  - name: ring around an enclosed region
+    input:
+      board:
+        - ["X", "X", "X", "X", "X"]
+        - ["X", "O", "O", "O", "X"]
+        - ["X", "O", "X", "O", "X"]
+        - ["X", "O", "O", "O", "X"]
+        - ["X", "X", "X", "X", "X"]
+    expected:
+      - ["X", "X", "X", "X", "X"]
+      - ["X", "X", "X", "X", "X"]
+      - ["X", "X", "X", "X", "X"]
+      - ["X", "X", "X", "X", "X"]
+      - ["X", "X", "X", "X", "X"]

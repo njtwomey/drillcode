@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.minimumTotal
+scaffolds: []
+args: [triangle]
+cases:
+  - name: example 1
+    input: {triangle: [[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]}
+    expected: 11
+  - name: example 2 single value
+    input: {triangle: [[-10]]}
+    expected: -10
+  - name: two rows
+    input: {triangle: [[1], [2, 3]]}
+    expected: 3
+  - name: negatives
+    input: {triangle: [[-1], [2, 3], [1, -1, -3]]}
+    expected: -1
+  - name: greedy fails
+    input: {triangle: [[1], [2, 3], [100, 100, 1]]}
+    expected: 5
+  - name: all ones
+    input: {triangle: [[1], [1, 1], [1, 1, 1], [1, 1, 1, 1]]}
+    expected: 4
+  - name: leftmost edge best
+    input: {triangle: [[1], [1, 9], [1, 9, 9], [1, 9, 9, 9]]}
+    expected: 4
+  - name: rightmost edge best
+    input: {triangle: [[5], [9, 1], [9, 9, 1], [9, 9, 9, 1]]}
+    expected: 8

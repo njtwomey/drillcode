@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.shipWithinDays
+scaffolds: []
+args: [weights, days]
+cases:
+  - name: example 1
+    input: {weights: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], days: 5}
+    expected: 15
+  - name: example 2
+    input: {weights: [3, 2, 2, 4, 1, 4], days: 3}
+    expected: 6
+  - name: example 3
+    input: {weights: [1, 2, 3, 1, 1], days: 4}
+    expected: 3
+  - name: one day carries everything
+    input: {weights: [4, 7, 2, 5], days: 1}
+    expected: 18
+  - name: days equals n
+    input: {weights: [4, 7, 2, 5], days: 4}
+    expected: 7
+  - name: single package
+    input: {weights: [10], days: 1}
+    expected: 10
+  - name: order must be preserved
+    input: {weights: [10, 1, 1, 10], days: 2}
+    expected: 11
+  - name: heaviest at the front
+    input: {weights: [9, 1, 1, 1, 1], days: 2}
+    expected: 9

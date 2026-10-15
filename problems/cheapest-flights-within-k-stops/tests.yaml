@@ -1,0 +1,37 @@
+kind: function
+entry: Solution.findCheapestPrice
+scaffolds: []
+args: [n, flights, src, dst, k]
+cases:
+  - name: example 1
+    input:
+      n: 4
+      flights: [[0, 1, 100], [1, 2, 100], [2, 0, 100], [1, 3, 600], [2, 3, 200]]
+      src: 0
+      dst: 3
+      k: 1
+    expected: 700
+  - name: example 2 one stop
+    input: {n: 3, flights: [[0, 1, 100], [1, 2, 100], [0, 2, 500]], src: 0, dst: 2, k: 1}
+    expected: 200
+  - name: example 3 direct only
+    input: {n: 3, flights: [[0, 1, 100], [1, 2, 100], [0, 2, 500]], src: 0, dst: 2, k: 0}
+    expected: 500
+  - name: cheapest path needs more stops than allowed
+    input: {n: 4, flights: [[0, 1, 1], [1, 2, 1], [2, 3, 1], [0, 3, 100]], src: 0, dst: 3, k: 1}
+    expected: 100
+  - name: more stops allowed makes the long path win
+    input: {n: 4, flights: [[0, 1, 1], [1, 2, 1], [2, 3, 1], [0, 3, 100]], src: 0, dst: 3, k: 2}
+    expected: 3
+  - name: reachable only with too many stops
+    input: {n: 4, flights: [[0, 1, 1], [1, 2, 1], [2, 3, 1]], src: 0, dst: 3, k: 1}
+    expected: -1
+  - name: no flights at all
+    input: {n: 3, flights: [], src: 0, dst: 2, k: 1}
+    expected: -1
+  - name: edges listed in chain order with no stops allowed
+    input: {n: 3, flights: [[0, 1, 1], [1, 2, 1]], src: 0, dst: 2, k: 0}
+    expected: -1
+  - name: destination has no incoming flight
+    input: {n: 3, flights: [[0, 1, 5]], src: 0, dst: 2, k: 1}
+    expected: -1

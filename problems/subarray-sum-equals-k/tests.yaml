@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.subarraySum
+scaffolds: []
+args: [nums, k]
+cases:
+  - name: example 1
+    input: {nums: [1, 1, 1], k: 2}
+    expected: 2
+  - name: example 2
+    input: {nums: [1, 2, 3], k: 3}
+    expected: 2
+  - name: single element no match
+    input: {nums: [1], k: 0}
+    expected: 0
+  - name: all zeros with k zero
+    input: {nums: [0, 0, 0], k: 0}
+    expected: 6
+  - name: negatives and zero cancel
+    input: {nums: [1, -1, 0], k: 0}
+    expected: 3
+  - name: mixed signs overlapping matches
+    input: {nums: [3, 4, 7, 2, -3, 1, 4, 2], k: 7}
+    expected: 4
+  - name: negative k
+    input: {nums: [-1, -1, 1], k: -1}
+    expected: 3
+  - name: whole array only
+    input: {nums: [5, -2, 4], k: 7}
+    expected: 1

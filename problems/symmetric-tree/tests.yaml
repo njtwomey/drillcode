@@ -1,0 +1,34 @@
+kind: function
+entry: Solution.isSymmetric
+scaffolds: [tree]
+args: [root]
+convert:
+  root: tree
+cases:
+  - name: example 1 symmetric
+    input: {root: [1, 2, 2, 3, 4, 4, 3]}
+    expected: true
+  - name: example 2 same-side children
+    input: {root: [1, 2, 2, null, 3, null, 3]}
+    expected: false
+  - name: single node
+    input: {root: [1]}
+    expected: true
+  - name: two equal children
+    input: {root: [1, 2, 2]}
+    expected: true
+  - name: different children
+    input: {root: [1, 2, 3]}
+    expected: false
+  - name: only a left child
+    input: {root: [1, 2]}
+    expected: false
+  - name: inner pair mirrors
+    input: {root: [1, 2, 2, null, 3, 3]}
+    expected: true
+  - name: same shape but not mirrored
+    input: {root: [1, 2, 2, 2, null, 2]}
+    expected: false
+  - name: deep values differ
+    input: {root: [1, 2, 2, 3, 4, 4, 5]}
+    expected: false

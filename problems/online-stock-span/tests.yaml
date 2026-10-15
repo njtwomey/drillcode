@@ -1,0 +1,22 @@
+kind: operations
+entry: StockSpanner
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["StockSpanner", []], ["next", [100]], ["next", [80]], ["next", [60]], ["next", [70]], ["next", [60]], ["next", [75]], ["next", [85]]]
+    expected: [null, 1, 1, 1, 2, 1, 4, 6]
+  - name: strictly increasing
+    ops: [["StockSpanner", []], ["next", [31]], ["next", [41]], ["next", [48]], ["next", [59]], ["next", [79]]]
+    expected: [null, 1, 2, 3, 4, 5]
+  - name: strictly decreasing
+    ops: [["StockSpanner", []], ["next", [9]], ["next", [7]], ["next", [5]], ["next", [3]]]
+    expected: [null, 1, 1, 1, 1]
+  - name: equal prices count as not higher
+    ops: [["StockSpanner", []], ["next", [5]], ["next", [5]], ["next", [5]]]
+    expected: [null, 1, 2, 3]
+  - name: single call
+    ops: [["StockSpanner", []], ["next", [42]]]
+    expected: [null, 1]
+  - name: new high swallows an earlier merged span
+    ops: [["StockSpanner", []], ["next", [10]], ["next", [4]], ["next", [6]], ["next", [3]], ["next", [20]]]
+    expected: [null, 1, 1, 2, 1, 5]

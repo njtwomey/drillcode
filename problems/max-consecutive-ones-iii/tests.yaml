@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.longestOnes
+scaffolds: []
+args: [nums, k]
+cases:
+  - name: example 1
+    input: {nums: [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], k: 2}
+    expected: 6
+  - name: example 2
+    input: {nums: [0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], k: 3}
+    expected: 10
+  - name: k zero all zeros
+    input: {nums: [0, 0, 0], k: 0}
+    expected: 0
+  - name: k zero all ones
+    input: {nums: [1, 1, 1], k: 0}
+    expected: 3
+  - name: k exceeds number of zeros
+    input: {nums: [0, 0, 0], k: 5}
+    expected: 3
+  - name: single zero flipped
+    input: {nums: [0], k: 1}
+    expected: 1
+  - name: k zero picks longest run
+    input: {nums: [1, 1, 0, 1, 1, 1, 0, 1], k: 0}
+    expected: 3
+  - name: one flip bridges two runs
+    input: {nums: [0, 1, 0], k: 1}
+    expected: 2

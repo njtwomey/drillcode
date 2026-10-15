@@ -1,0 +1,34 @@
+kind: function
+entry: Solution.minDepth
+scaffolds: [tree]
+args: [root]
+convert:
+  root: tree
+cases:
+  - name: example 1
+    input: {root: [3, 9, 20, null, null, 15, 7]}
+    expected: 2
+  - name: example 2 right chain
+    input: {root: [2, null, 3, null, 4, null, 5, null, 6]}
+    expected: 5
+  - name: empty tree
+    input: {root: []}
+    expected: 0
+  - name: single node
+    input: {root: [1]}
+    expected: 1
+  - name: only a left child
+    input: {root: [1, 2]}
+    expected: 2
+  - name: only a right child
+    input: {root: [1, null, 2]}
+    expected: 2
+  - name: shallow leaf on the right
+    input: {root: [1, 2, 3, 4, 5]}
+    expected: 2
+  - name: left chain
+    input: {root: [1, 2, null, 3]}
+    expected: 3
+  - name: all leaves at depth three
+    input: {root: [1, 2, 3, 4, null, null, 5]}
+    expected: 3

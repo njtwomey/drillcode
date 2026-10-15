@@ -1,0 +1,38 @@
+kind: function
+entry: Solution.reverseKGroup
+scaffolds: [linked_list]
+args: [head, k]
+convert:
+  head: linked_list
+  result: linked_list
+cases:
+  - name: example 1 k=2
+    input: {head: [1, 2, 3, 4, 5], k: 2}
+    expected: [2, 1, 4, 3, 5]
+  - name: example 2 k=3
+    input: {head: [1, 2, 3, 4, 5], k: 3}
+    expected: [3, 2, 1, 4, 5]
+  - name: k=1 changes nothing
+    input: {head: [1, 2, 3, 4], k: 1}
+    expected: [1, 2, 3, 4]
+  - name: k equals length reverses the whole list
+    input: {head: [1, 2, 3, 4, 5], k: 5}
+    expected: [5, 4, 3, 2, 1]
+  - name: k larger than the remainder leaves tail untouched
+    input: {head: [1, 2, 3, 4, 5, 6, 7], k: 3}
+    expected: [3, 2, 1, 6, 5, 4, 7]
+  - name: exact multiple of k
+    input: {head: [1, 2, 3, 4, 5, 6], k: 3}
+    expected: [3, 2, 1, 6, 5, 4]
+  - name: single node
+    input: {head: [1], k: 1}
+    expected: [1]
+  - name: k=2 on two nodes
+    input: {head: [1, 2], k: 2}
+    expected: [2, 1]
+  - name: duplicates
+    input: {head: [4, 4, 5, 5, 6, 6, 7], k: 2}
+    expected: [4, 4, 5, 5, 6, 6, 7]
+  - name: four groups of two
+    input: {head: [1, 2, 3, 4, 5, 6, 7, 8], k: 2}
+    expected: [2, 1, 4, 3, 6, 5, 8, 7]

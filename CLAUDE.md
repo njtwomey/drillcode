@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-A local workbench for coding-interview prep: a catalogue of 110 LeetCode problems, each with a Python reference solution and test suite, plus a React app to browse them, edit Python in the browser, run the tests there, and attempt problems from a blank skeleton. No backend; browser state lives in localStorage.
+DrillCode: a local workbench for coding-interview prep (repository `njtwomey/drillcode`, app in `drillcode/`): a catalogue of 110 LeetCode problems, each with a Python reference solution and test suite, plus a React app to browse them, edit Python in the browser, run the tests there, and attempt problems from a blank skeleton. No backend; browser state lives in localStorage.
 
 ## Python: always use uv
 
@@ -22,12 +22,12 @@ In the browser Python is Pyodide (CPython compiled to WASM, loaded from the jsDe
 | `make techniques` | `scripts/check_techniques.py`: validates `techniques/*.md` and that every problem is listed by a technique |
 | `make skeletons` | regenerate every `skeleton.py` from its `solution.py` (never hand-edit skeletons) |
 | `make headers` | regenerate each `solution.py` module docstring from `index.yaml` (never hand-edit that docstring; edit `index.yaml`) |
-| `make dev` / `make build` / `make preview` | Vite dev server / production build to `web/dist` / serve the build |
-| `make lint` / `make typecheck` | oxlint / `tsc -b` in `web/` |
+| `make dev` / `make build` / `make preview` | Vite dev server / production build to `drillcode/dist` / serve the build |
+| `make lint` / `make typecheck` | oxlint / `tsc -b` in `drillcode/` |
 | `make links` | `scripts/verify_links.py`: every slug, number and premium flag against LeetCode's GraphQL API (needs network) |
 | `make pre-push` | fixes what it can (skeletons, solution headers, `oxlint --fix`), then catalogue, techniques, tests, lint, typecheck, build, links. Run before pushing; it leaves rewrites in `git status` |
 
-Package manager is npm (pnpm was not installed). `web/` is its own npm project.
+Package manager is npm (pnpm was not installed). `drillcode/` is its own npm project.
 
 ## Layout
 
@@ -35,16 +35,16 @@ Package manager is npm (pnpm was not installed). `web/` is its own npm project.
 - `problems/_scaffolds/` (`linked_list.py`, `tree.py`, `graph.py`): node classes and JSON conversions. They import nothing from the repo and have no top-level side effects, because the browser worker writes them into the Pyodide filesystem.
 - `problems/_harness/runner.py`: the one harness used by both the CLI and the browser. Standard library only, reads no files. Callers pass the solution source, the parsed `tests.yaml`, a case and optionally the validator source.
 - `scripts/`: `run_tests.py`, `check_catalogue.py`, `gen_skeletons.py`, `sync_headers.py`, `verify_links.py`, `_common.py` (topic list, paths, variant discovery).
-- `web/`: Vite + React + TypeScript + Tailwind + shadcn/ui (radix-nova, neutral, Lucide), react-router (`HashRouter`), zustand, CodeMirror 6, ECharts via `echarts-for-react`.
-- `.github/workflows/deploy.yml` builds and deploys `web/dist` to GitHub Pages on push to `main` (after catalogue check and tests). `.claude/skills/add-problem/SKILL.md` is the add-a-problem workflow.
+- `drillcode/`: Vite + React + TypeScript + Tailwind + shadcn/ui (radix-nova, neutral, Lucide), react-router (`HashRouter`), zustand, CodeMirror 6, ECharts via `echarts-for-react`.
+- `.github/workflows/deploy.yml` builds and deploys `drillcode/dist` to GitHub Pages on push to `main` (after catalogue check and tests). `.claude/skills/add-problem/SKILL.md` is the add-a-problem workflow.
 
 ## Big picture
 
-**One harness, two hosts.** `runner.run_case(solution_source, spec, case, validator_source)` runs a single case and returns a plain dict (`name, status, ms, expected, actual, message, stdout, stderr`); it never raises. `run_case_json` is the string-in/string-out wrapper the worker calls. Scaffolds are imported as flat top-level modules, so both hosts put `_scaffolds/` and `_harness/` on `sys.path` (CLI: `scripts/_common.py`; browser: `web/src/py/worker.ts` writes the files to `/workbench`).
+**One harness, two hosts.** `runner.run_case(solution_source, spec, case, validator_source)` runs a single case and returns a plain dict (`name, status, ms, expected, actual, message, stdout, stderr`); it never raises. `run_case_json` is the string-in/string-out wrapper the worker calls. Scaffolds are imported as flat top-level modules, so both hosts put `_scaffolds/` and `_harness/` on `sys.path` (CLI: `scripts/_common.py`; browser: `drillcode/src/py/worker.ts` writes the files to `/workbench`).
 
-**Five-second rule.** The harness does not enforce the limit. CLI: `signal.alarm` per case raises `runner.CaseTimeout` (a `BaseException`, so user `except Exception` cannot hide it). Browser: `web/src/py/runner.ts` sends one case per worker message with a 5 s timer; on expiry it `terminate()`s the worker, marks that case `timeout` and the rest `skipped`, and starts a fresh worker in the background. Pyodide starts when the app loads (`main.tsx` imports the runner), not on first Run.
+**Five-second rule.** The harness does not enforce the limit. CLI: `signal.alarm` per case raises `runner.CaseTimeout` (a `BaseException`, so user `except Exception` cannot hide it). Browser: `drillcode/src/py/runner.ts` sends one case per worker message with a 5 s timer; on expiry it `terminate()`s the worker, marks that case `timeout` and the rest `skipped`, and starts a fresh worker in the background. Pyodide starts when the app loads (`main.tsx` imports the runner), not on first Run.
 
-**Files on disk are the source of truth.** `web/src/lib/catalogue.ts` reads `problems/` with `import.meta.glob(..., '?raw')` (`server.fs.allow` includes the repo root), so editing a solution or `tests.yaml` hot-reloads. The Definitions block on the problem page is the leading `#` comment block of `skeleton.py`.
+**Files on disk are the source of truth.** `drillcode/src/lib/catalogue.ts` reads `problems/` with `import.meta.glob(..., '?raw')` (`server.fs.allow` includes the repo root), so editing a solution or `tests.yaml` hot-reloads. The Definitions block on the problem page is the leading `#` comment block of `skeleton.py`.
 
 **Pages** (`HashRouter`, nav bar in `App.tsx`): `/` Problems (labelled filter bar with search, difficulty, topic, a All / Not done yet / Done toggle and Only the Blind 75; every column header sorts: click cycles ascending, descending, off; topic and tag chips filter when clicked; a Random problem button opens one from the rows shown), `/p/:slug` problem page, `/practice` session setup, `/practice/session` the running session, `/tips` and `/tips/:slug` the techniques reference, `/profile` (a user icon at the right of the header, beside the theme toggle) completion tables by difficulty, set and topic plus practice history and a reset. The problem page and practice session share `components/Workspace.tsx` (editor toolbar, editor, and Test cases / Console / Add a case / Benchmark tabs). Layout is three columns on wide screens: a narrow left column (description and, in View mode, approach/tricks/edge cases), the code in the middle, and a narrow right column listing every test case with its result plus the add-a-case field. Below the editor are Console and Benchmark tabs.
 
@@ -52,9 +52,9 @@ Package manager is npm (pnpm was not installed). `web/` is its own npm project.
 
 **Practice** (`store.ts` `practice*` state, `pages/Practice*.tsx`): the user picks difficulty, topics, Blind 75, a status (All / Not done yet / Done, the last for spaced repetition) and a count; a random set is drawn and stepped through. No View, no Reveal, no hints, no notes; only the first two test cases are shown by name and input, later ones read "Hidden case n" until they fail. Passing all cases marks the problem done and records attempts and time; finished sessions go to `practiceHistory`. Practice drafts are keyed `practice:<slug>` and wiped when a session starts.
 
-**Custom cases** (`components/CustomCases.tsx`, in the right-hand column under the test list): function problems get one labelled field per input (argument names, with their types read from `skeleton.py`, plus converter extras such as `pos`), then an `expected` field, then the Add button below. Each field takes JSON or Python literals (`True`, `None`, single quotes) and is validated as you type; the label for `expected` says "the final `matrix`" for in-place problems. Design problems (`kind: operations`) have no fixed arguments, so they take one `calls` field (`Class(args); method(args)`) and one results field. The Tests list and the stored cases show each case as one line, `values → expected`, produced by `formatCase`; `parseCaseLine` (the inverse, used for `calls`) is checked against every catalogue case. `web/src/lib/caseFormat.ts` holds both.
+**Custom cases** (`components/CustomCases.tsx`, in the right-hand column under the test list): function problems get one labelled field per input (argument names, with their types read from `skeleton.py`, plus converter extras such as `pos`), then an `expected` field, then the Add button below. Each field takes JSON or Python literals (`True`, `None`, single quotes) and is validated as you type; the label for `expected` says "the final `matrix`" for in-place problems. Design problems (`kind: operations`) have no fixed arguments, so they take one `calls` field (`Class(args); method(args)`) and one results field. The Tests list and the stored cases show each case as one line, `values → expected`, produced by `formatCase`; `parseCaseLine` (the inverse, used for `calls`) is checked against every catalogue case. `drillcode/src/lib/caseFormat.ts` holds both.
 
-**Persistence** is one zustand store under the localStorage key `leetcode-workbench` (`web/src/lib/store.ts`): done ticks, filters, sort, editor drafts, custom cases, practice config/session/history, theme. Draft keys are `<slug>:view`, `<slug>:implement`, `<slug>:view:<variant>` and `practice:<slug>`. The editor marks app-initiated text replacement (mode switch, Reset) with an annotation so it is not saved as a user draft; keep that, or stale drafts block on-disk hot reload.
+**Persistence and data model.** There is no backend: everything lives in the browser's localStorage, in one JSON document under the key `leetcode-workbench` (kept after the DrillCode rename so existing progress survives), written by zustand's `persist` middleware (`drillcode/src/lib/store.ts`, `version: 2` with a `migrate` for older shapes). Fields: `done` (slug to true), `filters`, `sort`, `drafts` (editor text by `<slug>:view`, `<slug>:implement`, `<slug>:view:<variant>`, `practice:<slug>`), `customCases` (by slug), `theme`, `practiceConfig`, `practice` (the running session, with per-problem attempts and seconds), `practiceHistory` (finished sessions: when, solved, total, seconds), and `solves`, an append-only log of `{slug, at, source: 'practice' | 'implement', seconds?}` capped at 5000 events. A solve is logged when every test passes in Practice (first pass of that problem in the session, with its time) or in Implement mode (once per visit). Ticking Done by hand does not log a solve. `lib/stats.ts` derives per-problem counts, last-solved dates and best times from the log; they appear in the Problems table (Solved column), on the problem page header, and in the Profile statistics (totals, last 7 days, day streak, most solved, longest since solved). Reset on the Profile page clears done ticks, solves and practice history but keeps drafts and custom cases. Data is per browser; clearing site data erases it.
 
 ## Rules for solutions
 
@@ -98,15 +98,15 @@ Comparators (`compare`): `exact` (default); `unordered` (sort the outer list onl
 - Extra harness features beyond the brief's list: `linked_list_array`, `linked_list_cycle:<arg>`, result converter `node_val`, `call: false`, a validator that receives raw results plus converted args, an optional `entry` for operations problems (needed for skeleton generation and the catalogue check), and the worker/CLI message carrying `validatorSource`.
 - LeetCode links are verified through the GraphQL endpoint (`scripts/verify_links.py`), because plain HEAD requests get 403 from bot protection even for non-existent slugs. The same check also confirms number and premium flag.
 - Routing is `HashRouter` and Vite `base: './'` so the static build works under any GitHub Pages path with no 404 fallback.
-- Pyodide is pinned to a specific CDN version in `web/src/py/worker.ts` (`PYODIDE_URL`) so deploys are reproducible; bump it deliberately.
+- Pyodide is pinned to a specific CDN version in `drillcode/src/py/worker.ts` (`PYODIDE_URL`) so deploys are reproducible; bump it deliberately.
 - Terminate-and-restart is the only cancellation path; the optional interrupt-buffer route (needs COOP/COEP headers, which GitHub Pages cannot send) was not built.
-- Vite chunk warning limit is raised to 2500 kB because every problem's source text is embedded in the bundle. `web/src/components/ui/` (generated by shadcn) is excluded from oxlint.
+- Vite chunk warning limit is raised to 2500 kB because every problem's source text is embedded in the bundle. `drillcode/src/components/ui/` (generated by shadcn) is excluded from oxlint.
 - Charts are static (animation off) and tree-shaken (`echarts/core` with only bar, line, grid, title, tooltip, legend). `echarts-for-react/lib/core` is CommonJS and is unwrapped from `.default` in `Chart.tsx`; charts sit behind an error boundary so a bad option cannot blank a page.
 - Landing "n of m done" under "Hide done" counts over the visible problems plus done ones, otherwise it would always read 0.
 
 - LeetCode's statements are not copied (copyright). Each problem has a `description.md` written in our own words for an experienced reader: the task precisely (real parameter names in `code`, return value, input guarantees), then a `Constraints:` bullet list of only the limits that drive algorithm choice. It must not hint at the approach (practice mode shows it) and has no examples (the test cases are shown separately). Format is the small markdown subset rendered by `components/Description.tsx`: paragraphs, `- ` bullets, inline `code`. The problem page also links to the full statement on LeetCode.
 - There is no histogram on the home page or the profile; progress is shown as the Profile page's completion tables. ECharts remains only for the benchmark charts.
-- Multi-selects (difficulty, topic, area) are popovers of checkboxes where an empty selection means "all". Topic and area lists are alphabetical (`TOPICS` in `scripts/_common.py` and `web/src/lib/catalogue.ts` are kept sorted); difficulty stays easy, medium, hard.
+- Multi-selects (difficulty, topic, area) are popovers of checkboxes where an empty selection means "all". Topic and area lists are alphabetical (`TOPICS` in `scripts/_common.py` and `drillcode/src/lib/catalogue.ts` are kept sorted); difficulty stays easy, medium, hard.
 - The topic `DP` was renamed `Dynamic programming` so every topic is spelled out. Persisted state is versioned (`version: 2` in `store.ts`): v1 `hideDone` / `skipDone` switches migrate to the three-way status filter and the old shuffle queue is dropped.
 - The home page's Shuffle/queue was replaced by a Random problem button; Previous and Next on the problem page always follow catalogue order.
 
@@ -122,7 +122,7 @@ Shared variable names, used in templates, prose and solutions: `dummy`, `prev`, 
 
 **Every catalogue problem must be listed by at least one technique** (`check_techniques.py` fails otherwise). If a problem fits no page, add a Variants entry to the nearest one or add a page.
 
-`techniques/_index.md` holds the signals table; `web/src/lib/techniques.ts` parses it into cards (a signal, then link chips to techniques) and builds a search index over each page's text, area, topics, signal rows and listed problems. The Tips page puts search first, with Area and Topic dropdowns, and shows cards, not tables. Technique badges appear on the problem page in View mode only, never in Implement or Practice, because they hint at the approach. Inline `code` in a page that equals a technique slug renders as a link.
+`techniques/_index.md` holds the signals table; `drillcode/src/lib/techniques.ts` parses it into cards (a signal, then link chips to techniques) and builds a search index over each page's text, area, topics, signal rows and listed problems. The Tips page puts search first, with Area and Topic dropdowns, and shows cards, not tables. Technique badges appear on the problem page in View mode only, never in Implement or Practice, because they hint at the approach. Inline `code` in a page that equals a technique slug renders as a link.
 
 ## Adding a problem
 

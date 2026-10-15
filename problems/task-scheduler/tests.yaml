@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.leastInterval
+scaffolds: []
+args: [tasks, n]
+cases:
+  - name: example 1
+    input: {tasks: ["A", "A", "A", "B", "B", "B"], n: 2}
+    expected: 8
+  - name: example 2 no cooldown
+    input: {tasks: ["A", "A", "A", "B", "B", "B"], n: 0}
+    expected: 6
+  - name: example 3 dominant task
+    input: {tasks: ["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"], n: 2}
+    expected: 16
+  - name: single task
+    input: {tasks: ["A"], n: 5}
+    expected: 1
+  - name: distinct tasks need no idling
+    input: {tasks: ["A", "B", "C"], n: 5}
+    expected: 3
+  - name: enough tasks to fill every gap
+    input: {tasks: ["A", "A", "A", "B", "B", "B", "C", "C", "C", "D", "D", "E"], n: 2}
+    expected: 12
+  - name: long cooldown
+    input: {tasks: ["A", "A", "A", "B", "B", "B"], n: 50}
+    expected: 104
+  - name: two pairs no cooldown
+    input: {tasks: ["A", "A", "B", "B"], n: 0}
+    expected: 4

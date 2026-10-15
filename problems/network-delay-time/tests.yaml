@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.networkDelayTime
+scaffolds: []
+args: [times, n, k]
+cases:
+  - name: example 1
+    input: {times: [[2, 1, 1], [2, 3, 1], [3, 4, 1]], n: 4, k: 2}
+    expected: 2
+  - name: example 2
+    input: {times: [[1, 2, 1]], n: 2, k: 1}
+    expected: 1
+  - name: example 3 start cannot reach the other node
+    input: {times: [[1, 2, 1]], n: 2, k: 2}
+    expected: -1
+  - name: one node is never reached
+    input: {times: [[1, 2, 1], [2, 3, 2]], n: 4, k: 1}
+    expected: -1
+  - name: cheaper route uses more edges
+    input: {times: [[1, 2, 10], [1, 3, 1], [3, 2, 1]], n: 3, k: 1}
+    expected: 2
+  - name: answer is the maximum, not the sum
+    input: {times: [[1, 2, 3], [1, 3, 4]], n: 3, k: 1}
+    expected: 4
+  - name: cycle in the graph
+    input: {times: [[1, 2, 1], [2, 1, 1], [2, 3, 1]], n: 3, k: 1}
+    expected: 2
+  - name: improved distance after a stale heap entry
+    input: {times: [[1, 2, 1], [1, 3, 5], [2, 3, 1], [3, 4, 1]], n: 4, k: 1}
+    expected: 3
+  - name: zero weight edges
+    input: {times: [[1, 2, 0], [2, 3, 0]], n: 3, k: 1}
+    expected: 0

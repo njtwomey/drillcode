@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.rangeBitwiseAnd
+scaffolds: []
+args: [left, right]
+cases:
+  - name: example 1
+    input: {left: 5, right: 7}
+    expected: 4
+  - name: example 2 zero range
+    input: {left: 0, right: 0}
+    expected: 0
+  - name: example 3 full range
+    input: {left: 1, right: 2147483647}
+    expected: 0
+  - name: single value max
+    input: {left: 2147483647, right: 2147483647}
+    expected: 2147483647
+  - name: single value
+    input: {left: 5, right: 5}
+    expected: 5
+  - name: zero to one
+    input: {left: 0, right: 1}
+    expected: 0
+  - name: adjacent with shared prefix
+    input: {left: 6, right: 7}
+    expected: 6
+  - name: prefix only
+    input: {left: 12, right: 13}
+    expected: 12
+  - name: upper half of the range
+    input: {left: 1073741824, right: 2147483647}
+    expected: 1073741824
+  - name: crossing a power of two
+    input: {left: 7, right: 8}
+    expected: 0

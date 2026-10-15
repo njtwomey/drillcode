@@ -1,0 +1,38 @@
+kind: function
+entry: Solution.deleteDuplicates
+scaffolds: [linked_list]
+args: [head]
+convert:
+  head: linked_list
+  result: linked_list
+cases:
+  - name: example 1
+    input: {head: [1, 2, 3, 3, 4, 4, 5]}
+    expected: [1, 2, 5]
+  - name: example 2 head is duplicated
+    input: {head: [1, 1, 1, 2, 3]}
+    expected: [2, 3]
+  - name: empty list
+    input: {head: []}
+    expected: []
+  - name: single node
+    input: {head: [4]}
+    expected: [4]
+  - name: all equal gives empty
+    input: {head: [2, 2, 2, 2]}
+    expected: []
+  - name: no duplicates
+    input: {head: [1, 2, 3, 4]}
+    expected: [1, 2, 3, 4]
+  - name: duplicates at the tail
+    input: {head: [1, 2, 3, 3]}
+    expected: [1, 2]
+  - name: back-to-back duplicate runs
+    input: {head: [1, 1, 2, 2, 3]}
+    expected: [3]
+  - name: negatives and pair at the head
+    input: {head: [-3, -3, -1, 0, 0, 2]}
+    expected: [-1, 2]
+  - name: two equal nodes
+    input: {head: [5, 5]}
+    expected: []

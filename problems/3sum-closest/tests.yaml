@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.threeSumClosest
+scaffolds: []
+args: [nums, target]
+cases:
+  - name: example 1
+    input: {nums: [-1, 2, 1, -4], target: 1}
+    expected: 2
+  - name: example 2 all zeros
+    input: {nums: [0, 0, 0], target: 1}
+    expected: 0
+  - name: exactly three numbers
+    input: {nums: [1, 1, 1], target: 100}
+    expected: 3
+  - name: exact match exists
+    input: {nums: [1, 2, 4, 8, 16, 32, 64, 128], target: 82}
+    expected: 82
+  - name: target far below every sum
+    input: {nums: [4, 0, 5, -5, 3, 3, 0, -4, -5], target: -100}
+    expected: -14
+  - name: target far above every sum
+    input: {nums: [-1, 0, 1, 2], target: 1000}
+    expected: 3
+  - name: negatives only
+    input: {nums: [-8, -5, -3, -2], target: -9}
+    expected: -10
+  - name: duplicates with unsorted input
+    input: {nums: [3, 3, -3, 3, -3, 0], target: 2}
+    expected: 3
+  - name: exact match among four numbers
+    input: {nums: [10, 20, 30, 40], target: 70}
+    expected: 70

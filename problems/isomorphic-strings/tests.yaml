@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.isIsomorphic
+scaffolds: []
+args: [s, t]
+cases:
+  - name: example 1
+    input: {s: "egg", t: "add"}
+    expected: true
+  - name: example 2
+    input: {s: "foo", t: "bar"}
+    expected: false
+  - name: example 3
+    input: {s: "paper", t: "title"}
+    expected: true
+  - name: two sources share a target
+    input: {s: "badc", t: "baba"}
+    expected: false
+  - name: one source needs two targets
+    input: {s: "aa", t: "ab"}
+    expected: false
+  - name: reverse direction conflict
+    input: {s: "ab", t: "aa"}
+    expected: false
+  - name: single characters
+    input: {s: "a", t: "z"}
+    expected: true
+  - name: map to self and swap
+    input: {s: "abab", t: "baba"}
+    expected: true
+  - name: digits and spaces
+    input: {s: "1 2", t: "a b"}
+    expected: true

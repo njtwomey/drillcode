@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.maxProfit
+scaffolds: []
+args: [prices]
+cases:
+  - name: example 1
+    input: {prices: [1, 2, 3, 0, 2]}
+    expected: 3
+  - name: example 2 single day
+    input: {prices: [1]}
+    expected: 0
+  - name: two days rising
+    input: {prices: [1, 2]}
+    expected: 1
+  - name: two days falling
+    input: {prices: [2, 1]}
+    expected: 0
+  - name: strictly decreasing
+    input: {prices: [5, 4, 3, 2, 1]}
+    expected: 0
+  - name: all equal
+    input: {prices: [3, 3, 3, 3]}
+    expected: 0
+  - name: cooldown blocks the second trade
+    input: {prices: [1, 2, 4]}
+    expected: 3
+  - name: one long hold beats two short trades
+    input: {prices: [1, 4, 2, 7]}
+    expected: 6
+  - name: skip the cooldown day
+    input: {prices: [2, 1, 4]}
+    expected: 3
+  - name: mixed
+    input: {prices: [6, 1, 6, 4, 3, 0, 2]}
+    expected: 7

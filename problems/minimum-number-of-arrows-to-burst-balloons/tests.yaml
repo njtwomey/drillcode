@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.findMinArrowShots
+scaffolds: []
+args: [points]
+cases:
+  - name: example 1
+    input: {points: [[10, 16], [2, 8], [1, 6], [7, 12]]}
+    expected: 2
+  - name: example 2 disjoint
+    input: {points: [[1, 2], [3, 4], [5, 6], [7, 8]]}
+    expected: 4
+  - name: example 3 chain of touching
+    input: {points: [[1, 2], [2, 3], [3, 4], [4, 5]]}
+    expected: 2
+  - name: single balloon
+    input: {points: [[1, 1]]}
+    expected: 1
+  - name: two touching balloons share an arrow
+    input: {points: [[1, 2], [2, 3]]}
+    expected: 1
+  - name: nested balloons need sorting by end
+    input: {points: [[1, 10], [2, 3], [4, 5], [6, 7]]}
+    expected: 3
+  - name: extreme values far apart
+    input: {points: [[-2147483646, -2147483645], [2147483646, 2147483647]]}
+    expected: 2
+  - name: full integer range
+    input: {points: [[-2147483648, 2147483647]]}
+    expected: 1
+  - name: touching at the maximum
+    input: {points: [[-2147483648, 2147483647], [2147483647, 2147483647]]}
+    expected: 1
+  - name: identical balloons
+    input: {points: [[3, 9], [3, 9], [3, 9]]}
+    expected: 1

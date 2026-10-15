@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.maxCoins
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [3, 1, 5, 8]}
+    expected: 167
+  - name: example 2
+    input: {nums: [1, 5]}
+    expected: 10
+  - name: single balloon
+    input: {nums: [7]}
+    expected: 7
+  - name: empty input
+    input: {nums: []}
+    expected: 0
+  - name: three balloons
+    input: {nums: [3, 1, 5]}
+    expected: 35
+  - name: all ones
+    input: {nums: [1, 1, 1]}
+    expected: 3
+  - name: two equal balloons
+    input: {nums: [2, 2]}
+    expected: 6
+  - name: zeros are worthless but still neighbours
+    input: {nums: [0, 5, 0]}
+    expected: 5
+  - name: ascending four
+    input: {nums: [1, 2, 3, 4]}
+    expected: 40

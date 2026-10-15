@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.longestPalindromeSubseq
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "bbbab"}
+    expected: 4
+  - name: example 2
+    input: {s: "cbbd"}
+    expected: 2
+  - name: single character
+    input: {s: "a"}
+    expected: 1
+  - name: all distinct
+    input: {s: "abcde"}
+    expected: 1
+  - name: already a palindrome
+    input: {s: "abcba"}
+    expected: 5
+  - name: all equal
+    input: {s: "aaaa"}
+    expected: 4
+  - name: gaps between matching ends
+    input: {s: "agbdba"}
+    expected: 5
+  - name: subsequence not substring
+    input: {s: "character"}
+    expected: 5

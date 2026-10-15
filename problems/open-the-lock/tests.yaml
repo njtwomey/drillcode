@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.openLock
+scaffolds: []
+args: [deadends, target]
+cases:
+  - name: example 1
+    input: {deadends: ["0201", "0101", "0102", "1212", "2002"], target: "0202"}
+    expected: 6
+  - name: example 2 wraps around
+    input: {deadends: ["8888"], target: "0009"}
+    expected: 1
+  - name: example 3 target walled in
+    input: {deadends: ["8887", "8889", "8878", "8898", "8788", "8988", "7888", "9888"], target: "8888"}
+    expected: -1
+  - name: start is a dead end
+    input: {deadends: ["0000"], target: "8888"}
+    expected: -1
+  - name: target is the start
+    input: {deadends: ["1111"], target: "0000"}
+    expected: 0
+  - name: single wrap downward
+    input: {deadends: ["1111"], target: "9000"}
+    expected: 1
+  - name: two wheels wrap
+    input: {deadends: ["1111"], target: "0099"}
+    expected: 2
+  - name: farthest state
+    input: {deadends: ["1111"], target: "5555"}
+    expected: 20
+  - name: dead ends elsewhere do not interfere
+    input: {deadends: ["0100", "1000", "0010"], target: "0001"}
+    expected: 1
+  - name: blocking neighbours of the start
+    input: {deadends: ["0001", "0009", "0010", "0090", "0100", "0900", "1000", "9000"], target: "1111"}
+    expected: -1

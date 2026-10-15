@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.splitArray
+scaffolds: []
+args: [nums, k]
+cases:
+  - name: example 1
+    input: {nums: [7, 2, 5, 10, 8], k: 2}
+    expected: 18
+  - name: example 2
+    input: {nums: [1, 2, 3, 4, 5], k: 2}
+    expected: 9
+  - name: k is one
+    input: {nums: [1, 4, 4], k: 1}
+    expected: 9
+  - name: k equals n
+    input: {nums: [1, 4, 4], k: 3}
+    expected: 4
+  - name: k is two on small array
+    input: {nums: [1, 4, 4], k: 2}
+    expected: 5
+  - name: single element
+    input: {nums: [5], k: 1}
+    expected: 5
+  - name: all zeros
+    input: {nums: [0, 0, 0], k: 2}
+    expected: 0
+  - name: balanced split is not best
+    input: {nums: [1, 2, 3, 4, 5], k: 3}
+    expected: 6
+  - name: k almost n
+    input: {nums: [2, 3, 1, 2, 4, 3], k: 5}
+    expected: 4
+  - name: big element dominates
+    input: {nums: [1, 1, 100, 1, 1], k: 3}
+    expected: 100

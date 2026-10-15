@@ -83,6 +83,25 @@
   complexity:
     time: O(n)
     space: O(n)
+- slug: convert-sorted-array-to-binary-search-tree
+  number: 108
+  title: Convert Sorted Array to Binary Search Tree
+  difficulty: easy
+  topic: Tree
+  tags:
+  - Binary search
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+  summary: Recursively pick the middle element of each index range as the root, building the two halves as subtrees
+  tricks: Recurse on index bounds rather than slicing to stay O(n); the middle root keeps subtree sizes within one so the tree is balanced
+  edge_cases:
+  - Single value
+  - Even length (two valid middles)
+  - Two values
+  complexity:
+    time: O(n)
+    space: O(log n)
 - slug: counting-bits
   number: 338
   title: Counting Bits
@@ -116,6 +135,25 @@
   complexity:
     time: O(n)
     space: O(h)
+- slug: find-all-numbers-disappeared-in-an-array
+  number: 448
+  title: Find All Numbers Disappeared in an Array
+  difficulty: easy
+  topic: Array
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
+  summary: Use the array as its own seen-set by negating nums[v - 1] for each value v, then report the slots still positive
+  tricks: Read values with abs() since earlier steps may have negated them, and set -abs() so duplicates do not flip the sign back
+  edge_cases:
+  - Duplicates hitting an already marked slot
+  - Permutation (nothing missing)
+  - All values equal
+  complexity:
+    time: O(n)
+    space: O(1)
 - slug: first-bad-version
   number: 278
   title: First Bad Version
@@ -151,6 +189,25 @@
   complexity:
     time: O(m·n)
     space: O(m·n)
+- slug: happy-number
+  number: 202
+  title: Happy Number
+  difficulty: easy
+  topic: Two pointers
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/happy-number/
+  summary: Iterate the digit-square-sum map with Floyd's slow and fast pointers; a meeting point other than 1 is a cycle
+  tricks: Values shrink to under 1000 after one step, so a cycle or 1 is guaranteed; a set of seen values is the simple alternative
+  edge_cases:
+  - n = 1
+  - Numbers that fall into the 4 -> 16 -> 37 -> 58 -> 89 -> 145 -> 42 -> 20 -> 4 cycle
+  - Largest 32-bit input
+  complexity:
+    time: O(log n)
+    space: O(1)
 - slug: implement-queue-using-stacks
   number: 232
   title: Implement Queue using Stacks
@@ -184,6 +241,43 @@
   complexity:
     time: O(n)
     space: O(h)
+- slug: isomorphic-strings
+  number: 205
+  title: Isomorphic Strings
+  difficulty: easy
+  topic: Hash
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/isomorphic-strings/
+  summary: Walk both strings together keeping a map in each direction; any contradiction means not isomorphic
+  tricks: One map is not enough, since two source chars may point at the same target; check both directions
+  edge_cases:
+  - Two source chars mapping to one target ("badc" / "baba")
+  - One source char needing two targets
+  - A character mapping to itself
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: last-stone-weight
+  number: 1046
+  title: Last Stone Weight
+  difficulty: easy
+  topic: Heap
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/last-stone-weight/
+  summary: Max-heap via negated values; repeatedly smash the two heaviest and push back any remainder
+  tricks: heapq is a min-heap, so negate weights; an empty heap at the end means the answer is 0
+  edge_cases:
+  - Single stone
+  - Two equal stones
+  - Everything cancels out
+  complexity:
+    time: O(n log n)
+    space: O(n)
 - slug: linked-list-cycle
   number: 141
   title: Linked List Cycle
@@ -287,6 +381,25 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: minimum-depth-of-binary-tree
+  number: 111
+  title: Minimum Depth of Binary Tree
+  difficulty: easy
+  topic: Tree
+  tags:
+  - Graph
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/minimum-depth-of-binary-tree/
+  summary: BFS by level, returning the depth of the first leaf found
+  tricks: A node with one child is not a leaf, so min(left, right) with an empty side returning 0 gives the wrong answer; BFS sidesteps this and exits early
+  edge_cases:
+  - Empty tree is 0
+  - Single node is 1
+  - Skewed chain, where only one side has a leaf
+  complexity:
+    time: O(n)
+    space: O(n)
 - slug: missing-number
   number: 268
   title: Missing Number
@@ -338,6 +451,62 @@
   complexity:
     time: O(k)
     space: O(1)
+- slug: palindrome-linked-list
+  number: 234
+  title: Palindrome Linked List
+  difficulty: easy
+  topic: Linked list
+  tags:
+  - Two pointers
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/palindrome-linked-list/
+  summary: Find the middle with slow and fast pointers, reverse the second half in place, then compare both halves
+  tricks: Only the reversed half needs to be walked; for odd lengths the middle node compares equal to itself so no special case is needed
+  edge_cases:
+  - Single node
+  - Odd and even lengths
+  - Ends match but the centre differs
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: path-sum
+  number: 112
+  title: Path Sum
+  difficulty: easy
+  topic: Tree
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/path-sum/
+  summary: DFS carrying the remaining target down, checking it is zero at a leaf
+  tricks: Only a node with no children ends a path, so a missing child must return false rather than test the remainder
+  edge_cases:
+  - Empty tree is false even for target 0
+  - Node with one child is not a leaf
+  - Negative values
+  complexity:
+    time: O(n)
+    space: O(h)
+- slug: range-sum-query-immutable
+  number: 303
+  title: Range Sum Query - Immutable
+  difficulty: easy
+  topic: Design
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/range-sum-query-immutable/
+  summary: Precompute a prefix-sum array once; each query is a subtraction of two prefixes
+  tricks: Prefix array has length n + 1 with a leading 0, so a range starting at index 0 needs no special case
+  edge_cases:
+  - Range covering a single index
+  - Range starting at index 0
+  - Negative values
+  complexity:
+    time: O(n) build, O(1) per query
+    space: O(n)
 - slug: ransom-note
   number: 383
   title: Ransom Note
@@ -354,6 +523,44 @@
   - Note longer than magazine
   complexity:
     time: O(m + n)
+    space: O(1)
+- slug: remove-duplicates-from-sorted-array
+  number: 26
+  title: Remove Duplicates from Sorted Array
+  difficulty: easy
+  topic: Two pointers
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+  summary: Read and write pointers; copy a value forward only when it differs from the last value kept
+  tricks: Because the array is sorted, comparing with the last kept element (nums[write - 1]) is enough, and the return value is the write index
+  edge_cases:
+  - Single element
+  - All elements equal
+  - No duplicates at all
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: remove-linked-list-elements
+  number: 203
+  title: Remove Linked List Elements
+  difficulty: easy
+  topic: Linked list
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/remove-linked-list-elements/
+  summary: Walk with a dummy head, bypassing any next node whose value matches and advancing only when it does not
+  tricks: Do not advance prev after a deletion, since the new next node may match too; the dummy handles a removed head
+  edge_cases:
+  - Empty list
+  - Head or entire list matches
+  - Consecutive matches
+  - No match
+  complexity:
+    time: O(n)
     space: O(1)
 - slug: reverse-bits
   number: 190
@@ -407,6 +614,80 @@
   complexity:
     time: O(n)
     space: O(h)
+- slug: search-insert-position
+  number: 35
+  title: Search Insert Position
+  difficulty: easy
+  topic: Binary search
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/search-insert-position/
+  summary: Lower-bound binary search over [0, n) returning the first index with nums[index] >= target
+  tricks: Start hi at len(nums), not len(nums) - 1, so appending at the end is reachable
+  edge_cases:
+  - Target larger than every element (returns len(nums))
+  - Target smaller than every element (returns 0)
+  - Single element
+  complexity:
+    time: O(log n)
+    space: O(1)
+- slug: single-number
+  number: 136
+  title: Single Number
+  difficulty: easy
+  topic: Bit manipulation
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/single-number/
+  summary: XOR every element; pairs cancel and the single value remains
+  tricks: x ^ x is 0 and x ^ 0 is x, and XOR is order independent
+  edge_cases:
+  - Single element
+  - Negative numbers
+  - The single value is 0
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: sqrtx
+  number: 69
+  title: Sqrt(x)
+  difficulty: easy
+  topic: Binary search
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/sqrtx/
+  summary: Binary search the largest r in [0, x] with r * r <= x, rounding mid up so the loop always shrinks
+  tricks: Use the upper midpoint when the true branch sets lo = mid, otherwise lo and hi = lo + 1 never converge
+  edge_cases:
+  - x = 0 and x = 1
+  - Non-perfect squares round down
+  - x = 2^31 - 1 (mid * mid is large, fine in Python but overflows in fixed-width languages)
+  complexity:
+    time: O(log x)
+    space: O(1)
+- slug: squares-of-a-sorted-array
+  number: 977
+  title: Squares of a Sorted Array
+  difficulty: easy
+  topic: Two pointers
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/squares-of-a-sorted-array/
+  summary: Two pointers at both ends; the larger absolute value gives the largest square, so fill the result from the back
+  tricks: Squares are largest at the ends of a sorted array with negatives, so build the output in descending order instead of sorting
+  edge_cases:
+  - All negative or all non-negative
+  - Equal magnitudes with opposite signs
+  - Single element
+  complexity:
+    time: O(n)
+    space: O(n)
 - slug: subtree-of-another-tree
   number: 572
   title: Subtree of Another Tree
@@ -424,6 +705,24 @@
   - Repeated values in the main tree
   complexity:
     time: O(m·n)
+    space: O(h)
+- slug: symmetric-tree
+  number: 101
+  title: Symmetric Tree
+  difficulty: easy
+  topic: Tree
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/symmetric-tree/
+  summary: Recursively compare two subtrees, pairing the left child of one with the right child of the other
+  tricks: Compare outer with outer and inner with inner; checking each level's values for a palindrome misses shape differences
+  edge_cases:
+  - Single node
+  - Only one child present
+  - Same shape but values or positions not mirrored
+  complexity:
+    time: O(n)
     space: O(h)
 - slug: two-sum
   number: 1
@@ -494,6 +793,25 @@
   complexity:
     time: O(n)
     space: O(n)
+- slug: 01-matrix
+  number: 542
+  title: 01 Matrix
+  difficulty: medium
+  topic: Matrix
+  tags:
+  - Graph
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/01-matrix/
+  summary: Multi-source BFS seeded with every 0 at once, so each cell is first reached from its nearest zero
+  tricks: Seed the queue with all zeros together rather than searching from each 1; the result grid doubles as the visited set
+  edge_cases:
+  - Single cell
+  - Single row or column
+  - Matrix of ones with one zero in a corner
+  complexity:
+    time: O(m * n)
+    space: O(m * n)
 - slug: 3sum
   number: 15
   title: 3Sum
@@ -512,6 +830,412 @@
   complexity:
     time: O(n²)
     space: O(1)
+- slug: 3sum-closest
+  number: 16
+  title: 3Sum Closest
+  difficulty: medium
+  topic: Two pointers
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/3sum-closest/
+  summary: Sort, fix the first element, and sweep the rest with two pointers, tracking the sum nearest the target
+  tricks: Move left when the sum is below target and right when above; return immediately on an exact match; the target can lie outside every achievable sum
+  edge_cases:
+  - Exactly three numbers
+  - Target far outside the achievable range
+  - Exact match exists
+  - Duplicates and negatives
+  complexity:
+    time: O(n²)
+    space: O(1)
+- slug: 4sum
+  number: 18
+  title: 4Sum
+  difficulty: medium
+  topic: Two pointers
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/4sum/
+  summary: Sort, fix the first two values with nested loops, then close in with left and right pointers on the rest
+  tricks: Skip repeated values at each level (i, j, then left and right after a hit) so no quadruplet is emitted twice
+  edge_cases:
+  - Fewer than four elements
+  - All equal values
+  - Duplicates producing repeated quadruplets
+  - Sums beyond 32-bit range in other languages
+  complexity:
+    time: O(n³)
+    space: O(1)
+- slug: accounts-merge
+  number: 721
+  title: Accounts Merge
+  difficulty: medium
+  topic: Graph
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/accounts-merge/
+  summary: Union-find keyed by email, joining every email of an account to its first, then group emails by root and sort
+  tricks: Union emails rather than accounts and look the name up from the root, because equal names do not imply the same person
+  edge_cases:
+  - Same name, no shared email
+  - Transitive merge across three accounts
+  - Repeated email within one account
+  complexity:
+    time: O(N log N * α(N)) for N emails
+    space: O(N)
+- slug: asteroid-collision
+  number: 735
+  title: Asteroid Collision
+  difficulty: medium
+  topic: Stack
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/asteroid-collision/
+  summary: Keep a stack of survivors; a negative asteroid fights the positive tops while they are smaller, then dies, ties or is pushed
+  tricks: Only a positive on the stack meeting an incoming negative can collide, and the incoming asteroid may destroy several in a row
+  edge_cases:
+  - Equal sizes destroy each other
+  - One asteroid clears several right-movers
+  - Left-movers before right-movers never collide
+  - Everything cancels out (empty result)
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: basic-calculator-ii
+  number: 227
+  title: Basic Calculator II
+  difficulty: medium
+  topic: Stack
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/basic-calculator-ii/
+  summary: One pass with a stack of terms; push signed numbers for + and -, apply * and / immediately to the top, then sum the stack
+  tricks: Apply the previous operator when you reach the next one, add a sentinel to flush the last number, and truncate division toward zero rather than flooring
+  edge_cases:
+  - Spaces anywhere including the ends
+  - Multi-digit numbers
+  - Division of a negative term (truncate toward zero)
+  - Expression that is a single number
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: best-time-to-buy-and-sell-stock-with-cooldown
+  number: 309
+  title: Best Time to Buy and Sell Stock with Cooldown
+  difficulty: medium
+  topic: Dynamic programming
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+  summary: Three-state machine (held, sold, rest) updated once per day, where buying is only allowed from the rest state
+  tricks: Update sold from yesterday's held before changing held, and keep yesterday's sold to feed rest; a sale today blocks buying tomorrow
+  edge_cases:
+  - Single day or two days
+  - Strictly decreasing prices (0)
+  - Cooldown forcing a skipped trade
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: binary-tree-zigzag-level-order-traversal
+  number: 103
+  title: Binary Tree Zigzag Level Order Traversal
+  difficulty: medium
+  topic: Tree
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+  summary: BFS level by level, reversing the recorded values on every second level
+  tricks: Keep the traversal order fixed and only reverse the output row, so the next level is still built left to right
+  edge_cases:
+  - Empty tree
+  - Single node
+  - Levels with missing children
+  - Skewed chain
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: bitwise-and-of-numbers-range
+  number: 201
+  title: Bitwise AND of Numbers Range
+  difficulty: medium
+  topic: Bit manipulation
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/bitwise-and-of-numbers-range/
+  summary: Shift left and right together until they are equal, then shift the common prefix back
+  tricks: Every bit below the first differing bit is 0 in some number of the range, so only the common prefix survives
+  edge_cases:
+  - left equals right
+  - Range starting at 0
+  - Range up to 2^31 - 1
+  complexity:
+    time: O(log max)
+    space: O(1)
+- slug: boats-to-save-people
+  number: 881
+  title: Boats to Save People
+  difficulty: medium
+  topic: Greedy
+  tags:
+  - Two pointers
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/boats-to-save-people/
+  summary: Sort, then pair the heaviest remaining person with the lightest if they fit together, otherwise send the heaviest alone
+  tricks: The heaviest person needs a boat regardless, so the lightest is the best possible partner; check left <= right so a lone person is counted once
+  edge_cases:
+  - Single person
+  - Nobody can share a boat
+  - Odd number of people
+  complexity:
+    time: O(n log n)
+    space: O(1)
+- slug: capacity-to-ship-packages-within-d-days
+  number: 1011
+  title: Capacity To Ship Packages Within D Days
+  difficulty: medium
+  topic: Binary search
+  tags:
+  - Greedy
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+  summary: Binary search the capacity between max(weights) and sum(weights); a capacity works if greedy daily loading takes at most days
+  tricks: The lower bound must be the heaviest package, otherwise the greedy check silently mishandles a package larger than the capacity
+  edge_cases:
+  - days = 1 (answer is the total weight)
+  - days = n (answer is the heaviest package)
+  - Single package
+  - Packages must stay in order
+  complexity:
+    time: O(n log(sum))
+    space: O(1)
+- slug: car-fleet
+  number: 853
+  title: Car Fleet
+  difficulty: medium
+  topic: Monotonic stack
+  tags:
+  - Stack
+  - Greedy
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/car-fleet/
+  summary: Sort by position descending, compute each car's solo arrival time, and count a new fleet whenever a car arrives later than every fleet ahead
+  tricks: A car that would arrive earlier than the fleet ahead is capped to that fleet's time, so only strictly larger times start a fleet (ties merge)
+  edge_cases:
+  - Single car
+  - Equal speeds (no one ever catches up)
+  - Two cars reaching the target at the same moment
+  - Input positions not sorted
+  complexity:
+    time: O(n log n)
+    space: O(n)
+- slug: car-pooling
+  number: 1094
+  title: Car Pooling
+  difficulty: medium
+  topic: Array
+  tags:
+  - Intervals
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/car-pooling/
+  summary: Difference array over stops, then a running sum checked against capacity
+  tricks: Passengers leave at `to` before others board there, so each trip covers the half-open range [from, to)
+  edge_cases:
+  - Load exactly equal to capacity is allowed
+  - Drop off and pick up at the same stop
+  - Trips given out of order
+  complexity:
+    time: O(n + m)
+    space: O(m)
+- slug: cheapest-flights-within-k-stops
+  number: 787
+  title: Cheapest Flights Within K Stops
+  difficulty: medium
+  topic: Graph
+  tags:
+  - Dynamic programming
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/cheapest-flights-within-k-stops/
+  summary: Bellman-Ford limited to k + 1 rounds, relaxing every flight from a copy of the previous round's costs
+  tricks: Relax from a snapshot of the last round; updating in place lets one round chain several flights and ignores the stop limit
+  edge_cases:
+  - Cheapest path needs more stops than allowed
+  - k = 0 allows only direct flights
+  - Destination unreachable
+  complexity:
+    time: O(k * E)
+    space: O(n)
+- slug: coin-change-ii
+  number: 518
+  title: Coin Change II
+  difficulty: medium
+  topic: Dynamic programming
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/coin-change-ii/
+  summary: Unbounded knapsack counting; for each coin in an outer loop, add dp[a - coin] into dp[a] for a ascending
+  tricks: Coins outside and amounts inside counts combinations; swapping the loops would count permutations
+  edge_cases:
+  - Amount 0 (one way, the empty set)
+  - Amount not reachable (0)
+  - Coin larger than the amount
+  complexity:
+    time: O(n·amount)
+    space: O(amount)
+- slug: combination-sum-ii
+  number: 40
+  title: Combination Sum II
+  difficulty: medium
+  topic: Backtracking
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/combination-sum-ii/
+  summary: Sort, then backtrack with start index i + 1 for single use, skipping repeated values at the same depth and breaking once a candidate exceeds the remainder
+  tricks: Skip duplicates with i > start (not i > 0), and break rather than continue when the sorted candidate is too large
+  edge_cases:
+  - No combination reaches the target
+  - Many equal candidates
+  - Target smaller than every candidate
+  complexity:
+    time: O(2^n)
+    space: O(n)
+- slug: construct-binary-tree-from-inorder-and-postorder-traversal
+  number: 106
+  title: Construct Binary Tree from Inorder and Postorder Traversal
+  difficulty: medium
+  topic: Tree
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+  summary: Take roots from the end of postorder (right subtree first) and split the inorder range using a value-to-index map
+  tricks: Reading postorder backwards gives root, right, left, so build the right subtree before the left one; a hash map avoids rescanning inorder
+  edge_cases:
+  - Single node
+  - Fully left or fully right skewed tree
+  - Negative values
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: contiguous-array
+  number: 525
+  title: Contiguous Array
+  difficulty: medium
+  topic: Hash
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/contiguous-array/
+  summary: Map 0 to -1 and track a running balance; the longest span between two equal balances is the answer
+  tricks: 'Store only the first index of each balance and seed {0: -1} so subarrays starting at index 0 count'
+  edge_cases:
+  - No balanced subarray (all ones or all zeros)
+  - Whole array balanced
+  - Best subarray begins at index 0
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: count-good-nodes-in-binary-tree
+  number: 1448
+  title: Count Good Nodes in Binary Tree
+  difficulty: medium
+  topic: Tree
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/count-good-nodes-in-binary-tree/
+  summary: DFS passing down the maximum value seen on the path, counting nodes whose value is at least that maximum
+  tricks: Compare against the maximum of all ancestors, not just the parent, and seed it with the root value rather than 0
+  edge_cases:
+  - Single node
+  - All negative values
+  - Equal values count as good
+  - Strictly decreasing chain
+  complexity:
+    time: O(n)
+    space: O(h)
+- slug: course-schedule-ii
+  number: 210
+  title: Course Schedule II
+  difficulty: medium
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/course-schedule-ii/
+  summary: 'Kahn''s topological sort: queue zero-in-degree courses and release dependants; fewer than n ordered means a cycle'
+  tricks: Return the empty list when the order is shorter than numCourses; DFS post-order reversed also works
+  edge_cases:
+  - Cycle, including a self-prerequisite
+  - No prerequisites
+  - Duplicate pairs
+  complexity:
+    time: O(V + E)
+    space: O(V + E)
+- slug: decode-string
+  number: 394
+  title: Decode String
+  difficulty: medium
+  topic: Stack
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/decode-string/
+  summary: Scan once; on "[" push the outer text and count then start fresh, on "]" pop and append the inner text repeated count times
+  tricks: Build counts digit by digit (num * 10 + digit) for multi-digit repeats, and reset num and curr every time a group opens
+  edge_cases:
+  - Multi-digit repeat count
+  - Nested groups
+  - Plain letters before, between and after groups
+  - No brackets at all
+  complexity:
+    time: O(output length)
+    space: O(output length)
+- slug: delete-node-in-a-bst
+  number: 450
+  title: Delete Node in a BST
+  difficulty: medium
+  topic: Tree
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/delete-node-in-a-bst/
+  summary: Search by BST order; with two children, copy in the inorder successor's value and delete that node from the right subtree
+  tricks: Return the new subtree root from each recursive call so the parent relinks; the successor has no left child, so its own deletion is trivial
+  edge_cases:
+  - Empty tree or key absent
+  - Deleting the root
+  - Node with one child
+  - Node with two children whose successor has a right child
+  complexity:
+    time: O(h)
+    space: O(h)
 - slug: design-add-and-search-words-data-structure
   number: 211
   title: Design Add and Search Words Data Structure
@@ -757,6 +1481,25 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: edit-distance
+  number: 72
+  title: Edit Distance
+  difficulty: medium
+  topic: Dynamic programming
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/edit-distance/
+  summary: Table where dp[i][j] is the edit distance between the first i and first j characters; match copies the diagonal, else 1 plus the cheapest of replace, delete or insert
+  tricks: Initialise the first row and column to i and j (all inserts or all deletes), and index characters with i-1 and j-1 because the table is one larger
+  edge_cases:
+  - One or both strings empty
+  - Identical strings (0)
+  - Strings of different lengths
+  complexity:
+    time: O(m·n)
+    space: O(m·n)
 - slug: encode-and-decode-strings
   number: 271
   title: Encode and Decode Strings
@@ -775,6 +1518,24 @@
   complexity:
     time: O(n)
     space: O(n)
+- slug: evaluate-division
+  number: 399
+  title: Evaluate Division
+  difficulty: medium
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/evaluate-division/
+  summary: Build a weighted graph with edges a -> b of weight v and b -> a of 1/v, then BFS per query multiplying weights along the path
+  tricks: A variable absent from every equation gives -1.0 even for x / x, while a known x / x is 1.0; a weighted union-find also works
+  edge_cases:
+  - Unknown variable in a query
+  - Query on two disconnected components
+  - Same known variable on both sides
+  complexity:
+    time: O(Q * (V + E))
+    space: O(V + E)
 - slug: evaluate-reverse-polish-notation
   number: 150
   title: Evaluate Reverse Polish Notation
@@ -793,6 +1554,65 @@
   complexity:
     time: O(n)
     space: O(n)
+- slug: find-all-anagrams-in-a-string
+  number: 438
+  title: Find All Anagrams in a String
+  difficulty: medium
+  topic: Sliding window
+  tags:
+  - Hash
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/find-all-anagrams-in-a-string/
+  summary: Fixed window of len(p) over s with 26 letter counts; record the start index whenever the counts equal those of p
+  tricks: Only compare once the window is full, and the start index is i - len(p) + 1
+  edge_cases:
+  - p longer than s
+  - Overlapping matches
+  - Repeated letters
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: find-first-and-last-position-of-element-in-sorted-array
+  number: 34
+  title: Find First and Last Position of Element in Sorted Array
+  difficulty: medium
+  topic: Binary search
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+  summary: Two lower-bound searches; first = lower_bound(target), last = lower_bound(target + 1) - 1
+  tricks: Reuse one lower-bound helper for both ends instead of writing two fiddly boundary searches
+  edge_cases:
+  - Empty array
+  - Target absent (including above or below every element)
+  - Whole array equals target
+  - Single occurrence
+  complexity:
+    time: O(log n)
+    space: O(1)
+- slug: find-k-pairs-with-smallest-sums
+  number: 373
+  title: Find K Pairs with Smallest Sums
+  difficulty: medium
+  topic: Heap
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/find-k-pairs-with-smallest-sums/
+  summary: Seed a min-heap with (nums1[i] + nums2[0], i, 0) for the first k rows, then pop and push the successor (i, j + 1)
+  tricks: Treat each nums1 value as a sorted row and merge the rows lazily; rows beyond the first k can never matter
+  edge_cases:
+  - k larger than the number of pairs
+  - Duplicate values and tied sums
+  - Negative numbers
+  complexity:
+    time: O(k log k)
+    space: O(k)
 - slug: find-minimum-in-rotated-sorted-array
   number: 153
   title: Find Minimum in Rotated Sorted Array
@@ -811,6 +1631,25 @@
   complexity:
     time: O(log n)
     space: O(1)
+- slug: find-peak-element
+  number: 162
+  title: Find Peak Element
+  difficulty: medium
+  topic: Binary search
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/find-peak-element/
+  summary: Binary search on the slope; if nums[mid] < nums[mid + 1] a peak lies right of mid, otherwise at mid or left
+  tricks: The out-of-range neighbours count as negative infinity, so a peak is guaranteed on whichever side the slope rises toward
+  edge_cases:
+  - Single element
+  - Strictly increasing or decreasing array
+  - Several peaks (any is valid)
+  complexity:
+    time: O(log n)
+    space: O(1)
 - slug: find-the-duplicate-number
   number: 287
   title: Find the Duplicate Number
@@ -826,6 +1665,45 @@
   edge_cases:
   - Duplicate appearing more than twice
   - Duplicate at index 0
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: flatten-binary-tree-to-linked-list
+  number: 114
+  title: Flatten Binary Tree to Linked List
+  difficulty: medium
+  topic: Tree
+  tags:
+  - Linked list
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+  summary: For each node with a left child, attach its right subtree to the left subtree's rightmost node, then move the left subtree to the right
+  tricks: Splice the right subtree onto the left subtree's tail before overwriting curr.right, or it is lost; no recursion or stack needed
+  edge_cases:
+  - Empty tree
+  - Single node
+  - Left-only chain
+  - Already flat tree
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: gas-station
+  number: 134
+  title: Gas Station
+  difficulty: medium
+  topic: Greedy
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/gas-station/
+  summary: One pass with a running tank; when it goes negative restart from the next station, and answer -1 if the total is negative
+  tricks: A failed stretch rules out every start inside it, and a non-negative total guarantees the last candidate works
+  edge_cases:
+  - Total gas less than total cost gives -1
+  - Single station
+  - Total exactly equal to total cost
   complexity:
     time: O(n)
     space: O(1)
@@ -915,6 +1793,26 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: house-robber-iii
+  number: 337
+  title: House Robber III
+  difficulty: medium
+  topic: Dynamic programming
+  tags:
+  - Tree
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/house-robber-iii/
+  summary: Post-order DFS returning the best haul with and without robbing each node, combined at the parent
+  tricks: Return a pair per node instead of memoising on node; skipping a node does not force robbing its children, so take the max of each child's pair
+  edge_cases:
+  - Single node
+  - Skewed chain
+  - Best answer skips two levels
+  - Zero-valued nodes
+  complexity:
+    time: O(n)
+    space: O(h)
 - slug: implement-trie-prefix-tree
   number: 208
   title: Implement Trie (Prefix Tree)
@@ -950,6 +1848,62 @@
   complexity:
     time: O(n)
     space: O(n)
+- slug: interleaving-string
+  number: 97
+  title: Interleaving String
+  difficulty: medium
+  topic: Dynamic programming
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/interleaving-string/
+  summary: Table where dp[i][j] says s3[:i+j] interleaves s1[:i] and s2[:j]; the last character must come from s1 or s2
+  tricks: Check len(s1) + len(s2) == len(s3) first, and try both sources for each character since equal letters make greedy matching fail
+  edge_cases:
+  - All strings empty
+  - Length mismatch
+  - Both strings start with the same letter
+  complexity:
+    time: O(m·n)
+    space: O(m·n)
+- slug: interval-list-intersections
+  number: 986
+  title: Interval List Intersections
+  difficulty: medium
+  topic: Intervals
+  tags:
+  - Two pointers
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/interval-list-intersections/
+  summary: Two pointers; the overlap is [max(starts), min(ends)] when valid, then advance the interval that ends first
+  tricks: Use lo <= hi so intervals touching at one point count; always advance the pointer with the smaller end
+  edge_cases:
+  - Either list empty
+  - Intervals touching at a single point
+  - One interval spanning several in the other list
+  complexity:
+    time: O(m + n)
+    space: O(1)
+- slug: is-graph-bipartite
+  number: 785
+  title: Is Graph Bipartite?
+  difficulty: medium
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/is-graph-bipartite/
+  summary: BFS two-colouring from every unvisited node; any edge joining two equal colours means an odd cycle
+  tricks: Start a new search for each component, since the graph may be disconnected
+  edge_cases:
+  - Disconnected graph with the odd cycle in a later component
+  - Isolated nodes
+  - Odd versus even cycle
+  complexity:
+    time: O(V + E)
+    space: O(V)
 - slug: jump-game
   number: 55
   title: Jump Game
@@ -965,6 +1919,25 @@
   - Single element (true)
   - Zero before the end that can be jumped over
   - Zero at the last index
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: jump-game-ii
+  number: 45
+  title: Jump Game II
+  difficulty: medium
+  topic: Greedy
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/jump-game-ii/
+  summary: Greedy BFS layers; track the farthest reachable index and take a jump when the current layer ends
+  tricks: Stop the loop before the last index so no extra jump is counted at the end
+  edge_cases:
+  - Single element needs 0 jumps
+  - First jump reaches the end
+  - Zeros in the middle that must be jumped over
   complexity:
     time: O(n)
     space: O(1)
@@ -1053,6 +2026,25 @@
   complexity:
     time: O(4^n · n)
     space: O(n)
+- slug: linked-list-cycle-ii
+  number: 142
+  title: Linked List Cycle II
+  difficulty: medium
+  topic: Linked list
+  tags:
+  - Two pointers
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/linked-list-cycle-ii/
+  summary: Floyd's cycle detection, then restart one pointer at the head and advance both one step at a time until they meet at the entry
+  tricks: The distance from head to the entry equals the distance from the meeting point to the entry (mod the cycle length), so the second phase walks both pointers at the same speed
+  edge_cases:
+  - Empty list or single node without a cycle
+  - Tail points to itself
+  - Cycle starts at the head
+  complexity:
+    time: O(n)
+    space: O(1)
 - slug: longest-common-subsequence
   number: 1143
   title: Longest Common Subsequence
@@ -1106,6 +2098,25 @@
   complexity:
     time: O(n log n)
     space: O(n)
+- slug: longest-palindromic-subsequence
+  number: 516
+  title: Longest Palindromic Subsequence
+  difficulty: medium
+  topic: Dynamic programming
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/longest-palindromic-subsequence/
+  summary: Interval table where dp[i][j] is the best palindromic subsequence of s[i..j]; equal ends add 2 to the inside, otherwise drop one end
+  tricks: Fill i from the end and j from i+1 so the inner and shorter ranges are already known; a subsequence is not a substring
+  edge_cases:
+  - Single character
+  - All characters distinct (answer 1)
+  - Whole string already a palindrome
+  complexity:
+    time: O(n²)
+    space: O(n²)
 - slug: longest-palindromic-substring
   number: 5
   title: Longest Palindromic Substring
@@ -1212,6 +2223,64 @@
   complexity:
     time: O(1) per operation
     space: O(capacity)
+- slug: max-area-of-island
+  number: 695
+  title: Max Area of Island
+  difficulty: medium
+  topic: Matrix
+  tags:
+  - Graph
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/max-area-of-island/
+  summary: Scan the grid, and from each unvisited land cell flood the island with an iterative DFS, counting cells and tracking the maximum
+  tricks: Sink cells as they are pushed so none is counted twice, and use a stack rather than recursion for large islands
+  edge_cases:
+  - No land
+  - Diagonal land cells are separate islands
+  - Whole grid is one island
+  complexity:
+    time: O(m * n)
+    space: O(m * n)
+- slug: max-consecutive-ones-iii
+  number: 1004
+  title: Max Consecutive Ones III
+  difficulty: medium
+  topic: Sliding window
+  tags:
+  - Two pointers
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/max-consecutive-ones-iii/
+  summary: Longest window containing at most k zeros; grow right, and shrink left whenever the zero count exceeds k
+  tricks: Never flip anything, just count zeros in the window; k = 0 degenerates to the longest run of ones
+  edge_cases:
+  - k = 0
+  - k larger than the number of zeros
+  - All zeros or all ones
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: maximal-square
+  number: 221
+  title: Maximal Square
+  difficulty: medium
+  topic: Dynamic programming
+  tags:
+  - Matrix
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/maximal-square/
+  summary: dp[i][j] is the side of the biggest all-ones square ending at that corner, equal to min(up, left, diagonal) + 1 on a "1"
+  tricks: Pad a zero row and column so borders need no special case, compare cells to the string "1", and return side squared rather than side
+  edge_cases:
+  - All zeros (0)
+  - Single row or column
+  - Rectangle of ones that is not a square
+  complexity:
+    time: O(m·n)
+    space: O(m·n)
 - slug: maximum-product-subarray
   number: 152
   title: Maximum Product Subarray
@@ -1247,6 +2316,26 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: maximum-xor-of-two-numbers-in-an-array
+  number: 421
+  title: Maximum XOR of Two Numbers in an Array
+  difficulty: medium
+  topic: Trie
+  tags:
+  - Bit manipulation
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
+  summary: Binary trie of the bits, most significant first; for each number walk the opposite bit whenever it exists
+  tricks: A higher bit outweighs all lower ones, so greedily preferring the opposite bit is optimal; limit depth to the max's bit length
+  edge_cases:
+  - Single element gives 0
+  - All duplicates
+  - Values at 2^31 - 1 and 0
+  complexity:
+    time: O(n * B)
+    space: O(n * B)
 - slug: meeting-rooms-ii
   number: 253
   title: Meeting Rooms II
@@ -1283,6 +2372,25 @@
   complexity:
     time: O(n log n)
     space: O(n)
+- slug: min-cost-to-connect-all-points
+  number: 1584
+  title: Min Cost to Connect All Points
+  difficulty: medium
+  topic: Graph
+  tags:
+  - Greedy
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/min-cost-to-connect-all-points/
+  summary: Prim's minimum spanning tree in its O(n²) array form, tracking each point's cheapest edge into the tree
+  tricks: On a complete graph scan arrays instead of using a heap or building all edges; Kruskal with union-find also works but must sort n² edges
+  edge_cases:
+  - Single point costs 0
+  - Negative coordinates
+  - Collinear points
+  complexity:
+    time: O(n²)
+    space: O(n)
 - slug: min-stack
   number: 155
   title: Min Stack
@@ -1299,6 +2407,123 @@
   - Pop that removes the current min
   complexity:
     time: O(1) per operation
+    space: O(n)
+- slug: minimum-height-trees
+  number: 310
+  title: Minimum Height Trees
+  difficulty: medium
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/minimum-height-trees/
+  summary: Trim leaves layer by layer, like topological sort on a tree, until one or two centre nodes remain
+  tricks: Minimum-height roots are the centres of the longest path, so there are at most two; handle n <= 2 before building the graph
+  edge_cases:
+  - Single node
+  - Two nodes, both are answers
+  - Even-length path with two centres
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: minimum-number-of-arrows-to-burst-balloons
+  number: 452
+  title: Minimum Number of Arrows to Burst Balloons
+  difficulty: medium
+  topic: Greedy
+  tags:
+  - Intervals
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+  summary: Sort by right edge, shoot at the first balloon's end, and skip every balloon starting at or before it
+  tricks: Sort by end, not start, and use a strict > so touching balloons share an arrow; compare rather than subtract
+  edge_cases:
+  - Touching balloons share an arrow
+  - Nested balloons
+  - Endpoints at the 32-bit integer extremes
+  complexity:
+    time: O(n log n)
+    space: O(1)
+- slug: minimum-path-sum
+  number: 64
+  title: Minimum Path Sum
+  difficulty: medium
+  topic: Dynamic programming
+  tags:
+  - Matrix
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/minimum-path-sum/
+  summary: Grid DP where each cell costs its value plus the smaller of the cell above and the cell to the left, kept in one rolling row
+  tricks: Seed a virtual start with 0 and everything else inf so the first row and column need no special code; greedy neighbour choice is wrong
+  edge_cases:
+  - Single cell, row or column
+  - Zero-valued cells
+  - A cheap-looking first step leading to an expensive cell
+  complexity:
+    time: O(m·n)
+    space: O(n)
+- slug: minimum-size-subarray-sum
+  number: 209
+  title: Minimum Size Subarray Sum
+  difficulty: medium
+  topic: Sliding window
+  tags:
+  - Two pointers
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/minimum-size-subarray-sum/
+  summary: Expand right adding to a running sum; while the sum reaches target, record the length and shrink from the left
+  tricks: Positivity makes the window monotone, so each pointer only moves forward; return 0 if best never improved
+  edge_cases:
+  - No subarray reaches target
+  - A single element suffices
+  - Whole array needed
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: network-delay-time
+  number: 743
+  title: Network Delay Time
+  difficulty: medium
+  topic: Graph
+  tags:
+  - Heap
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/network-delay-time/
+  summary: Dijkstra from k with a min-heap; the answer is the largest finalised distance if all n nodes were reached, else -1
+  tricks: Skip heap entries for nodes already finalised, and compare the number of reached nodes with n to detect unreachable ones
+  edge_cases:
+  - A node unreachable from k
+  - Shorter route using more edges
+  - Zero-weight edges
+  complexity:
+    time: O(E log V)
+    space: O(V + E)
+- slug: next-greater-element-ii
+  number: 503
+  title: Next Greater Element II
+  difficulty: medium
+  topic: Monotonic stack
+  tags:
+  - Stack
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/next-greater-element-ii/
+  summary: Decreasing stack of indices over two passes (i from 0 to 2n - 1, value nums[i % n]), resolving waiting indices when a larger value arrives
+  tricks: Iterate 2n times to simulate the circle but push indices only on the first pass
+  edge_cases:
+  - Maximum element (and its duplicates) gets -1
+  - All elements equal
+  - Answer found only by wrapping around
+  - Single element
+  complexity:
+    time: O(n)
     space: O(n)
 - slug: non-overlapping-intervals
   number: 435
@@ -1354,6 +2579,81 @@
   complexity:
     time: O(m·n)
     space: O(m·n)
+- slug: number-of-provinces
+  number: 547
+  title: Number of Provinces
+  difficulty: medium
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/number-of-provinces/
+  summary: Union-find over the adjacency matrix with path halving; start with n components and decrement on every successful union
+  tricks: Only the upper triangle is needed because the matrix is symmetric; count merges rather than counting roots afterwards
+  edge_cases:
+  - Single city
+  - No links between cities
+  - Cities linked only indirectly
+  complexity:
+    time: O(n² * α(n))
+    space: O(n)
+- slug: odd-even-linked-list
+  number: 328
+  title: Odd Even Linked List
+  difficulty: medium
+  topic: Linked list
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/odd-even-linked-list/
+  summary: Weave the nodes into an odd chain and an even chain in one pass, then attach the even chain after the odd tail
+  tricks: Save the head of the even chain before relinking, and loop on even and even.next so the pointers never dereference null
+  edge_cases:
+  - Empty list and single node
+  - Two nodes
+  - Even and odd lengths
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: online-stock-span
+  number: 901
+  title: Online Stock Span
+  difficulty: medium
+  topic: Design
+  tags:
+  - Monotonic stack
+  - Stack
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/online-stock-span/
+  summary: Keep a stack of (price, span) with decreasing prices; pop entries <= today's price and add their spans to today's
+  tricks: Store the accumulated span with each entry so popped runs are absorbed in O(1) instead of re-walked
+  edge_cases:
+  - Equal prices (span includes them)
+  - Strictly decreasing prices (always 1)
+  - A new high that swallows the whole history
+  complexity:
+    time: O(1) amortised per call
+    space: O(n)
+- slug: open-the-lock
+  number: 752
+  title: Open the Lock
+  difficulty: medium
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/open-the-lock/
+  summary: BFS over the 10,000 wheel states from "0000", seeding the visited set with the dead ends and counting turns by level
+  tricks: Dead ends are just pre-visited nodes; check for "0000" among them first and wrap digits with modulo 10
+  edge_cases:
+  - '"0000" is a dead end'
+  - Target is "0000"
+  - Target walled in by dead ends
+  - Wrap-around from 0 to 9
+  complexity:
+    time: O(10^4 * 8)
+    space: O(10^4)
 - slug: pacific-atlantic-water-flow
   number: 417
   title: Pacific Atlantic Water Flow
@@ -1371,6 +2671,25 @@
   complexity:
     time: O(m·n)
     space: O(m·n)
+- slug: palindrome-partitioning
+  number: 131
+  title: Palindrome Partitioning
+  difficulty: medium
+  topic: Backtracking
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/palindrome-partitioning/
+  summary: Backtrack on the start index, extending only with prefixes that are palindromes
+  tricks: Test the piece before recursing so dead branches are pruned; the answer is every path that reaches the end of the string
+  edge_cases:
+  - Single character
+  - No palindrome longer than one character
+  - Whole string is a palindrome
+  complexity:
+    time: O(n * 2^n)
+    space: O(n)
 - slug: palindromic-substrings
   number: 647
   title: Palindromic Substrings
@@ -1406,6 +2725,125 @@
   complexity:
     time: O(n · sum)
     space: O(sum)
+- slug: partition-labels
+  number: 763
+  title: Partition Labels
+  difficulty: medium
+  topic: Greedy
+  tags:
+  - Hash
+  - String
+  - Two pointers
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/partition-labels/
+  summary: Record each letter's last index, then extend the current part's end and cut when the index reaches it
+  tricks: Cut as soon as the scan index equals the farthest last occurrence seen so far
+  edge_cases:
+  - All letters distinct
+  - One letter repeated across the whole string
+  - Single character
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: partition-to-k-equal-sum-subsets
+  number: 698
+  title: Partition to K Equal Sum Subsets
+  difficulty: medium
+  topic: Dynamic programming
+  tags:
+  - Bit manipulation
+  - Backtracking
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
+  summary: Bitmask DP where each reachable subset stores its total modulo target, and the full mask must end at remainder 0
+  tricks: Storing the sum modulo target makes the current bucket implicit, so no bucket index is needed
+  edge_cases:
+  - k = 1
+  - Total not divisible by k
+  - An element larger than the target
+  complexity:
+    time: O(n * 2^n)
+    space: O(2^n)
+- slug: path-sum-ii
+  number: 113
+  title: Path Sum II
+  difficulty: medium
+  topic: Tree
+  tags:
+  - Backtracking
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/path-sum-ii/
+  summary: DFS with one shared path list, pushing on entry and popping on exit, copying it at each matching leaf
+  tricks: Append a copy of the path, not the list itself, and pop on every exit so siblings start from the right prefix
+  edge_cases:
+  - Empty tree
+  - Matching sum at a non-leaf must not be recorded
+  - Negative and zero values
+  - Several matching paths
+  complexity:
+    time: O(n²)
+    space: O(h)
+- slug: path-sum-iii
+  number: 437
+  title: Path Sum III
+  difficulty: medium
+  topic: Tree
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/path-sum-iii/
+  summary: DFS with a running prefix sum and a hash map of prefix-sum counts along the current root path
+  tricks: 'Seed the map with {0: 1} for paths starting at the root, and decrement the entry on exit so sibling subtrees do not see each other'
+  edge_cases:
+  - Empty tree
+  - Negative values and zeros
+  - Paths that start below the root
+  - Large values
+  complexity:
+    time: O(n)
+    space: O(h)
+- slug: perfect-squares
+  number: 279
+  title: Perfect Squares
+  difficulty: medium
+  topic: Dynamic programming
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/perfect-squares/
+  summary: Unbounded knapsack minimising count; dp[i] is the minimum of dp[i - sq] + 1 over every square sq <= i
+  tricks: Greedy largest-square-first is wrong (12 is 4+4+4, not 9+1+1+1); dp[0] = 0 and others start at infinity
+  edge_cases:
+  - n itself a perfect square (1)
+  - n = 1, 2, 3 (only ones)
+  - Numbers needing four squares such as 7
+  complexity:
+    time: O(n·√n)
+    space: O(n)
+- slug: permutation-in-string
+  number: 567
+  title: Permutation in String
+  difficulty: medium
+  topic: Sliding window
+  tags:
+  - Hash
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/permutation-in-string/
+  summary: Slide a window of len(s1) over s2 keeping 26 letter counts and compare to the counts of s1
+  tricks: Fixed window, so add the new right char and remove the char that just left; return False early if s1 is longer
+  edge_cases:
+  - s1 longer than s2
+  - Match at the very end
+  - Right letters but wrong counts
+  complexity:
+    time: O(n)
+    space: O(1)
 - slug: permutations
   number: 46
   title: Permutations
@@ -1422,6 +2860,45 @@
   complexity:
     time: O(n · n!)
     space: O(n)
+- slug: permutations-ii
+  number: 47
+  title: Permutations II
+  difficulty: medium
+  topic: Backtracking
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/permutations-ii/
+  summary: Backtrack over a counter of remaining copies, trying each distinct value once per position
+  tricks: Iterating distinct values with counts avoids duplicate permutations without sorting or a used array
+  edge_cases:
+  - All elements equal
+  - Single element
+  - Several repeated values
+  complexity:
+    time: O(n * n!)
+    space: O(n)
+- slug: powx-n
+  number: 50
+  title: Pow(x, n)
+  difficulty: medium
+  topic: Array
+  tags:
+  - Bit manipulation
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/powx-n/
+  summary: Binary exponentiation; square the base each step and multiply it in for every set bit of the exponent
+  tricks: Invert x and negate n for a negative exponent; Python ints make negating -2^31 safe
+  edge_cases:
+  - n = 0 gives 1
+  - Negative exponent
+  - Negative base with odd exponent
+  - n = -2^31
+  complexity:
+    time: O(log n)
+    space: O(1)
 - slug: product-of-array-except-self
   number: 238
   title: Product of Array Except Self
@@ -1440,6 +2917,104 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: range-sum-query-mutable
+  number: 307
+  title: Range Sum Query - Mutable
+  difficulty: medium
+  topic: Design
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/range-sum-query-mutable/
+  summary: Fenwick tree (binary indexed tree) with point updates and prefix-sum differences
+  tricks: i & -i is the lowest set bit; adding it climbs to the next covering block and subtracting it hops to the previous block
+  edge_cases:
+  - Single element
+  - Update to the same or a negative value
+  - Queries spanning a single index
+  complexity:
+    time: O(n) build, O(log n) per operation
+    space: O(n)
+- slug: recover-binary-search-tree
+  number: 99
+  title: Recover Binary Search Tree
+  difficulty: medium
+  topic: Tree
+  tags:
+  - Stack
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/recover-binary-search-tree/
+  summary: Iterative inorder traversal tracking the previous node; the larger side of the first descent and smaller side of the last are swapped back
+  tricks: Keep the first descent's earlier node and update the second on every descent; adjacent swaps produce just one descent
+  edge_cases:
+  - Swapped values adjacent in inorder (one descent)
+  - Swapped root with a deep node
+  - Two-node tree
+  - Extreme 32-bit values
+  complexity:
+    time: O(n)
+    space: O(h)
+- slug: redundant-connection
+  number: 684
+  title: Redundant Connection
+  difficulty: medium
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/redundant-connection/
+  summary: Union-find over the edges in order; the first edge whose endpoints already share a root closes the cycle
+  tricks: Process edges in input order so the first cycle-closing edge is also the last one that could be removed
+  edge_cases:
+  - Triangle
+  - Cycle edge not at the end of the input
+  - Cycle with trees hanging off it
+  complexity:
+    time: O(n * α(n))
+    space: O(n)
+- slug: remove-duplicates-from-sorted-list-ii
+  number: 82
+  title: Remove Duplicates from Sorted List II
+  difficulty: medium
+  topic: Linked list
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+  summary: Walk with a dummy head and a trailing prev pointer; skip whole runs of equal values and relink prev past them
+  tricks: Do not advance prev when a run is removed, because the next run may also be a duplicate; the dummy covers a duplicated head
+  edge_cases:
+  - Duplicated head value
+  - All values equal gives an empty list
+  - Duplicates at the tail
+  - Empty list
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: remove-k-digits
+  number: 402
+  title: Remove K Digits
+  difficulty: medium
+  topic: Monotonic stack
+  tags:
+  - Greedy
+  - Stack
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/remove-k-digits/
+  summary: Greedily pop the previous digit while it is larger than the incoming one and removals remain, then trim leftovers from the end
+  tricks: After the loop any remaining k is removed from the tail of the non-decreasing stack, and the result needs lstrip("0") or "0"
+  edge_cases:
+  - k equals len(num) (result "0")
+  - Leading zeros after removal
+  - Already non-decreasing digits
+  - Digit that is removed from the middle of a run of equal digits
+  complexity:
+    time: O(n)
+    space: O(n)
 - slug: remove-nth-node-from-end-of-list
   number: 19
   title: Remove Nth Node From End of List
@@ -1471,6 +3046,64 @@
   edge_cases:
   - Even and odd lengths
   - One or two nodes
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: reorganize-string
+  number: 767
+  title: Reorganize String
+  difficulty: medium
+  topic: Heap
+  tags:
+  - Greedy
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/reorganize-string/
+  summary: Reject if any letter exceeds ceil(n / 2), otherwise repeatedly pair the two most frequent letters using a max-heap
+  tricks: Pairing the two largest piles each round guarantees adjacent letters differ and nothing is left over except at most one single letter
+  edge_cases:
+  - Impossible when one letter exceeds ceil(n / 2)
+  - Single character
+  - Exactly at the bound
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: restore-ip-addresses
+  number: 93
+  title: Restore IP Addresses
+  difficulty: medium
+  topic: Backtracking
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/restore-ip-addresses/
+  summary: Backtrack over four segments of 1 to 3 digits, rejecting leading zeros and values above 255
+  tricks: Prune when the remaining digits cannot fit the remaining segments, and break at the first invalid length because longer pieces only get worse
+  edge_cases:
+  - Fewer than 4 or more than 12 digits
+  - Leading zeros such as 010
+  - Segment above 255
+  complexity:
+    time: O(1)
+    space: O(1)
+- slug: reverse-linked-list-ii
+  number: 92
+  title: Reverse Linked List II
+  difficulty: medium
+  topic: Linked list
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/reverse-linked-list-ii/
+  summary: Walk to the node before position left, then repeatedly move the node after the segment's first node to the front of the segment
+  tricks: A dummy head handles left equal to 1, and the first segment node never moves so it naturally becomes the segment tail already linked to the rest
+  edge_cases:
+  - left equals 1 (head changes)
+  - right equals the length
+  - left equals right
+  - Single node
   complexity:
     time: O(n)
     space: O(1)
@@ -1563,6 +3196,25 @@
   complexity:
     time: O(m·n)
     space: O(1)
+- slug: shortest-path-in-binary-matrix
+  number: 1091
+  title: Shortest Path in Binary Matrix
+  difficulty: medium
+  topic: Matrix
+  tags:
+  - Graph
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/shortest-path-in-binary-matrix/
+  summary: BFS from the top-left over 8 directions, carrying the path length in the queue and marking cells seen when queued
+  tricks: Reject a blocked start or end up front, and mark cells seen at enqueue time so none is queued twice
+  edge_cases:
+  - Blocked start or end cell
+  - Single cell grid
+  - Start walled in by ones
+  complexity:
+    time: O(n²)
+    space: O(n²)
 - slug: sort-colors
   number: 75
   title: Sort Colors
@@ -1581,6 +3233,26 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: sort-list
+  number: 148
+  title: Sort List
+  difficulty: medium
+  topic: Linked list
+  tags:
+  - Two pointers
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/sort-list/
+  summary: Top-down merge sort, splitting at the middle found with slow and fast pointers and merging the sorted halves with a dummy head
+  tricks: Cut the list at the end of the first half before recursing; starting fast one node ahead makes two-node lists split 1 and 1 so recursion always shrinks
+  edge_cases:
+  - Empty list and single node
+  - Already sorted and reverse sorted
+  - Duplicates and negatives
+  - Two and three nodes
+  complexity:
+    time: O(n log n)
+    space: O(log n)
 - slug: spiral-matrix
   number: 54
   title: Spiral Matrix
@@ -1600,6 +3272,44 @@
   complexity:
     time: O(m·n)
     space: O(1)
+- slug: subarray-sum-equals-k
+  number: 560
+  title: Subarray Sum Equals K
+  difficulty: medium
+  topic: Hash
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/subarray-sum-equals-k/
+  summary: Running prefix sum with a map of prefix-sum counts; add the count of prefix - k at each step
+  tricks: 'Seed the map with {0: 1} and look up before inserting the current prefix, so k = 0 does not count empty subarrays'
+  edge_cases:
+  - Negative numbers and zeros (a sliding window fails)
+  - k = 0 or negative k
+  - Subarray starting at index 0
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: subarray-sums-divisible-by-k
+  number: 974
+  title: Subarray Sums Divisible by K
+  difficulty: medium
+  topic: Hash
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/subarray-sums-divisible-by-k/
+  summary: Count prefix sums by remainder mod k; each pair of equal remainders is one divisible subarray
+  tricks: Seed remainder 0 with a count of 1; Python's % keeps negative prefixes in [0, k), other languages need a fix-up
+  edge_cases:
+  - Negative numbers (negative prefix remainders)
+  - Zeros
+  - Subarray starting at index 0
+  complexity:
+    time: O(n)
+    space: O(k)
 - slug: subsets
   number: 78
   title: Subsets
@@ -1615,6 +3325,25 @@
   - Empty input (result is [[]])
   complexity:
     time: O(n · 2^n)
+    space: O(n)
+- slug: subsets-ii
+  number: 90
+  title: Subsets II
+  difficulty: medium
+  topic: Backtracking
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/subsets-ii/
+  summary: Sort, then backtrack over start indices, recording every path and skipping a value equal to its left neighbour at the same depth
+  tricks: Skip when i > start and nums[i] == nums[i-1]; the condition is i > start, not i > 0, or deeper picks of a repeated value are lost
+  edge_cases:
+  - All elements equal
+  - Unsorted input with duplicates
+  - Single element
+  complexity:
+    time: O(n * 2^n)
     space: O(n)
 - slug: sum-of-two-integers
   number: 371
@@ -1633,6 +3362,102 @@
   complexity:
     time: O(1)
     space: O(1)
+- slug: surrounded-regions
+  number: 130
+  title: Surrounded Regions
+  difficulty: medium
+  topic: Matrix
+  tags:
+  - Graph
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/surrounded-regions/
+  summary: Flood-fill from every border 'O' to mark the safe ones, then flip the remaining 'O' to 'X' and restore the marks
+  tricks: Search from the border inwards instead of testing each region; the safe marker doubles as the visited flag
+  edge_cases:
+  - Single cell
+  - Single row or column, where everything is on the border
+  - Diagonal contact with the border does not connect
+  complexity:
+    time: O(m * n)
+    space: O(m * n)
+- slug: swap-nodes-in-pairs
+  number: 24
+  title: Swap Nodes in Pairs
+  difficulty: medium
+  topic: Linked list
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/swap-nodes-in-pairs/
+  summary: Walk with a dummy head and a pointer to the node before each pair, rewiring the pair's three links in place
+  tricks: Rewire in the order first.next, second.next, prev.next so no link is lost, then advance prev to the old first node
+  edge_cases:
+  - Empty list and single node
+  - Odd length leaves the last node alone
+  - Two nodes
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: target-sum
+  number: 494
+  title: Target Sum
+  difficulty: medium
+  topic: Dynamic programming
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/target-sum/
+  summary: Reduce to counting subsets that sum to (total + target) / 2 and run a 0/1 knapsack count with a 1D array
+  tricks: Iterate sums downward so each number is used once; return 0 when |target| exceeds the total or the parity is odd, and zeros double the count
+  edge_cases:
+  - Zeros (each doubles the count)
+  - Target beyond the total or of the wrong parity
+  - Negative target
+  complexity:
+    time: O(n·S)
+    space: O(S)
+- slug: task-scheduler
+  number: 621
+  title: Task Scheduler
+  difficulty: medium
+  topic: Greedy
+  tags:
+  - Heap
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/task-scheduler/
+  summary: Count frequencies and compute (max - 1) * (n + 1) + number of tasks tied for max, floored at the task count
+  tricks: The most frequent task forces the frame layout; if other tasks overfill the gaps no idling is needed, hence the max with len(tasks)
+  edge_cases:
+  - n = 0
+  - Several tasks tied for the highest count
+  - More distinct tasks than the cooldown
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: time-based-key-value-store
+  number: 981
+  title: Time Based Key-Value Store
+  difficulty: medium
+  topic: Design
+  tags:
+  - Hash
+  - Binary search
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/time-based-key-value-store/
+  summary: Map each key to parallel lists of timestamps and values, and bisect_right the timestamps on get
+  tricks: Timestamps arrive in increasing order, so appending keeps each list sorted and no re-sorting is needed
+  edge_cases:
+  - Unknown key returns an empty string
+  - Query earlier than the first timestamp
+  - Query exactly at a stored timestamp
+  - Query after the last timestamp
+  complexity:
+    time: O(1) set, O(log n) get
+    space: O(n)
 - slug: top-k-frequent-elements
   number: 347
   title: Top K Frequent Elements
@@ -1649,6 +3474,43 @@
   - All elements identical
   complexity:
     time: O(n)
+    space: O(n)
+- slug: top-k-frequent-words
+  number: 692
+  title: Top K Frequent Words
+  difficulty: medium
+  topic: Heap
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/top-k-frequent-words/
+  summary: Count words, then take the k smallest by key (-count, word) with heapq.nsmallest
+  tricks: Negating the count lets one ascending key express frequency descending then alphabetical order
+  edge_cases:
+  - Ties broken lexicographically
+  - k equals the number of distinct words
+  - One word
+  complexity:
+    time: O(n log k)
+    space: O(n)
+- slug: triangle
+  number: 120
+  title: Triangle
+  difficulty: medium
+  topic: Dynamic programming
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/triangle/
+  summary: Bottom-up from the last row, replacing each cell by its value plus the smaller of its two children, reusing one array
+  tricks: Going bottom-up leaves the answer in dp[0] and avoids ragged edge handling; copy the last row so the input is not mutated
+  edge_cases:
+  - Single row
+  - Negative values
+  - A locally cheaper child that leads to a worse path
+  complexity:
+    time: O(n²)
     space: O(n)
 - slug: two-sum-ii-input-array-is-sorted
   number: 167
@@ -1771,6 +3633,27 @@
   complexity:
     time: O(C) total characters
     space: O(1) alphabet
+- slug: binary-tree-cameras
+  number: 968
+  title: Binary Tree Cameras
+  difficulty: hard
+  topic: Tree
+  tags:
+  - Greedy
+  - Dynamic programming
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/binary-tree-cameras/
+  summary: Post-order DFS with three node states (needs cover, covered, has camera), placing a camera on the parent of any uncovered child
+  tricks: Never put a camera on a leaf; wait and place it on its parent, then give the root its own camera if it still needs cover
+  edge_cases:
+  - Single node needs one camera
+  - Root left uncovered after the DFS
+  - Long skewed chain (one camera per three nodes)
+  - Perfect binary tree
+  complexity:
+    time: O(n)
+    space: O(h)
 - slug: binary-tree-maximum-path-sum
   number: 124
   title: Binary Tree Maximum Path Sum
@@ -1788,6 +3671,62 @@
   complexity:
     time: O(n)
     space: O(h)
+- slug: burst-balloons
+  number: 312
+  title: Burst Balloons
+  difficulty: hard
+  topic: Dynamic programming
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/burst-balloons/
+  summary: Interval DP over a list padded with 1s, choosing the last balloon k burst in each open interval (l, r)
+  tricks: Pick the last balloon, not the first, so its neighbours are fixed at l and r and the two sides are independent; pad both ends with 1
+  edge_cases:
+  - Single balloon
+  - Empty input (0)
+  - Zeros among the values
+  complexity:
+    time: O(n³)
+    space: O(n²)
+- slug: candy
+  number: 135
+  title: Candy
+  difficulty: hard
+  topic: Greedy
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/candy/
+  summary: Two passes, left to right then right to left, taking the larger candy count required by either neighbour
+  tricks: Equal ratings impose no constraint; take the max on the second pass so peaks keep both slopes
+  edge_cases:
+  - Equal neighbours
+  - Strictly increasing or decreasing ratings
+  - Peak between plateaus
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: distinct-subsequences
+  number: 115
+  title: Distinct Subsequences
+  difficulty: hard
+  topic: Dynamic programming
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/distinct-subsequences/
+  summary: Table where dp[i][j] counts ways s[:i] spells t[:j]; skip s[i-1] always, and also use it when it equals t[j-1]
+  tricks: Seed dp[i][0] = 1 for every i, since the empty target is formed by choosing nothing; count by positions, not by distinct strings
+  edge_cases:
+  - Target longer than source (0)
+  - Many repeated characters, so counts are binomial
+  - Characters present but in the wrong order
+  complexity:
+    time: O(m·n)
+    space: O(m·n)
 - slug: find-median-from-data-stream
   number: 295
   title: Find Median from Data Stream
@@ -1806,6 +3745,106 @@
   complexity:
     time: O(log n) add, O(1) median
     space: O(n)
+- slug: first-missing-positive
+  number: 41
+  title: First Missing Positive
+  difficulty: hard
+  topic: Array
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/first-missing-positive/
+  summary: Cyclic placement; swap each value v in 1..n into index v - 1, then the first index holding the wrong value gives the answer
+  tricks: The answer lies in 1..n+1, and the swap loop must stop when the target slot already holds the value, or duplicates spin forever
+  edge_cases:
+  - All values out of range (negatives, zeros, above n)
+  - Duplicates
+  - Permutation of 1..n (answer n + 1)
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: largest-rectangle-in-histogram
+  number: 84
+  title: Largest Rectangle in Histogram
+  difficulty: hard
+  topic: Monotonic stack
+  tags:
+  - Stack
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/largest-rectangle-in-histogram/
+  summary: Keep a stack of indices with non-decreasing heights; when a shorter bar arrives, pop and measure each taller bar's rectangle
+  tricks: Append a height-0 sentinel so the final pops happen inside the loop, and take the left edge from the new stack top after popping
+  edge_cases:
+  - Single bar
+  - All bars equal
+  - Strictly increasing or decreasing heights
+  - Zero-height bars splitting the histogram
+  complexity:
+    time: O(n)
+    space: O(n)
+- slug: lfu-cache
+  number: 460
+  title: LFU Cache
+  difficulty: hard
+  topic: Design
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/lfu-cache/
+  summary: Maps for value and frequency plus a per-frequency OrderedDict of keys, tracking the minimum frequency
+  tricks: A new key resets min_freq to 1, and a touch bumps min_freq only if it emptied the lowest bucket
+  edge_cases:
+  - Capacity 0 stores nothing
+  - Capacity 1
+  - Ties on frequency evict the least recently used
+  - Put on an existing key counts as a use
+  complexity:
+    time: O(1) per operation
+    space: O(capacity)
+- slug: longest-increasing-path-in-a-matrix
+  number: 329
+  title: Longest Increasing Path in a Matrix
+  difficulty: hard
+  topic: Dynamic programming
+  tags:
+  - Matrix
+  - Graph
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+  summary: DFS from every cell that returns the longest increasing path starting there, memoised per cell
+  tricks: Strictly increasing steps make the graph acyclic, so memoisation replaces a visited set; try all four directions
+  edge_cases:
+  - Single cell
+  - All values equal (1)
+  - Path that turns corners or spirals
+  complexity:
+    time: O(m·n)
+    space: O(m·n)
+- slug: median-of-two-sorted-arrays
+  number: 4
+  title: Median of Two Sorted Arrays
+  difficulty: hard
+  topic: Binary search
+  tags:
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/median-of-two-sorted-arrays/
+  summary: Binary search a partition of the shorter array so the combined left half has (m + n + 1) // 2 elements and max(left) <= min(right)
+  tricks: Search the shorter array, and use -inf and inf for empty sides so the boundary comparisons need no special cases
+  edge_cases:
+  - One array empty
+  - Even versus odd total length
+  - Arrays that do not overlap at all
+  - Very different lengths
+  complexity:
+    time: O(log min(m, n))
+    space: O(1)
 - slug: merge-k-sorted-lists
   number: 23
   title: Merge k Sorted Lists
@@ -1843,6 +3882,63 @@
   complexity:
     time: O(m + n)
     space: O(alphabet)
+- slug: n-queens
+  number: 51
+  title: N-Queens
+  difficulty: hard
+  topic: Backtracking
+  tags:
+  - Matrix
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/n-queens/
+  summary: Place one queen per row, tracking used columns and both diagonals in sets
+  tricks: Cells on one diagonal share row - col and on the other share row + col, so three sets give O(1) conflict checks
+  edge_cases:
+  - n = 1
+  - n = 2 and n = 3 have no solution
+  - Undo all three sets when backtracking
+  complexity:
+    time: O(n!)
+    space: O(n)
+- slug: reverse-nodes-in-k-group
+  number: 25
+  title: Reverse Nodes in k-Group
+  difficulty: hard
+  topic: Linked list
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/reverse-nodes-in-k-group/
+  summary: Use a dummy head; for each group first check that k nodes remain, then reverse it in place and reconnect both ends
+  tricks: Start the reversal with prev set to the first node of the next group so the group's old head is already linked onward, and only reverse after confirming k nodes exist
+  edge_cases:
+  - k equals 1 or equals the length
+  - Remainder shorter than k stays in order
+  - Exact multiple of k
+  - Single node
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: russian-doll-envelopes
+  number: 354
+  title: Russian Doll Envelopes
+  difficulty: hard
+  topic: Dynamic programming
+  tags:
+  - Binary search
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/russian-doll-envelopes/
+  summary: Sort by width ascending and height descending, then take the longest strictly increasing subsequence of heights with a tails array and bisect
+  tricks: The descending-height tie-break stops equal widths from chaining, and bisect_left keeps the chain strict
+  edge_cases:
+  - Identical envelopes
+  - Equal widths with different heights
+  - Equal heights with increasing widths
+  complexity:
+    time: O(n log n)
+    space: O(n)
 - slug: serialize-and-deserialize-binary-tree
   number: 297
   title: Serialize and Deserialize Binary Tree
@@ -1879,6 +3975,48 @@
   complexity:
     time: O(n)
     space: O(k)
+- slug: sliding-window-median
+  number: 480
+  title: Sliding Window Median
+  difficulty: hard
+  topic: Sliding window
+  tags:
+  - Binary search
+  - Heap
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/sliding-window-median/
+  summary: Maintain the window in a sorted list, using bisect to remove the outgoing value and insort to add the incoming one
+  tricks: Average the two middle values with true division for even k; two heaps with lazy deletion also work but are fiddly
+  edge_cases:
+  - k = 1
+  - k equals the array length
+  - Values near the 32-bit limits
+  - Even window sizes give .5 medians
+  complexity:
+    time: O(n * k)
+    space: O(k)
+- slug: split-array-largest-sum
+  number: 410
+  title: Split Array Largest Sum
+  difficulty: hard
+  topic: Binary search
+  tags:
+  - Greedy
+  - Array
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/split-array-largest-sum/
+  summary: Binary search the answer between max(nums) and sum(nums); a cap is feasible if a greedy left-to-right split needs at most k pieces
+  tricks: Feasibility is monotonic in the cap, so search the answer space and let a greedy count do the checking
+  edge_cases:
+  - k = 1 (answer is the total sum)
+  - k = n (answer is the largest element)
+  - Zeros in the array
+  - One huge element
+  complexity:
+    time: O(n log(sum))
+    space: O(1)
 - slug: trapping-rain-water
   number: 42
   title: Trapping Rain Water
@@ -1897,6 +4035,24 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: word-ladder
+  number: 127
+  title: Word Ladder
+  difficulty: hard
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/word-ladder/
+  summary: BFS over words, finding neighbours through wildcard-pattern buckets such as h*t, with the step count as the level
+  tricks: Bucket words by pattern to avoid comparing every pair, and empty a bucket after its first expansion
+  edge_cases:
+  - End word not in the list
+  - Begin word not in the list
+  - End word in the list but unreachable
+  complexity:
+    time: O(N * L²)
+    space: O(N * L²)
 - slug: word-search-ii
   number: 212
   title: Word Search II

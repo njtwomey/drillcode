@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.updateMatrix
+scaffolds: []
+args: [mat]
+cases:
+  - name: example 1
+    input: {mat: [[0, 0, 0], [0, 1, 0], [0, 0, 0]]}
+    expected: [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+  - name: example 2
+    input: {mat: [[0, 0, 0], [0, 1, 0], [1, 1, 1]]}
+    expected: [[0, 0, 0], [0, 1, 0], [1, 2, 1]]
+  - name: single zero
+    input: {mat: [[0]]}
+    expected: [[0]]
+  - name: single row
+    input: {mat: [[0, 1, 1, 1]]}
+    expected: [[0, 1, 2, 3]]
+  - name: single column
+    input: {mat: [[1], [1], [0]]}
+    expected: [[2], [1], [0]]
+  - name: one zero in a corner
+    input: {mat: [[1, 1, 1], [1, 1, 1], [1, 1, 0]]}
+    expected: [[4, 3, 2], [3, 2, 1], [2, 1, 0]]
+  - name: one zero in the middle
+    input: {mat: [[1, 1, 1], [1, 0, 1], [1, 1, 1]]}
+    expected: [[2, 1, 2], [1, 0, 1], [2, 1, 2]]
+  - name: zeros at both ends
+    input: {mat: [[0, 1, 1, 0]]}
+    expected: [[0, 1, 1, 0]]
+  - name: nearest zero differs per cell
+    input: {mat: [[0, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 0]]}
+    expected: [[0, 1, 2, 3, 2], [1, 2, 3, 2, 1], [2, 3, 2, 1, 0]]

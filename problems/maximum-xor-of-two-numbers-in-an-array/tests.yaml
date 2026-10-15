@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.findMaximumXOR
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [3, 10, 5, 25, 2, 8]}
+    expected: 28
+  - name: example 2
+    input: {nums: [14, 70, 53, 83, 49, 91, 36, 80, 92, 51, 66, 70]}
+    expected: 127
+  - name: single zero
+    input: {nums: [0]}
+    expected: 0
+  - name: single element
+    input: {nums: [5]}
+    expected: 0
+  - name: all duplicates
+    input: {nums: [7, 7, 7]}
+    expected: 0
+  - name: duplicates of two values
+    input: {nums: [4, 4, 3, 3]}
+    expected: 7
+  - name: zero and max
+    input: {nums: [2147483647, 0]}
+    expected: 2147483647
+  - name: top two bits
+    input: {nums: [2147483647, 1073741824]}
+    expected: 1073741823
+  - name: small values
+    input: {nums: [1, 2, 3]}
+    expected: 3

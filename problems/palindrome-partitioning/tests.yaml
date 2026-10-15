@@ -1,0 +1,27 @@
+kind: function
+entry: Solution.partition
+scaffolds: []
+args: [s]
+compare: unordered
+cases:
+  - name: example 1
+    input: {s: "aab"}
+    expected: [["a", "a", "b"], ["aa", "b"]]
+  - name: example 2 single char
+    input: {s: "a"}
+    expected: [["a"]]
+  - name: no multi-char palindrome
+    input: {s: "abc"}
+    expected: [["a", "b", "c"]]
+  - name: all same letter
+    input: {s: "aaa"}
+    expected: [["a", "a", "a"], ["a", "aa"], ["aa", "a"], ["aaa"]]
+  - name: odd palindrome whole string
+    input: {s: "aba"}
+    expected: [["a", "b", "a"], ["aba"]]
+  - name: even palindrome whole string
+    input: {s: "abba"}
+    expected: [["a", "b", "b", "a"], ["a", "bb", "a"], ["abba"]]
+  - name: two doubled letters
+    input: {s: "aabb"}
+    expected: [["a", "a", "b", "b"], ["aa", "b", "b"], ["a", "a", "bb"], ["aa", "bb"]]

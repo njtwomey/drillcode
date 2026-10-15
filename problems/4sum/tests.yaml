@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.fourSum
+scaffolds: []
+args: [nums, target]
+compare: unordered_nested
+cases:
+  - name: example 1
+    input: {nums: [1, 0, -1, 0, -2, 2], target: 0}
+    expected: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
+  - name: example 2 all equal
+    input: {nums: [2, 2, 2, 2, 2], target: 8}
+    expected: [[2, 2, 2, 2]]
+  - name: exactly four zeros
+    input: {nums: [0, 0, 0, 0], target: 0}
+    expected: [[0, 0, 0, 0]]
+  - name: fewer than four elements
+    input: {nums: [1, 2, 3], target: 6}
+    expected: []
+  - name: no quadruplet
+    input: {nums: [1, 2, 3, 4], target: 100}
+    expected: []
+  - name: negative target
+    input: {nums: [-1, -2, -3, -4, -5], target: -10}
+    expected: [[-4, -3, -2, -1]]
+  - name: duplicates at several positions
+    input: {nums: [-2, -1, -1, 1, 1, 2, 2], target: 0}
+    expected: [[-2, -1, 1, 2], [-1, -1, 1, 1]]
+  - name: large values
+    input: {nums: [1000000000, 1000000000, 1000000000, 1000000000], target: 4000000000}
+    expected: [[1000000000, 1000000000, 1000000000, 1000000000]]

@@ -1,0 +1,26 @@
+kind: function
+entry: Solution.lastStoneWeight
+scaffolds: []
+args: [stones]
+cases:
+  - name: example 1
+    input: {stones: [2, 7, 4, 1, 8, 1]}
+    expected: 1
+  - name: example 2 single stone
+    input: {stones: [1]}
+    expected: 1
+  - name: two equal stones
+    input: {stones: [2, 2]}
+    expected: 0
+  - name: two different stones
+    input: {stones: [1, 3]}
+    expected: 2
+  - name: odd count of equal stones
+    input: {stones: [3, 3, 3]}
+    expected: 3
+  - name: remainder returns to the pile
+    input: {stones: [10, 4, 2, 10]}
+    expected: 2
+  - name: everything cancels
+    input: {stones: [9, 3, 2, 10]}
+    expected: 0

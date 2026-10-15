@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.decodeString
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "3[a]2[bc]"}
+    expected: "aaabcbc"
+  - name: example 2 nested
+    input: {s: "3[a2[c]]"}
+    expected: "accaccacc"
+  - name: example 3 trailing letters
+    input: {s: "2[abc]3[cd]ef"}
+    expected: "abcabccdcdcdef"
+  - name: no brackets
+    input: {s: "abc"}
+    expected: "abc"
+  - name: multi-digit count
+    input: {s: "12[x]"}
+    expected: "xxxxxxxxxxxx"
+  - name: deeply nested
+    input: {s: "2[2[2[a]]]"}
+    expected: "aaaaaaaa"
+  - name: letters around a group
+    input: {s: "a2[b]c"}
+    expected: "abbc"
+  - name: nested with sibling groups
+    input: {s: "3[z]2[2[y]pq4[F]]"}
+    expected: "zzzyypqFFFFyypqFFFF"
+  - name: count of one
+    input: {s: "1[ab]1[c]"}
+    expected: "abc"

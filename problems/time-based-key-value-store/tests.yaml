@@ -1,0 +1,22 @@
+kind: operations
+entry: TimeMap
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["TimeMap", []], ["set", ["foo", "bar", 1]], ["get", ["foo", 1]], ["get", ["foo", 3]], ["set", ["foo", "bar2", 4]], ["get", ["foo", 4]], ["get", ["foo", 5]]]
+    expected: [null, null, "bar", "bar", null, "bar2", "bar2"]
+  - name: missing key
+    ops: [["TimeMap", []], ["get", ["nope", 5]]]
+    expected: [null, ""]
+  - name: query before first timestamp
+    ops: [["TimeMap", []], ["set", ["a", "x", 10]], ["get", ["a", 9]], ["get", ["a", 10]]]
+    expected: [null, null, "", "x"]
+  - name: several versions pick the latest not after query
+    ops: [["TimeMap", []], ["set", ["k", "v1", 1]], ["set", ["k", "v2", 5]], ["set", ["k", "v3", 9]], ["get", ["k", 4]], ["get", ["k", 5]], ["get", ["k", 8]], ["get", ["k", 100]]]
+    expected: [null, null, null, null, "v1", "v2", "v2", "v3"]
+  - name: keys are independent
+    ops: [["TimeMap", []], ["set", ["a", "A1", 1]], ["set", ["b", "B2", 2]], ["set", ["a", "A3", 3]], ["get", ["a", 2]], ["get", ["b", 1]], ["get", ["b", 7]], ["get", ["a", 3]]]
+    expected: [null, null, null, null, "A1", "", "B2", "A3"]
+  - name: same value at different times
+    ops: [["TimeMap", []], ["set", ["k", "same", 1]], ["set", ["k", "same", 6]], ["get", ["k", 3]], ["get", ["k", 6]]]
+    expected: [null, null, null, "same", "same"]

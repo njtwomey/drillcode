@@ -5,9 +5,9 @@
 help:  ## List targets
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-12s %s\n", $$1, $$2}'
 
-install:  ## Install Python (uv) and web (npm) dependencies
+install:  ## Install Python (uv) and app (npm) dependencies
 	uv sync
-	cd web && npm ci
+	cd drillcode && npm ci
 
 test:  ## Run every reference solution against its tests (CLI)
 	uv run python scripts/run_tests.py
@@ -31,19 +31,19 @@ links:  ## Verify every LeetCode link (needs network)
 	uv run python scripts/verify_links.py
 
 dev:  ## Run the web app locally with hot reload
-	cd web && npm run dev
+	cd drillcode && npm run dev
 
-build:  ## Production build into web/dist (what GitHub Pages serves)
-	cd web && npm run build
+build:  ## Production build into drillcode/dist (what GitHub Pages serves)
+	cd drillcode && npm run build
 
 preview: build  ## Serve the production build locally
-	cd web && npm run preview
+	cd drillcode && npm run preview
 
 lint:  ## Lint the web app
-	cd web && npm run lint
+	cd drillcode && npm run lint
 
 typecheck:  ## Type-check the web app
-	cd web && npx tsc -b
+	cd drillcode && npx tsc -b
 
 check: catalogue techniques test lint typecheck  ## Fast checks, no network, no build
 
@@ -51,13 +51,13 @@ check: catalogue techniques test lint typecheck  ## Fast checks, no network, no 
 # it rewrote shows up in git status; commit it before pushing.
 pre-push:  ## Everything before pushing: regenerate, check, test, lint, build, verify links
 	uv sync --locked
-	cd web && npm ci
+	cd drillcode && npm ci
 	$(MAKE) skeletons
 	$(MAKE) headers
 	$(MAKE) catalogue
 	$(MAKE) techniques
 	$(MAKE) test
-	cd web && npx oxlint --fix
+	cd drillcode && npx oxlint --fix
 	$(MAKE) lint
 	$(MAKE) typecheck
 	$(MAKE) build
@@ -66,5 +66,5 @@ pre-push:  ## Everything before pushing: regenerate, check, test, lint, build, v
 	@echo "pre-push OK"
 
 clean:  ## Remove build output and caches
-	rm -rf web/dist web/node_modules/.tmp
-	find . -name __pycache__ -not -path './web/node_modules/*' -prune -exec rm -rf {} +
+	rm -rf drillcode/dist drillcode/node_modules/.tmp
+	find . -name __pycache__ -not -path './drillcode/node_modules/*' -prune -exec rm -rf {} +

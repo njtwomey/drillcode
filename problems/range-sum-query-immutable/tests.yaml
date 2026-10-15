@@ -1,0 +1,22 @@
+kind: operations
+entry: NumArray
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["NumArray", [[-2, 0, 3, -5, 2, -1]]], ["sumRange", [0, 2]], ["sumRange", [2, 5]], ["sumRange", [0, 5]]]
+    expected: [null, 1, -1, -3]
+  - name: single element
+    ops: [["NumArray", [[7]]], ["sumRange", [0, 0]]]
+    expected: [null, 7]
+  - name: single index ranges
+    ops: [["NumArray", [[4, -3, 9]]], ["sumRange", [0, 0]], ["sumRange", [1, 1]], ["sumRange", [2, 2]]]
+    expected: [null, 4, -3, 9]
+  - name: range ending at last index
+    ops: [["NumArray", [[1, 2, 3, 4, 5]]], ["sumRange", [3, 4]], ["sumRange", [1, 4]]]
+    expected: [null, 9, 14]
+  - name: all negative
+    ops: [["NumArray", [[-1, -2, -3]]], ["sumRange", [0, 2]], ["sumRange", [1, 2]]]
+    expected: [null, -6, -5]
+  - name: zeros and repeated queries
+    ops: [["NumArray", [[0, 0, 5, 0]]], ["sumRange", [0, 1]], ["sumRange", [2, 2]], ["sumRange", [2, 2]], ["sumRange", [0, 3]]]
+    expected: [null, 0, 5, 5, 5]

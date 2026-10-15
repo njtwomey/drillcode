@@ -1,4 +1,4 @@
-# Interview workbench
+# DrillCode
 
 A local workbench for coding-interview prep: 110 LeetCode problems, each with a Python reference solution and tests. A React app lets you browse, filter and sort the catalogue, read commented solutions, edit Python in the browser, run the tests there (every case is listed with its result), add your own cases, benchmark, and attempt problems from a blank skeleton. A Practice page draws a random set (say, easy to medium arrays) and runs it with no hints, a Tips page collects techniques and templates for when a problem looks awkward (search it, or start from a signal), and a Profile page (user icon, top right) shows completion by difficulty, set and topic.
 
@@ -28,7 +28,7 @@ All Python goes through `uv` (`uv run python scripts/run_tests.py [slug ...]`).
 
 1. Push the repo to GitHub.
 2. In the repository settings, set Pages -> Source to **GitHub Actions**.
-3. Push to `main`. `.github/workflows/deploy.yml` checks the catalogue, runs the tests, builds `web/dist` and deploys it.
+3. Push to `main`. `.github/workflows/deploy.yml` checks the catalogue, runs the tests, builds `drillcode/dist` and deploys it.
 
 The build uses a relative base path and hash routes (`/#/p/two-sum`), so it works at `https://<user>.github.io/<repo>/` without further configuration. Run `make build && make preview` to try the production build locally.
 

@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.change
+scaffolds: []
+args: [amount, coins]
+cases:
+  - name: example 1
+    input: {amount: 5, coins: [1, 2, 5]}
+    expected: 4
+  - name: example 2 impossible
+    input: {amount: 3, coins: [2]}
+    expected: 0
+  - name: example 3 single coin
+    input: {amount: 10, coins: [10]}
+    expected: 1
+  - name: amount zero
+    input: {amount: 0, coins: [1, 2]}
+    expected: 1
+  - name: amount zero single large coin
+    input: {amount: 0, coins: [7]}
+    expected: 1
+  - name: order does not matter
+    input: {amount: 3, coins: [1, 2]}
+    expected: 2
+  - name: three coin types
+    input: {amount: 4, coins: [1, 2, 3]}
+    expected: 4
+  - name: unsorted coins
+    input: {amount: 5, coins: [5, 2, 1]}
+    expected: 4
+  - name: change for a dollar
+    input: {amount: 100, coins: [1, 5, 10, 25]}
+    expected: 242

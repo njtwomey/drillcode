@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.detectCycle
+scaffolds: [linked_list]
+args: [head]
+convert:
+  head: linked_list_cycle:pos
+  result: node_val
+cases:
+  - name: example 1 cycle at index 1
+    input: {head: [3, 2, 0, -4], pos: 1}
+    expected: 2
+  - name: example 2 two nodes cycle to head
+    input: {head: [1, 2], pos: 0}
+    expected: 1
+  - name: example 3 single node no cycle
+    input: {head: [1], pos: -1}
+    expected: null
+  - name: empty list
+    input: {head: [], pos: -1}
+    expected: null
+  - name: single node pointing to itself
+    input: {head: [5], pos: 0}
+    expected: 5
+  - name: long list without a cycle
+    input: {head: [1, 2, 3, 4, 5, 6, 7, 8], pos: -1}
+    expected: null
+  - name: tail points to itself
+    input: {head: [10, 20, 30, 40, 50], pos: 4}
+    expected: 50
+  - name: cycle in the middle of a long tail
+    input: {head: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], pos: 6}
+    expected: 7
+  - name: two-node list without a cycle
+    input: {head: [4, 8], pos: -1}
+    expected: null

@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.carPooling
+scaffolds: []
+args: [trips, capacity]
+cases:
+  - name: example 1 exceeds capacity
+    input: {trips: [[2, 1, 5], [3, 3, 7]], capacity: 4}
+    expected: false
+  - name: example 2 exactly fills capacity
+    input: {trips: [[2, 1, 5], [3, 3, 7]], capacity: 5}
+    expected: true
+  - name: single trip over capacity
+    input: {trips: [[5, 0, 1]], capacity: 4}
+    expected: false
+  - name: drop off and pick up at the same stop
+    input: {trips: [[3, 2, 7], [3, 7, 9]], capacity: 3}
+    expected: true
+  - name: overlap by one stop
+    input: {trips: [[3, 2, 8], [3, 7, 9]], capacity: 3}
+    expected: false
+  - name: trip to the last stop
+    input: {trips: [[4, 0, 1000]], capacity: 4}
+    expected: true
+  - name: three staggered trips exceed
+    input: {trips: [[1, 0, 3], [1, 1, 3], [1, 2, 3]], capacity: 2}
+    expected: false
+  - name: three staggered trips fit
+    input: {trips: [[1, 0, 3], [1, 1, 3], [1, 2, 3]], capacity: 3}
+    expected: true
+  - name: trips given out of order
+    input: {trips: [[2, 5, 8], [2, 1, 6], [2, 6, 9]], capacity: 4}
+    expected: true

@@ -1,0 +1,40 @@
+kind: function
+entry: Solution.findCircleNum
+scaffolds: []
+args: [isConnected]
+cases:
+  - name: example 1
+    input: {isConnected: [[1, 1, 0], [1, 1, 0], [0, 0, 1]]}
+    expected: 2
+  - name: example 2 no links
+    input: {isConnected: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
+    expected: 3
+  - name: single city
+    input: {isConnected: [[1]]}
+    expected: 1
+  - name: everything linked
+    input: {isConnected: [[1, 1, 1], [1, 1, 1], [1, 1, 1]]}
+    expected: 1
+  - name: indirect connection through a middle city
+    input: {isConnected: [[1, 1, 0], [1, 1, 1], [0, 1, 1]]}
+    expected: 1
+  - name: two separate pairs
+    input: {isConnected: [[1, 0, 0, 1], [0, 1, 1, 0], [0, 1, 1, 0], [1, 0, 0, 1]]}
+    expected: 2
+  - name: pairs plus an isolated city
+    input:
+      isConnected:
+        - [1, 0, 0, 0, 1]
+        - [0, 1, 0, 1, 0]
+        - [0, 0, 1, 0, 0]
+        - [0, 1, 0, 1, 0]
+        - [1, 0, 0, 0, 1]
+    expected: 3
+  - name: two groups bridged by a late link
+    input:
+      isConnected:
+        - [1, 0, 1, 0]
+        - [0, 1, 0, 1]
+        - [1, 0, 1, 1]
+        - [0, 1, 1, 1]
+    expected: 1

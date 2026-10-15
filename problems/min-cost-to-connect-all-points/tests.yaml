@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.minCostConnectPoints
+scaffolds: []
+args: [points]
+cases:
+  - name: example 1
+    input: {points: [[0, 0], [2, 2], [3, 10], [5, 2], [7, 0]]}
+    expected: 20
+  - name: example 2
+    input: {points: [[3, 12], [-2, 5], [-4, 1]]}
+    expected: 18
+  - name: single point
+    input: {points: [[0, 0]]}
+    expected: 0
+  - name: two points
+    input: {points: [[0, 0], [1, 1]]}
+    expected: 2
+  - name: negative coordinates
+    input: {points: [[2, -3], [-17, -8], [13, 8], [-17, -15]]}
+    expected: 53
+  - name: collinear points
+    input: {points: [[0, 0], [0, 1], [0, 5]]}
+    expected: 5
+  - name: square corners
+    input: {points: [[0, 0], [0, 3], [3, 0], [3, 3]]}
+    expected: 9
+  - name: hub is cheaper than a chain
+    input: {points: [[0, 0], [2, 0], [-2, 0], [0, 2], [0, -2]]}
+    expected: 8

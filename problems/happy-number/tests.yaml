@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.isHappy
+scaffolds: []
+args: [n]
+cases:
+  - name: example 1
+    input: {n: 19}
+    expected: true
+  - name: example 2
+    input: {n: 2}
+    expected: false
+  - name: one is happy
+    input: {n: 1}
+    expected: true
+  - name: seven reaches one in five steps
+    input: {n: 7}
+    expected: true
+  - name: four enters the known cycle
+    input: {n: 4}
+    expected: false
+  - name: power of ten
+    input: {n: 1000000000}
+    expected: true
+  - name: seven ones
+    input: {n: 1111111}
+    expected: true
+  - name: maximum 32-bit value ends in the cycle
+    input: {n: 2147483647}
+    expected: false

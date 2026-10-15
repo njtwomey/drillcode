@@ -1,0 +1,33 @@
+kind: function
+entry: Solution.reorganizeString
+scaffolds: []
+args: [s]
+compare: validator
+cases:
+  - name: example 1
+    input: {s: "aab"}
+    expected: "aba"
+  - name: example 2 impossible
+    input: {s: "aaab"}
+    expected: ""
+  - name: single letter
+    input: {s: "a"}
+    expected: "a"
+  - name: two equal letters
+    input: {s: "aa"}
+    expected: ""
+  - name: tight bound odd length
+    input: {s: "baaba"}
+    expected: "ababa"
+  - name: one dominant letter
+    input: {s: "vvvlo"}
+    expected: "vlvov"
+  - name: just over the bound
+    input: {s: "aaaabc"}
+    expected: ""
+  - name: all distinct
+    input: {s: "abcdef"}
+    expected: "abcdef"
+  - name: tight bound with several letters
+    input: {s: "zzzzyyyxx"}
+    expected: "zyzyzxzxy"

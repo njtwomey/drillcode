@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.minDistance
+scaffolds: []
+args: [word1, word2]
+cases:
+  - name: example 1
+    input: {word1: "horse", word2: "ros"}
+    expected: 3
+  - name: example 2
+    input: {word1: "intention", word2: "execution"}
+    expected: 5
+  - name: both empty
+    input: {word1: "", word2: ""}
+    expected: 0
+  - name: first empty
+    input: {word1: "", word2: "abc"}
+    expected: 3
+  - name: second empty
+    input: {word1: "abc", word2: ""}
+    expected: 3
+  - name: identical
+    input: {word1: "abc", word2: "abc"}
+    expected: 0
+  - name: single replacement
+    input: {word1: "a", word2: "b"}
+    expected: 1
+  - name: kitten sitting
+    input: {word1: "kitten", word2: "sitting"}
+    expected: 3
+  - name: sunday saturday
+    input: {word1: "sunday", word2: "saturday"}
+    expected: 3

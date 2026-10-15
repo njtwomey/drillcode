@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.singleNumber
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [2, 2, 1]}
+    expected: 1
+  - name: example 2
+    input: {nums: [4, 1, 2, 1, 2]}
+    expected: 4
+  - name: example 3 single element
+    input: {nums: [1]}
+    expected: 1
+  - name: negative single
+    input: {nums: [-1, -1, -2]}
+    expected: -2
+  - name: zero is a pair member
+    input: {nums: [0, 1, 0]}
+    expected: 1
+  - name: the single is zero
+    input: {nums: [7, 0, 7]}
+    expected: 0
+  - name: pair separated by single
+    input: {nums: [-3, 5, -3]}
+    expected: 5
+  - name: integer extremes
+    input: {nums: [2147483647, -2147483648, 2147483647]}
+    expected: -2147483648

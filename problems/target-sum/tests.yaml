@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.findTargetSumWays
+scaffolds: []
+args: [nums, target]
+cases:
+  - name: example 1
+    input: {nums: [1, 1, 1, 1, 1], target: 3}
+    expected: 5
+  - name: example 2 single element
+    input: {nums: [1], target: 1}
+    expected: 1
+  - name: target out of reach
+    input: {nums: [1], target: 2}
+    expected: 0
+  - name: parity mismatch
+    input: {nums: [1, 2], target: 2}
+    expected: 0
+  - name: sum too small
+    input: {nums: [1, 2, 3], target: 7}
+    expected: 0
+  - name: negative target
+    input: {nums: [1, 1], target: -2}
+    expected: 1
+  - name: single zero target zero
+    input: {nums: [0], target: 0}
+    expected: 2
+  - name: zero doubles the count
+    input: {nums: [1, 0], target: 1}
+    expected: 2
+  - name: many zeros
+    input: {nums: [0, 0, 0, 0, 0, 0, 0, 0, 1], target: 1}
+    expected: 256
+  - name: all numbers needed
+    input: {nums: [1, 2, 7, 9, 981], target: 1000}
+    expected: 1

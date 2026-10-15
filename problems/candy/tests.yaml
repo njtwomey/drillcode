@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.candy
+scaffolds: []
+args: [ratings]
+cases:
+  - name: example 1
+    input: {ratings: [1, 0, 2]}
+    expected: 5
+  - name: example 2 equal neighbours
+    input: {ratings: [1, 2, 2]}
+    expected: 4
+  - name: single child
+    input: {ratings: [1]}
+    expected: 1
+  - name: all equal
+    input: {ratings: [1, 1, 1]}
+    expected: 3
+  - name: strictly increasing
+    input: {ratings: [1, 2, 3, 4, 5]}
+    expected: 15
+  - name: strictly decreasing
+    input: {ratings: [5, 4, 3, 2, 1]}
+    expected: 15
+  - name: slope then plateau then slope
+    input: {ratings: [1, 3, 2, 2, 1]}
+    expected: 7
+  - name: peak between equal plateaus
+    input: {ratings: [1, 2, 87, 87, 87, 2, 1]}
+    expected: 13
+  - name: valley
+    input: {ratings: [3, 2, 1, 2, 3]}
+    expected: 11

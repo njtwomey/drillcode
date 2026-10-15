@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.removeKdigits
+scaffolds: []
+args: [num, k]
+cases:
+  - name: example 1
+    input: {num: "1432219", k: 3}
+    expected: "1219"
+  - name: example 2 leading zeros stripped
+    input: {num: "10200", k: 1}
+    expected: "200"
+  - name: example 3 remove everything
+    input: {num: "10", k: 2}
+    expected: "0"
+  - name: single digit
+    input: {num: "9", k: 1}
+    expected: "0"
+  - name: increasing digits trim the tail
+    input: {num: "12345", k: 2}
+    expected: "123"
+  - name: equal digits
+    input: {num: "112", k: 1}
+    expected: "11"
+  - name: decreasing digits
+    input: {num: "54321", k: 2}
+    expected: "321"
+  - name: zeros collapse to zero
+    input: {num: "10001", k: 4}
+    expected: "0"
+  - name: removing a digit leaves zeros in front
+    input: {num: "100", k: 1}
+    expected: "0"

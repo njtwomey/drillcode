@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.findMaxLength
+scaffolds: []
+args: [nums]
+cases:
+  - name: example 1
+    input: {nums: [0, 1]}
+    expected: 2
+  - name: example 2
+    input: {nums: [0, 1, 0]}
+    expected: 2
+  - name: example 3
+    input: {nums: [0, 1, 1, 1, 1, 1, 0, 0, 0]}
+    expected: 6
+  - name: single zero
+    input: {nums: [0]}
+    expected: 0
+  - name: all ones
+    input: {nums: [1, 1, 1]}
+    expected: 0
+  - name: whole array balanced
+    input: {nums: [1, 1, 0, 0, 1, 1, 0, 0]}
+    expected: 8
+  - name: best subarray not at the start
+    input: {nums: [0, 0, 1, 0, 0, 0, 1, 1]}
+    expected: 6
+  - name: starts with one
+    input: {nums: [1, 0]}
+    expected: 2
+  - name: balance dips then recovers
+    input: {nums: [0, 0, 0, 1, 1, 1, 0]}
+    expected: 6

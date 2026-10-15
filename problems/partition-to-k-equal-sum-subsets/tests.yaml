@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.canPartitionKSubsets
+scaffolds: []
+args: [nums, k]
+cases:
+  - name: example 1
+    input: {nums: [4, 3, 2, 3, 5, 2, 1], k: 4}
+    expected: true
+  - name: example 2
+    input: {nums: [1, 2, 3, 4], k: 3}
+    expected: false
+  - name: single element k one
+    input: {nums: [1], k: 1}
+    expected: true
+  - name: k one always works
+    input: {nums: [5, 1, 2], k: 1}
+    expected: true
+  - name: sum not divisible by k
+    input: {nums: [1, 1, 1, 1, 2], k: 4}
+    expected: false
+  - name: element larger than target
+    input: {nums: [5, 1, 1, 1], k: 2}
+    expected: false
+  - name: sum divisible but no layout
+    input: {nums: [2, 2, 2, 2, 3, 4, 5], k: 4}
+    expected: false
+  - name: large values
+    input: {nums: [9999, 1, 10000, 5000, 5000], k: 2}
+    expected: true
+  - name: sixteen equal values
+    input: {nums: [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000], k: 16}
+    expected: true
+  - name: sixteen elements bucket parity blocks it
+    input: {nums: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3], k: 3}
+    expected: false

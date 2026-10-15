@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.partitionLabels
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "ababcbacadefegdehijhklij"}
+    expected: [9, 7, 8]
+  - name: example 2 single part
+    input: {s: "eccbbbbdec"}
+    expected: [10]
+  - name: single letter
+    input: {s: "a"}
+    expected: [1]
+  - name: all distinct
+    input: {s: "abc"}
+    expected: [1, 1, 1]
+  - name: one repeated letter
+    input: {s: "aaaa"}
+    expected: [4]
+  - name: interleaved pair
+    input: {s: "abab"}
+    expected: [4]
+  - name: first letter unique
+    input: {s: "caedbdedda"}
+    expected: [1, 9]
+  - name: runs of letters
+    input: {s: "aabbcc"}
+    expected: [2, 2, 2]

@@ -1,0 +1,33 @@
+kind: function
+entry: Solution.findMinHeightTrees
+scaffolds: []
+args: [n, edges]
+compare: unordered
+cases:
+  - name: example 1 star
+    input: {n: 4, edges: [[1, 0], [1, 2], [1, 3]]}
+    expected: [1]
+  - name: example 2 two centres
+    input: {n: 6, edges: [[3, 0], [3, 1], [3, 2], [3, 4], [5, 4]]}
+    expected: [3, 4]
+  - name: single node
+    input: {n: 1, edges: []}
+    expected: [0]
+  - name: two nodes
+    input: {n: 2, edges: [[0, 1]]}
+    expected: [0, 1]
+  - name: odd length path
+    input: {n: 5, edges: [[0, 1], [1, 2], [2, 3], [3, 4]]}
+    expected: [2]
+  - name: even length path
+    input: {n: 4, edges: [[0, 1], [1, 2], [2, 3]]}
+    expected: [1, 2]
+  - name: star centred on zero
+    input: {n: 5, edges: [[0, 1], [0, 2], [0, 3], [0, 4]]}
+    expected: [0]
+  - name: centre is not the highest degree node
+    input: {n: 7, edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [2, 6]]}
+    expected: [2, 3]
+  - name: three nodes in a line
+    input: {n: 3, edges: [[0, 1], [1, 2]]}
+    expected: [1]

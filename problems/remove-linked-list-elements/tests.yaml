@@ -1,0 +1,38 @@
+kind: function
+entry: Solution.removeElements
+scaffolds: [linked_list]
+args: [head, val]
+convert:
+  head: linked_list
+  result: linked_list
+cases:
+  - name: example 1
+    input: {head: [1, 2, 6, 3, 4, 5, 6], val: 6}
+    expected: [1, 2, 3, 4, 5]
+  - name: example 2 empty list
+    input: {head: [], val: 1}
+    expected: []
+  - name: example 3 every node matches
+    input: {head: [7, 7, 7, 7], val: 7}
+    expected: []
+  - name: no match
+    input: {head: [1, 2, 3], val: 9}
+    expected: [1, 2, 3]
+  - name: matching head run
+    input: {head: [2, 2, 2, 5, 6], val: 2}
+    expected: [5, 6]
+  - name: matching tail run
+    input: {head: [1, 2, 3, 3, 3], val: 3}
+    expected: [1, 2]
+  - name: consecutive matches in the middle
+    input: {head: [1, 4, 4, 4, 2], val: 4}
+    expected: [1, 2]
+  - name: single node removed
+    input: {head: [5], val: 5}
+    expected: []
+  - name: single node kept
+    input: {head: [5], val: 4}
+    expected: [5]
+  - name: alternating
+    input: {head: [1, 2, 1, 2, 1], val: 1}
+    expected: [2, 2]

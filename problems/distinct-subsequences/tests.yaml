@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.numDistinct
+scaffolds: []
+args: [s, t]
+cases:
+  - name: example 1
+    input: {s: "rabbbit", t: "rabbit"}
+    expected: 3
+  - name: example 2
+    input: {s: "babgbag", t: "bag"}
+    expected: 5
+  - name: single match
+    input: {s: "a", t: "a"}
+    expected: 1
+  - name: choose which duplicates
+    input: {s: "aaa", t: "aa"}
+    expected: 3
+  - name: target longer than source
+    input: {s: "abc", t: "abcd"}
+    expected: 0
+  - name: no common characters
+    input: {s: "abc", t: "z"}
+    expected: 0
+  - name: binomial count
+    input: {s: "aaaaa", t: "aa"}
+    expected: 10
+  - name: order matters
+    input: {s: "ba", t: "ab"}
+    expected: 0
+  - name: repeated pattern
+    input: {s: "ababab", t: "abab"}
+    expected: 5

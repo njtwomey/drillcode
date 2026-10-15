@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.findAnagrams
+scaffolds: []
+args: [s, p]
+compare: unordered
+cases:
+  - name: example 1
+    input: {s: "cbaebabacd", p: "abc"}
+    expected: [0, 6]
+  - name: example 2 overlapping matches
+    input: {s: "abab", p: "ab"}
+    expected: [0, 1, 2]
+  - name: p longer than s
+    input: {s: "a", p: "ab"}
+    expected: []
+  - name: repeated letters overlap
+    input: {s: "aaaaa", p: "aa"}
+    expected: [0, 1, 2, 3]
+  - name: match at the end only
+    input: {s: "baa", p: "aa"}
+    expected: [1]
+  - name: no match, same letters wrong counts
+    input: {s: "abcabc", p: "aab"}
+    expected: []
+  - name: whole string
+    input: {s: "listen", p: "silent"}
+    expected: [0]
+  - name: single char
+    input: {s: "aba", p: "a"}
+    expected: [0, 2]

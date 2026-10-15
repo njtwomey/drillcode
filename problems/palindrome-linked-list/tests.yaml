@@ -1,0 +1,34 @@
+kind: function
+entry: Solution.isPalindrome
+scaffolds: [linked_list]
+args: [head]
+convert:
+  head: linked_list
+cases:
+  - name: example 1 even palindrome
+    input: {head: [1, 2, 2, 1]}
+    expected: true
+  - name: example 2 not a palindrome
+    input: {head: [1, 2]}
+    expected: false
+  - name: single node
+    input: {head: [1]}
+    expected: true
+  - name: odd palindrome
+    input: {head: [1, 2, 3, 2, 1]}
+    expected: true
+  - name: all equal values
+    input: {head: [7, 7, 7, 7, 7, 7]}
+    expected: true
+  - name: odd length, middle matches but ends differ
+    input: {head: [1, 2, 3, 4, 1]}
+    expected: false
+  - name: differs only at the centre pair
+    input: {head: [1, 2, 3, 4, 2, 1]}
+    expected: false
+  - name: two equal nodes
+    input: {head: [9, 9]}
+    expected: true
+  - name: long even palindrome
+    input: {head: [0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0]}
+    expected: true

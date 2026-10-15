@@ -1,0 +1,30 @@
+kind: function
+entry: Solution.combinationSum2
+scaffolds: []
+args: [candidates, target]
+compare: unordered_nested
+cases:
+  - name: example 1
+    input: {candidates: [10, 1, 2, 7, 6, 1, 5], target: 8}
+    expected: [[1, 1, 6], [1, 2, 5], [1, 7], [2, 6]]
+  - name: example 2
+    input: {candidates: [2, 5, 2, 1, 2], target: 5}
+    expected: [[1, 2, 2], [5]]
+  - name: no combination
+    input: {candidates: [2, 4], target: 3}
+    expected: []
+  - name: each copy used at most once
+    input: {candidates: [1, 1, 1, 1], target: 2}
+    expected: [[1, 1]]
+  - name: single element hit
+    input: {candidates: [1], target: 1}
+    expected: [[1]]
+  - name: repeated values with several sums
+    input: {candidates: [3, 1, 3, 5, 1, 1], target: 8}
+    expected: [[3, 5], [1, 1, 1, 5], [1, 1, 3, 3]]
+  - name: target smaller than every candidate
+    input: {candidates: [5, 6, 7], target: 3}
+    expected: []
+  - name: needs every element
+    input: {candidates: [2, 2, 2], target: 6}
+    expected: [[2, 2, 2]]

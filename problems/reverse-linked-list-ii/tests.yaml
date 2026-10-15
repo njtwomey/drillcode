@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.reverseBetween
+scaffolds: [linked_list]
+args: [head, left, right]
+convert:
+  head: linked_list
+  result: linked_list
+cases:
+  - name: example 1 middle segment
+    input: {head: [1, 2, 3, 4, 5], left: 2, right: 4}
+    expected: [1, 4, 3, 2, 5]
+  - name: example 2 single node
+    input: {head: [5], left: 1, right: 1}
+    expected: [5]
+  - name: whole list
+    input: {head: [1, 2, 3, 4, 5], left: 1, right: 5}
+    expected: [5, 4, 3, 2, 1]
+  - name: segment starts at head
+    input: {head: [1, 2, 3, 4, 5], left: 1, right: 3}
+    expected: [3, 2, 1, 4, 5]
+  - name: segment ends at tail
+    input: {head: [1, 2, 3, 4, 5], left: 3, right: 5}
+    expected: [1, 2, 5, 4, 3]
+  - name: left equals right changes nothing
+    input: {head: [1, 2, 3, 4], left: 3, right: 3}
+    expected: [1, 2, 3, 4]
+  - name: two nodes swapped
+    input: {head: [3, 5], left: 1, right: 2}
+    expected: [5, 3]
+  - name: adjacent pair in the middle
+    input: {head: [1, 2, 3, 4, 5, 6], left: 3, right: 4}
+    expected: [1, 2, 4, 3, 5, 6]
+  - name: duplicates
+    input: {head: [7, 7, 8, 9, 9], left: 2, right: 5}
+    expected: [7, 9, 9, 8, 7]

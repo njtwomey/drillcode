@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.isBipartite
+scaffolds: []
+args: [graph]
+cases:
+  - name: example 1 triangle plus pendant
+    input: {graph: [[1, 2, 3], [0, 2], [0, 1, 3], [0, 2]]}
+    expected: false
+  - name: example 2 four-cycle
+    input: {graph: [[1, 3], [0, 2], [1, 3], [0, 2]]}
+    expected: true
+  - name: odd cycle in a second component
+    input: {graph: [[1], [0], [3, 4], [2, 4], [2, 3]]}
+    expected: false
+  - name: two bipartite components
+    input: {graph: [[1], [0], [3], [2]]}
+    expected: true
+  - name: isolated nodes
+    input: {graph: [[], []]}
+    expected: true
+  - name: single node
+    input: {graph: [[]]}
+    expected: true
+  - name: five-cycle
+    input: {graph: [[1, 4], [0, 2], [1, 3], [2, 4], [3, 0]]}
+    expected: false
+  - name: six-cycle
+    input: {graph: [[1, 5], [0, 2], [1, 3], [2, 4], [3, 5], [4, 0]]}
+    expected: true
+  - name: isolated node before an odd cycle
+    input: {graph: [[], [2, 3], [1, 3], [1, 2]]}
+    expected: false

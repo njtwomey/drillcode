@@ -1,0 +1,48 @@
+kind: function
+entry: Solution.calcEquation
+scaffolds: []
+args: [equations, values, queries]
+compare: float:0.00001
+cases:
+  - name: example 1
+    input:
+      equations: [["a", "b"], ["b", "c"]]
+      values: [2.0, 3.0]
+      queries: [["a", "c"], ["b", "a"], ["a", "e"], ["a", "a"], ["x", "x"]]
+    expected: [6.0, 0.5, -1.0, 1.0, -1.0]
+  - name: example 2
+    input:
+      equations: [["a", "b"], ["b", "c"], ["bc", "cd"]]
+      values: [1.5, 2.5, 5.0]
+      queries: [["a", "c"], ["c", "b"], ["bc", "cd"], ["cd", "bc"]]
+    expected: [3.75, 0.4, 5.0, 0.2]
+  - name: example 3
+    input:
+      equations: [["a", "b"]]
+      values: [0.5]
+      queries: [["a", "b"], ["b", "a"], ["a", "c"], ["x", "y"]]
+    expected: [0.5, 2.0, -1.0, -1.0]
+  - name: separate components
+    input:
+      equations: [["a", "b"], ["c", "d"]]
+      values: [2.0, 3.0]
+      queries: [["a", "d"], ["a", "b"], ["d", "c"]]
+    expected: [-1.0, 2.0, 0.3333333333]
+  - name: long chain in both directions
+    input:
+      equations: [["a", "b"], ["b", "c"], ["c", "d"], ["d", "e"]]
+      values: [2.0, 2.0, 2.0, 2.0]
+      queries: [["a", "e"], ["e", "a"]]
+    expected: [16.0, 0.0625]
+  - name: path goes through an edge against its direction
+    input:
+      equations: [["a", "b"], ["c", "b"]]
+      values: [4.0, 2.0]
+      queries: [["a", "c"], ["c", "a"]]
+    expected: [2.0, 0.5]
+  - name: known variable divided by itself
+    input:
+      equations: [["x1", "x2"]]
+      values: [3.0]
+      queries: [["x1", "x1"], ["x2", "x2"]]
+    expected: [1.0, 1.0]

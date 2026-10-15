@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.minSubArrayLen
+scaffolds: []
+args: [target, nums]
+cases:
+  - name: example 1
+    input: {target: 7, nums: [2, 3, 1, 2, 4, 3]}
+    expected: 2
+  - name: example 2 single element
+    input: {target: 4, nums: [1, 4, 4]}
+    expected: 1
+  - name: example 3 impossible
+    input: {target: 11, nums: [1, 1, 1, 1, 1, 1, 1, 1]}
+    expected: 0
+  - name: whole array needed
+    input: {target: 15, nums: [1, 2, 3, 4, 5]}
+    expected: 5
+  - name: single element equals target
+    input: {target: 5, nums: [5]}
+    expected: 1
+  - name: one big element beats a long run
+    input: {target: 6, nums: [1, 1, 1, 10, 2, 3]}
+    expected: 1
+  - name: just short of target
+    input: {target: 3, nums: [1, 1]}
+    expected: 0
+  - name: shortest window is in the middle
+    input: {target: 7, nums: [1, 2, 3, 4, 5]}
+    expected: 2
+  - name: long input where window is 8
+    input: {target: 213, nums: [12, 28, 83, 4, 25, 26, 25, 2, 25, 25, 25, 12]}
+    expected: 8

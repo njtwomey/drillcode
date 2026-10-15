@@ -1,0 +1,28 @@
+kind: operations
+entry: LFUCache
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["LFUCache", [2]], ["put", [1, 1]], ["put", [2, 2]], ["get", [1]], ["put", [3, 3]], ["get", [2]], ["get", [3]], ["put", [4, 4]], ["get", [1]], ["get", [3]], ["get", [4]]]
+    expected: [null, null, null, 1, null, -1, 3, null, -1, 3, 4]
+  - name: capacity zero stores nothing
+    ops: [["LFUCache", [0]], ["put", [0, 0]], ["get", [0]]]
+    expected: [null, null, -1]
+  - name: capacity one
+    ops: [["LFUCache", [1]], ["put", [1, 1]], ["put", [2, 2]], ["get", [1]], ["get", [2]], ["put", [3, 3]], ["get", [2]], ["get", [3]]]
+    expected: [null, null, null, -1, 2, null, -1, 3]
+  - name: tie on frequency evicts least recently used
+    ops: [["LFUCache", [2]], ["put", [1, 1]], ["put", [2, 2]], ["put", [3, 3]], ["get", [1]], ["get", [2]], ["get", [3]]]
+    expected: [null, null, null, null, -1, 2, 3]
+  - name: tie after reads is broken by recency within the bucket
+    ops: [["LFUCache", [2]], ["put", [1, 1]], ["put", [2, 2]], ["get", [1]], ["get", [2]], ["put", [3, 3]], ["get", [1]], ["get", [2]], ["get", [3]]]
+    expected: [null, null, null, 1, 2, null, -1, 2, 3]
+  - name: put on existing key counts as a use
+    ops: [["LFUCache", [2]], ["put", [1, 1]], ["put", [2, 2]], ["put", [1, 10]], ["put", [3, 3]], ["get", [2]], ["get", [1]], ["get", [3]]]
+    expected: [null, null, null, null, null, -1, 10, 3]
+  - name: new key resets minimum frequency
+    ops: [["LFUCache", [2]], ["put", [1, 1]], ["get", [1]], ["put", [2, 2]], ["put", [3, 3]], ["get", [2]], ["get", [1]], ["get", [3]]]
+    expected: [null, null, 1, null, null, -1, 1, 3]
+  - name: get missing key
+    ops: [["LFUCache", [2]], ["get", [9]]]
+    expected: [null, -1]

@@ -1,0 +1,45 @@
+kind: function
+entry: Solution.maximalSquare
+scaffolds: []
+args: [matrix]
+cases:
+  - name: example 1
+    input:
+      matrix:
+        - ["1", "0", "1", "0", "0"]
+        - ["1", "0", "1", "1", "1"]
+        - ["1", "1", "1", "1", "1"]
+        - ["1", "0", "0", "1", "0"]
+    expected: 4
+  - name: example 2 diagonal ones
+    input: {matrix: [["0", "1"], ["1", "0"]]}
+    expected: 1
+  - name: example 3 single zero
+    input: {matrix: [["0"]]}
+    expected: 0
+  - name: single one
+    input: {matrix: [["1"]]}
+    expected: 1
+  - name: full 3x3
+    input: {matrix: [["1", "1", "1"], ["1", "1", "1"], ["1", "1", "1"]]}
+    expected: 9
+  - name: single row of ones
+    input: {matrix: [["1", "1", "1"]]}
+    expected: 1
+  - name: wide rectangle is not a square
+    input: {matrix: [["1", "1", "1", "1", "1"], ["1", "1", "1", "1", "1"]]}
+    expected: 4
+  - name: square away from the corner
+    input:
+      matrix:
+        - ["1", "1", "1", "1"]
+        - ["1", "1", "1", "1"]
+        - ["0", "1", "1", "1"]
+    expected: 9
+  - name: hole inside blocks the big square
+    input:
+      matrix:
+        - ["1", "1", "1"]
+        - ["1", "0", "1"]
+        - ["1", "1", "1"]
+    expected: 1
