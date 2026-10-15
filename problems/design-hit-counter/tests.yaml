@@ -1,0 +1,22 @@
+kind: operations
+entry: HitCounter
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["HitCounter", []], ["hit", [1]], ["hit", [2]], ["hit", [3]], ["getHits", [4]], ["hit", [300]], ["getHits", [300]], ["getHits", [301]]]
+    expected: [null, null, null, null, 3, null, 4, 3]
+  - name: no hits yet
+    ops: [["HitCounter", []], ["getHits", [5]]]
+    expected: [null, 0]
+  - name: repeated timestamp counts every hit
+    ops: [["HitCounter", []], ["hit", [1]], ["hit", [1]], ["hit", [1]], ["getHits", [1]], ["getHits", [300]], ["getHits", [301]]]
+    expected: [null, null, null, null, 3, 3, 0]
+  - name: window boundary is 300 seconds inclusive of the newest
+    ops: [["HitCounter", []], ["hit", [1]], ["hit", [150]], ["hit", [299]], ["getHits", [300]], ["getHits", [400]], ["getHits", [450]], ["hit", [450]], ["getHits", [450]], ["getHits", [599]], ["getHits", [750]]]
+    expected: [null, null, null, null, 3, 2, 1, null, 2, 1, 0]
+  - name: hit at the same second as the query
+    ops: [["HitCounter", []], ["hit", [10]], ["getHits", [10]], ["hit", [310]], ["getHits", [310]], ["getHits", [609]], ["getHits", [610]]]
+    expected: [null, null, 1, null, 1, 1, 0]
+  - name: query repeated with no change
+    ops: [["HitCounter", []], ["hit", [5]], ["getHits", [6]], ["getHits", [6]], ["hit", [7]], ["getHits", [7]]]
+    expected: [null, null, 1, 1, null, 2]

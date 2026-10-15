@@ -1,0 +1,50 @@
+kind: function
+entry: Solution.myAtoi
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "42"}
+    expected: 42
+  - name: example 2 spaces sign and leading zeros
+    input: {s: "   -042"}
+    expected: -42
+  - name: example 3 stops at non-digit
+    input: {s: "1337c0d3"}
+    expected: 1337
+  - name: example 4 sign after a digit
+    input: {s: "0-1"}
+    expected: 0
+  - name: example 5 letters first
+    input: {s: "words and 987"}
+    expected: 0
+  - name: empty string
+    input: {s: ""}
+    expected: 0
+  - name: only spaces
+    input: {s: "   "}
+    expected: 0
+  - name: sign only
+    input: {s: "+"}
+    expected: 0
+  - name: two signs
+    input: {s: "+-12"}
+    expected: 0
+  - name: decimal point stops parsing
+    input: {s: "3.14159"}
+    expected: 3
+  - name: clamp high
+    input: {s: "91283472332"}
+    expected: 2147483647
+  - name: clamp low
+    input: {s: "-91283472332"}
+    expected: -2147483648
+  - name: exact int min
+    input: {s: "-2147483648"}
+    expected: -2147483648
+  - name: one over int max
+    input: {s: "2147483648"}
+    expected: 2147483647
+  - name: space between sign and digits
+    input: {s: "- 5"}
+    expected: 0

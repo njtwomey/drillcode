@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.longestCommonPrefix
+scaffolds: []
+args: [strs]
+cases:
+  - name: example 1
+    input: {strs: ["flower", "flow", "flight"]}
+    expected: "fl"
+  - name: example 2 no common prefix
+    input: {strs: ["dog", "racecar", "car"]}
+    expected: ""
+  - name: single string
+    input: {strs: ["alone"]}
+    expected: "alone"
+  - name: identical strings
+    input: {strs: ["same", "same", "same"]}
+    expected: "same"
+  - name: empty string last
+    input: {strs: ["abc", ""]}
+    expected: ""
+  - name: empty string first
+    input: {strs: ["", "abc"]}
+    expected: ""
+  - name: shortest string is the prefix
+    input: {strs: ["abc", "ab", "abcd"]}
+    expected: "ab"
+  - name: single empty string
+    input: {strs: [""]}
+    expected: ""
+  - name: shorter string last, one char
+    input: {strs: ["ab", "abc", "a"]}
+    expected: "a"

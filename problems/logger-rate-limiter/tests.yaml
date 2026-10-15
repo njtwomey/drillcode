@@ -1,0 +1,25 @@
+kind: operations
+entry: Logger
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["Logger", []], ["shouldPrintMessage", [1, "foo"]], ["shouldPrintMessage", [2, "bar"]], ["shouldPrintMessage", [3, "foo"]], ["shouldPrintMessage", [8, "bar"]], ["shouldPrintMessage", [10, "foo"]], ["shouldPrintMessage", [11, "foo"]]]
+    expected: [null, true, true, false, false, false, true]
+  - name: exactly ten seconds later is allowed
+    ops: [["Logger", []], ["shouldPrintMessage", [0, "a"]], ["shouldPrintMessage", [9, "a"]], ["shouldPrintMessage", [10, "a"]]]
+    expected: [null, true, false, true]
+  - name: blocked attempts do not extend the wait
+    ops: [["Logger", []], ["shouldPrintMessage", [1, "a"]], ["shouldPrintMessage", [5, "a"]], ["shouldPrintMessage", [9, "a"]], ["shouldPrintMessage", [11, "a"]]]
+    expected: [null, true, false, false, true]
+  - name: same timestamp
+    ops: [["Logger", []], ["shouldPrintMessage", [5, "a"]], ["shouldPrintMessage", [5, "a"]], ["shouldPrintMessage", [5, "b"]]]
+    expected: [null, true, false, true]
+  - name: messages are tracked independently
+    ops: [["Logger", []], ["shouldPrintMessage", [1, "a"]], ["shouldPrintMessage", [2, "b"]], ["shouldPrintMessage", [3, "c"]], ["shouldPrintMessage", [4, "a"]], ["shouldPrintMessage", [11, "a"]], ["shouldPrintMessage", [12, "b"]], ["shouldPrintMessage", [13, "c"]]]
+    expected: [null, true, true, true, false, true, true, true]
+  - name: repeated printing every ten seconds
+    ops: [["Logger", []], ["shouldPrintMessage", [100, "x"]], ["shouldPrintMessage", [110, "x"]], ["shouldPrintMessage", [119, "x"]], ["shouldPrintMessage", [120, "x"]], ["shouldPrintMessage", [1000, "x"]]]
+    expected: [null, true, true, false, true, true]
+  - name: first message at timestamp zero
+    ops: [["Logger", []], ["shouldPrintMessage", [0, "z"]], ["shouldPrintMessage", [0, "z"]]]
+    expected: [null, true, false]

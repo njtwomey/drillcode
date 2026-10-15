@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.addBinary
+scaffolds: []
+args: [a, b]
+cases:
+  - name: example 1
+    input: {a: "11", b: "1"}
+    expected: "100"
+  - name: example 2
+    input: {a: "1010", b: "1011"}
+    expected: "10101"
+  - name: both zero
+    input: {a: "0", b: "0"}
+    expected: "0"
+  - name: carry out of the top
+    input: {a: "1", b: "1"}
+    expected: "10"
+  - name: second much longer
+    input: {a: "1", b: "111"}
+    expected: "1000"
+  - name: first longer no final carry
+    input: {a: "100", b: "11"}
+    expected: "111"
+  - name: all ones both
+    input: {a: "1111", b: "1111"}
+    expected: "11110"
+  - name: add zero to longer
+    input: {a: "101", b: "0"}
+    expected: "101"
+  - name: zero plus longer
+    input: {a: "0", b: "1101"}
+    expected: "1101"

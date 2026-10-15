@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.minCostClimbingStairs
+scaffolds: []
+args: [cost]
+cases:
+  - name: example 1
+    input: {cost: [10, 15, 20]}
+    expected: 15
+  - name: example 2
+    input: {cost: [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]}
+    expected: 6
+  - name: two steps pick the cheaper
+    input: {cost: [1, 100]}
+    expected: 1
+  - name: equal two steps
+    input: {cost: [10, 10]}
+    expected: 10
+  - name: expensive last step is skipped
+    input: {cost: [1, 1, 100]}
+    expected: 1
+  - name: all zeros
+    input: {cost: [0, 0, 0, 0]}
+    expected: 0
+  - name: start on step zero
+    input: {cost: [10, 15, 20, 25]}
+    expected: 30
+  - name: alternate steps
+    input: {cost: [5, 1, 5, 1, 5]}
+    expected: 2

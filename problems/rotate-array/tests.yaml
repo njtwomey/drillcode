@@ -1,0 +1,33 @@
+kind: function
+entry: Solution.rotate
+scaffolds: []
+args: [nums, k]
+compare: in_place:nums
+cases:
+  - name: example 1
+    input: {nums: [1, 2, 3, 4, 5, 6, 7], k: 3}
+    expected: [5, 6, 7, 1, 2, 3, 4]
+  - name: example 2 negatives
+    input: {nums: [-1, -100, 3, 99], k: 2}
+    expected: [3, 99, -1, -100]
+  - name: k is zero
+    input: {nums: [1, 2, 3], k: 0}
+    expected: [1, 2, 3]
+  - name: k equals length
+    input: {nums: [1, 2, 3, 4], k: 4}
+    expected: [1, 2, 3, 4]
+  - name: k larger than length
+    input: {nums: [1, 2, 3], k: 4}
+    expected: [3, 1, 2]
+  - name: single element large k
+    input: {nums: [1], k: 5}
+    expected: [1]
+  - name: two elements odd k
+    input: {nums: [1, 2], k: 3}
+    expected: [2, 1]
+  - name: k many times the length
+    input: {nums: [1, 2, 3, 4, 5, 6, 7], k: 10}
+    expected: [5, 6, 7, 1, 2, 3, 4]
+  - name: k one less than length
+    input: {nums: [1, 2, 3, 4, 5], k: 4}
+    expected: [2, 3, 4, 5, 1]

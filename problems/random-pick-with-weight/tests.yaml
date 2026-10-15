@@ -1,0 +1,31 @@
+kind: function
+entry: Solution
+call: false
+scaffolds: []
+args: [w]
+compare: validator
+cases:
+  - name: example 1 single weight
+    input: {w: [1]}
+    expected: true
+  - name: example 2 one to three
+    input: {w: [1, 3]}
+    expected: true
+  - name: equal weights
+    input: {w: [1, 1, 1, 1]}
+    expected: true
+  - name: mixed weights
+    input: {w: [3, 14, 1, 7]}
+    expected: true
+  - name: heavy first index
+    input: {w: [100000, 1]}
+    expected: true
+  - name: heavy last index
+    input: {w: [1, 1, 100000]}
+    expected: true
+  - name: increasing weights
+    input: {w: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+    expected: true
+  - name: two equal halves
+    input: {w: [5, 5]}
+    expected: true

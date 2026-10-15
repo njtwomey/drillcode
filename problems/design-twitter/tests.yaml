@@ -1,0 +1,31 @@
+kind: operations
+entry: Twitter
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["Twitter", []], ["postTweet", [1, 5]], ["getNewsFeed", [1]], ["follow", [1, 2]], ["postTweet", [2, 6]], ["getNewsFeed", [1]], ["unfollow", [1, 2]], ["getNewsFeed", [1]]]
+    expected: [null, null, [5], null, null, [6, 5], null, [5]]
+  - name: user with no tweets or followees
+    ops: [["Twitter", []], ["getNewsFeed", [7]], ["postTweet", [1, 1]], ["getNewsFeed", [7]]]
+    expected: [null, [], null, []]
+  - name: feed capped at ten, newest first
+    ops: [["Twitter", []], ["postTweet", [1, 1]], ["postTweet", [1, 2]], ["postTweet", [1, 3]], ["postTweet", [1, 4]], ["postTweet", [1, 5]], ["postTweet", [1, 6]], ["postTweet", [1, 7]], ["postTweet", [1, 8]], ["postTweet", [1, 9]], ["postTweet", [1, 10]], ["postTweet", [1, 11]], ["postTweet", [1, 12]], ["getNewsFeed", [1]]]
+    expected: [null, null, null, null, null, null, null, null, null, null, null, null, null, [12, 11, 10, 9, 8, 7, 6, 5, 4, 3]]
+  - name: interleaved tweets merge by time
+    ops: [["Twitter", []], ["postTweet", [1, 101]], ["postTweet", [2, 201]], ["postTweet", [1, 102]], ["postTweet", [2, 202]], ["follow", [1, 2]], ["getNewsFeed", [1]], ["getNewsFeed", [2]]]
+    expected: [null, null, null, null, null, null, [202, 102, 201, 101], [202, 201]]
+  - name: order is by posting time, not tweet id
+    ops: [["Twitter", []], ["postTweet", [1, 50]], ["postTweet", [2, 3]], ["follow", [1, 2]], ["getNewsFeed", [1]]]
+    expected: [null, null, null, null, [3, 50]]
+  - name: merge across users is capped at ten
+    ops: [["Twitter", []], ["postTweet", [1, 1]], ["postTweet", [2, 2]], ["postTweet", [1, 3]], ["postTweet", [2, 4]], ["postTweet", [1, 5]], ["postTweet", [2, 6]], ["postTweet", [1, 7]], ["postTweet", [2, 8]], ["postTweet", [1, 9]], ["postTweet", [2, 10]], ["postTweet", [1, 11]], ["postTweet", [2, 12]], ["follow", [1, 2]], ["getNewsFeed", [1]]]
+    expected: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, [12, 11, 10, 9, 8, 7, 6, 5, 4, 3]]
+  - name: following yourself changes nothing
+    ops: [["Twitter", []], ["postTweet", [1, 1]], ["follow", [1, 1]], ["getNewsFeed", [1]], ["unfollow", [1, 1]], ["getNewsFeed", [1]]]
+    expected: [null, null, null, [1], null, [1]]
+  - name: unfollow a user never followed
+    ops: [["Twitter", []], ["postTweet", [2, 9]], ["unfollow", [1, 2]], ["getNewsFeed", [1]], ["follow", [1, 2]], ["follow", [1, 2]], ["getNewsFeed", [1]]]
+    expected: [null, null, null, [], null, null, [9]]
+  - name: follow is one way
+    ops: [["Twitter", []], ["postTweet", [2, 8]], ["postTweet", [1, 7]], ["follow", [1, 2]], ["getNewsFeed", [2]], ["getNewsFeed", [1]]]
+    expected: [null, null, null, null, [8], [7, 8]]

@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.plusOne
+scaffolds: []
+args: [digits]
+cases:
+  - name: example 1
+    input: {digits: [1, 2, 3]}
+    expected: [1, 2, 4]
+  - name: example 2
+    input: {digits: [4, 3, 2, 1]}
+    expected: [4, 3, 2, 2]
+  - name: single nine
+    input: {digits: [9]}
+    expected: [1, 0]
+  - name: all nines
+    input: {digits: [9, 9, 9]}
+    expected: [1, 0, 0, 0]
+  - name: trailing carry stops midway
+    input: {digits: [1, 9, 9]}
+    expected: [2, 0, 0]
+  - name: zero
+    input: {digits: [0]}
+    expected: [1]
+  - name: carry into the leading digit
+    input: {digits: [8, 9, 9, 9]}
+    expected: [9, 0, 0, 0]
+  - name: nine in the middle only
+    input: {digits: [1, 9, 0]}
+    expected: [1, 9, 1]

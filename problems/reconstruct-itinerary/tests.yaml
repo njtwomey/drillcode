@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.findItinerary
+scaffolds: []
+args: [tickets]
+cases:
+  - name: example 1 chain
+    input: {tickets: [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]}
+    expected: ["JFK", "MUC", "LHR", "SFO", "SJC"]
+  - name: example 2 lexical choice with cycle
+    input: {tickets: [["JFK", "SFO"], ["JFK", "ATL"], ["SFO", "ATL"], ["ATL", "JFK"], ["ATL", "SFO"]]}
+    expected: ["JFK", "ATL", "JFK", "SFO", "ATL", "SFO"]
+  - name: dead end must be last
+    input: {tickets: [["JFK", "KUL"], ["JFK", "NRT"], ["NRT", "JFK"]]}
+    expected: ["JFK", "NRT", "JFK", "KUL"]
+  - name: smaller branch is a dead end
+    input: {tickets: [["JFK", "AAA"], ["JFK", "BBB"], ["BBB", "CCC"], ["CCC", "JFK"]]}
+    expected: ["JFK", "BBB", "CCC", "JFK", "AAA"]
+  - name: repeated tickets between the same pair
+    input: {tickets: [["JFK", "AAA"], ["AAA", "JFK"], ["JFK", "AAA"], ["AAA", "JFK"]]}
+    expected: ["JFK", "AAA", "JFK", "AAA", "JFK"]
+  - name: single ticket
+    input: {tickets: [["JFK", "AAA"]]}
+    expected: ["JFK", "AAA"]
+  - name: revisit airport before the final leg
+    input: {tickets: [["JFK", "AAA"], ["AAA", "BBB"], ["BBB", "AAA"], ["AAA", "CCC"]]}
+    expected: ["JFK", "AAA", "BBB", "AAA", "CCC"]
+  - name: duplicate flights with a dead end
+    input: {tickets: [["JFK", "ZZZ"], ["JFK", "AAA"], ["AAA", "JFK"], ["AAA", "JFK"], ["JFK", "AAA"]]}
+    expected: ["JFK", "AAA", "JFK", "AAA", "JFK", "ZZZ"]

@@ -1,0 +1,41 @@
+kind: function
+entry: Solution.isMatch
+scaffolds: []
+args: [s, p]
+cases:
+  - name: example 1 pattern too short
+    input: {s: "aa", p: "a"}
+    expected: false
+  - name: example 2 star repeats
+    input: {s: "aa", p: "a*"}
+    expected: true
+  - name: example 3 dot star
+    input: {s: "ab", p: ".*"}
+    expected: true
+  - name: star matches zero
+    input: {s: "aab", p: "c*a*b"}
+    expected: true
+  - name: mississippi
+    input: {s: "mississippi", p: "mis*is*p*."}
+    expected: false
+  - name: trailing star matches zero
+    input: {s: "a", p: "ab*"}
+    expected: true
+  - name: dot star then two dots
+    input: {s: "a", p: ".*..a*"}
+    expected: false
+  - name: star zero then star one
+    input: {s: "aaa", p: "ab*a*c*a"}
+    expected: true
+  - name: string longer than pattern
+    input: {s: "aaaaaa", p: "a*"}
+    expected: true
+  - name: dot star must leave the tail
+    input: {s: "ab", p: ".*c"}
+    expected: false
+  - name: backtracking killer
+    input: {s: "aaaaaaaaaaaaaaaaaaaa", p: "a*a*a*a*a*b"}
+    expected: false
+  - name: dot star backs off for the last chars
+    input: {s: "bbbba", p: ".*a*a"}
+    expected: true

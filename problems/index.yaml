@@ -1,3 +1,22 @@
+- slug: add-binary
+  number: 67
+  title: Add Binary
+  difficulty: easy
+  topic: String
+  tags:
+  - Bit manipulation
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/add-binary/
+  summary: Add digit by digit from the right of both strings with a carry, then reverse the collected bits
+  tricks: Loop while either string has digits or a carry remains so unequal lengths and the final carry are handled together
+  edge_cases:
+  - Strings of different lengths
+  - Carry out of the top digit
+  - '"0" plus "0"'
+  complexity:
+    time: O(max(m, n))
+    space: O(max(m, n))
 - slug: balanced-binary-tree
   number: 110
   title: Balanced Binary Tree
@@ -260,6 +279,25 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: kth-largest-element-in-a-stream
+  number: 703
+  title: Kth Largest Element in a Stream
+  difficulty: easy
+  topic: Design
+  tags:
+  - Heap
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/kth-largest-element-in-a-stream/
+  summary: Keep a min-heap of the k largest values seen; its root is the kth largest
+  tricks: Only values larger than the root can enter the top k, so replace the root with heapreplace and ignore the rest
+  edge_cases:
+  - Initial list shorter than k or empty
+  - Duplicate values count separately
+  - k equals 1
+  complexity:
+    time: O(log k) per add
+    space: O(k)
 - slug: last-stone-weight
   number: 1046
   title: Last Stone Weight
@@ -293,6 +331,64 @@
   - Empty list
   - Single node pointing to itself
   - No cycle
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: logger-rate-limiter
+  number: 359
+  title: Logger Rate Limiter
+  difficulty: easy
+  topic: Design
+  tags:
+  - Hash
+  blind75: false
+  premium: true
+  leetcode: https://leetcode.com/problems/logger-rate-limiter/
+  summary: A dict from message to the earliest timestamp it may print again
+  tricks: Only update the deadline when a message is printed; a rejected attempt must not extend the wait
+  edge_cases:
+  - Exactly 10 seconds later is allowed
+  - Rejected attempts do not push the deadline
+  - Same timestamp for the same message
+  complexity:
+    time: O(1) per call
+    space: O(unique messages)
+- slug: longest-common-prefix
+  number: 14
+  title: Longest Common Prefix
+  difficulty: easy
+  topic: String
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/longest-common-prefix/
+  summary: Scan column by column across all strings and stop at the first string that is too short or differs from the first
+  tricks: Check the index against each string's length before comparing, so a short string ends the scan safely
+  edge_cases:
+  - No common prefix
+  - A single string
+  - Identical strings
+  - An empty string in the array
+  complexity:
+    time: O(S)
+    space: O(1)
+- slug: longest-palindrome
+  number: 409
+  title: Longest Palindrome
+  difficulty: easy
+  topic: Hash
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/longest-palindrome/
+  summary: Count each character, add every complete pair, and add one more if any character has a leftover odd count
+  tricks: Only one odd leftover can be the centre, so add 1 once rather than per odd count; matching is case-sensitive
+  edge_cases:
+  - A single character
+  - All characters in pairs
+  - Several odd counts
+  - Mixed case such as Aa
   complexity:
     time: O(n)
     space: O(1)
@@ -346,6 +442,25 @@
   complexity:
     time: O(n log n)
     space: O(1)
+- slug: merge-sorted-array
+  number: 88
+  title: Merge Sorted Array
+  difficulty: easy
+  topic: Two pointers
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/merge-sorted-array/
+  summary: Merge from the back with pointers at the last real element of each array, writing the larger into the free tail of nums1
+  tricks: Filling from the back never overwrites unread values of nums1, and once nums2 is exhausted the rest is already in place
+  edge_cases:
+  - n = 0 so nums1 is unchanged
+  - m = 0 so nums2 is copied over
+  - All of nums2 smaller or larger than nums1
+  - Duplicates and negatives
+  complexity:
+    time: O(m + n)
+    space: O(1)
 - slug: merge-two-sorted-lists
   number: 21
   title: Merge Two Sorted Lists
@@ -378,6 +493,24 @@
   edge_cases:
   - Single node
   - Two nodes
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: min-cost-climbing-stairs
+  number: 746
+  title: Min Cost Climbing Stairs
+  difficulty: easy
+  topic: Dynamic programming
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/min-cost-climbing-stairs/
+  summary: Roll two states, the cheapest cost of a path ending on each of the last two steps, and take the min of them at the end
+  tricks: The top is reachable from either of the last two steps, so the answer is min(prev, curr), not just the last state
+  edge_cases:
+  - Exactly two steps
+  - Very expensive last step that should be skipped
+  - All costs zero
   complexity:
     time: O(n)
     space: O(1)
@@ -488,6 +621,24 @@
   complexity:
     time: O(n)
     space: O(h)
+- slug: plus-one
+  number: 66
+  title: Plus One
+  difficulty: easy
+  topic: Array
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/plus-one/
+  summary: Scan from the last digit, turning 9s into 0s until a digit below 9 can be incremented, else prepend a 1
+  tricks: Stop at the first digit below 9; only when every digit was 9 does the array grow
+  edge_cases:
+  - All nines such as [9, 9, 9]
+  - A single digit, 0 or 9
+  - Carry that stops midway, such as [1, 9, 9]
+  complexity:
+    time: O(n)
+    space: O(1)
 - slug: range-sum-query-immutable
   number: 303
   title: Range Sum Query - Immutable
@@ -1481,6 +1632,103 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: design-browser-history
+  number: 1472
+  title: Design Browser History
+  difficulty: medium
+  topic: Design
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/design-browser-history/
+  summary: A list of pages with a current index; visit truncates everything after the index
+  tricks: Clamp back and forward with max and min on the index; delete history[curr + 1:] on visit so stale forward pages disappear
+  edge_cases:
+  - back or forward by more steps than exist
+  - visit after going back discards forward pages
+  - Zero-step moves are not given but clamping must still hold
+  complexity:
+    time: O(1) amortised per operation
+    space: O(visits)
+- slug: design-hit-counter
+  number: 362
+  title: Design Hit Counter
+  difficulty: medium
+  topic: Design
+  tags: []
+  blind75: false
+  premium: true
+  leetcode: https://leetcode.com/problems/design-hit-counter/
+  summary: A deque of hit timestamps; on getHits evict those at or before timestamp minus 300
+  tricks: Timestamps are non-decreasing so expired hits sit at the front and can be dropped for good; the window is timestamp-299..timestamp, so evict <= timestamp-300
+  edge_cases:
+  - Several hits in the same second
+  - Query exactly 300 seconds after a hit (expired)
+  - No hits yet
+  complexity:
+    time: O(1) amortised per call
+    space: O(hits in window)
+- slug: design-twitter
+  number: 355
+  title: Design Twitter
+  difficulty: medium
+  topic: Design
+  tags:
+  - Heap
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/design-twitter/
+  summary: Per-user tweet lists stamped with a global counter, merged across followees with a max-heap
+  tricks: Each list is already time-ordered, so push only the newest tweet per user and advance the list you pop from; stop at 10
+  edge_cases:
+  - User with no tweets or followees
+  - Following yourself or unfollowing someone never followed
+  - More than 10 tweets in the feed
+  - Newest means latest posted, not largest tweet id
+  complexity:
+    time: O(f) per getNewsFeed (f followees), O(1) otherwise
+    space: O(tweets + follows)
+- slug: design-underground-system
+  number: 1396
+  title: Design Underground System
+  difficulty: medium
+  topic: Design
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/design-underground-system/
+  summary: A dict of open check-ins by id and a dict of (start, end) to total time and trip count
+  tricks: Store a running sum and count per route rather than every trip; the route key is ordered and the check-in is popped on checkout so ids can be reused
+  edge_cases:
+  - A to B and B to A are separate routes
+  - Same customer id reused for a later journey
+  - Several routes ending at the same station
+  - Average that is not an integer
+  complexity:
+    time: O(1) per operation
+    space: O(open check-ins + routes)
+- slug: detect-squares
+  number: 2013
+  title: Detect Squares
+  difficulty: medium
+  topic: Design
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/detect-squares/
+  summary: Counter of points; treat each stored point as the diagonal corner and multiply the counts of the other two corners
+  tricks: Square means equal non-zero side lengths, so the corners (px, y) and (x, py) are forced; multiplying counts handles duplicate points
+  edge_cases:
+  - Duplicate points multiply the count
+  - Query point equal to a stored point (zero area)
+  - Rectangle that is not a square
+  - Squares on both sides of the query
+  complexity:
+    time: O(1) add, O(p) count (p distinct points)
+    space: O(p)
 - slug: edit-distance
   number: 72
   title: Edit Distance
@@ -1554,6 +1802,24 @@
   complexity:
     time: O(n)
     space: O(n)
+- slug: exclusive-time-of-functions
+  number: 636
+  title: Exclusive Time of Functions
+  difficulty: medium
+  topic: Stack
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/exclusive-time-of-functions/
+  summary: Stack of (id, start); on end add the inclusive span to that function and subtract it from the caller below
+  tricks: End timestamps are inclusive so a span is end - start + 1; subtracting callee spans from the caller handles recursion and nesting
+  edge_cases:
+  - A function calling itself recursively
+  - A call that starts and ends in the same unit
+  - A function that never appears in the logs
+  complexity:
+    time: O(L)
+    space: O(L)
 - slug: find-all-anagrams-in-a-string
   number: 438
   title: Find All Anagrams in a String
@@ -1758,6 +2024,26 @@
   complexity:
     time: O(n · k)
     space: O(n · k)
+- slug: hand-of-straights
+  number: 846
+  title: Hand of Straights
+  difficulty: medium
+  topic: Greedy
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/hand-of-straights/
+  summary: Count the cards, then walk values in ascending order and consume a run of groupSize consecutive values starting at each smallest remaining card
+  tricks: Check len(hand) % groupSize first; when several copies of a card remain, all of them must start runs, so subtract the full count at once
+  edge_cases:
+  - Length not divisible by groupSize
+  - groupSize of 1
+  - Gap in the values
+  - Duplicates that start overlapping runs
+  complexity:
+    time: O(n log n)
+    space: O(n)
 - slug: house-robber
   number: 198
   title: House Robber
@@ -1830,6 +2116,25 @@
   complexity:
     time: O(L) per operation
     space: O(total chars)
+- slug: insert-delete-getrandom-o1
+  number: 380
+  title: Insert Delete GetRandom O(1)
+  difficulty: medium
+  topic: Design
+  tags:
+  - Hash
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/insert-delete-getrandom-o1/
+  summary: A list for random access plus a dict from value to list index
+  tricks: Remove by overwriting the hole with the last element then popping; update the moved element's index before deleting val so removing the last element still works
+  edge_cases:
+  - Remove the last element itself
+  - Insert of an existing value and remove of a missing one
+  - Set shrinks to one element or to empty and is refilled
+  complexity:
+    time: O(1) average per operation
+    space: O(n)
 - slug: insert-interval
   number: 57
   title: Insert Interval
@@ -2010,6 +2315,25 @@
   complexity:
     time: O(h + k)
     space: O(h)
+- slug: kth-smallest-element-in-a-sorted-matrix
+  number: 378
+  title: Kth Smallest Element in a Sorted Matrix
+  difficulty: medium
+  topic: Heap
+  tags:
+  - Binary search
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/
+  summary: 'Min-heap of row heads: pop the smallest k - 1 times, pushing the next element of the popped row'
+  tricks: Only the first k rows can matter; binary search on the value with a staircase count is the O(n log range) alternative
+  edge_cases:
+  - 1x1 matrix
+  - Duplicate values each count toward k
+  - k equals n squared (the maximum)
+  complexity:
+    time: O(min(n, k) + k log min(n, k))
+    space: O(min(n, k))
 - slug: letter-combinations-of-a-phone-number
   number: 17
   title: Letter Combinations of a Phone Number
@@ -2372,6 +2696,24 @@
   complexity:
     time: O(n log n)
     space: O(n)
+- slug: merge-triplets-to-form-target-triplet
+  number: 1899
+  title: Merge Triplets to Form Target Triplet
+  difficulty: medium
+  topic: Greedy
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/merge-triplets-to-form-target-triplet/
+  summary: Skip every triplet with a coordinate above the target, then check each target coordinate is matched by some remaining triplet
+  tricks: Max never decreases, so one oversized coordinate poisons a triplet; a matching value inside a discarded triplet does not count
+  edge_cases:
+  - Only triplet exceeds the target
+  - Target value present only in a discarded triplet
+  - Each coordinate supplied by a different triplet
+  complexity:
+    time: O(n)
+    space: O(1)
 - slug: min-cost-to-connect-all-points
   number: 1584
   title: Min Cost to Connect All Points
@@ -2485,6 +2827,26 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: multiply-strings
+  number: 43
+  title: Multiply Strings
+  difficulty: medium
+  topic: Maths
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/multiply-strings/
+  summary: Schoolbook multiplication into a result array of length m + n, adding each digit product at position i + j + 1 and carrying to i + j
+  tricks: Add into the existing column value before splitting into digit and carry, then strip at most one leading zero; return "0" up front if either input is zero
+  edge_cases:
+  - Either operand is "0"
+  - Long operands with long carry chains
+  - Product with a trailing run of zeros
+  - Product has m + n - 1 digits
+  complexity:
+    time: O(m * n)
+    space: O(m + n)
 - slug: network-delay-time
   number: 743
   title: Network Delay Time
@@ -2917,6 +3279,24 @@
   complexity:
     time: O(n)
     space: O(1)
+- slug: random-pick-with-weight
+  number: 528
+  title: Random Pick with Weight
+  difficulty: medium
+  topic: Binary search
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/random-pick-with-weight/
+  summary: Prefix sums of the weights, then binary search a uniform random target in 1..total
+  tricks: Index i owns a block of w[i] consecutive targets, so a uniform target gives probability w[i] / total; bisect_left on targets 1..total avoids off-by-one
+  edge_cases:
+  - Single weight always returns 0
+  - One very heavy weight next to light ones
+  - Equal weights
+  complexity:
+    time: O(n) constructor, O(log n) per pickIndex
+    space: O(n)
 - slug: range-sum-query-mutable
   number: 307
   title: Range Sum Query - Mutable
@@ -3088,6 +3468,24 @@
   complexity:
     time: O(1)
     space: O(1)
+- slug: reverse-integer
+  number: 7
+  title: Reverse Integer
+  difficulty: medium
+  topic: Maths
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/reverse-integer/
+  summary: Peel digits off the absolute value with divmod and append them to the result, bailing out before an append would pass the 32-bit limit
+  tricks: Work on abs(x) because Python's // and % floor for negatives; the bound is 2**31 - 1 for positives but 2**31 for negatives
+  edge_cases:
+  - Trailing zeros (120 becomes 21)
+  - Overflow in either direction returns 0
+  - Zero and negative inputs
+  complexity:
+    time: O(log x)
+    space: O(1)
 - slug: reverse-linked-list-ii
   number: 92
   title: Reverse Linked List II
@@ -3104,6 +3502,24 @@
   - right equals the length
   - left equals right
   - Single node
+  complexity:
+    time: O(n)
+    space: O(1)
+- slug: rotate-array
+  number: 189
+  title: Rotate Array
+  difficulty: medium
+  topic: Array
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/rotate-array/
+  summary: Reverse the whole array, then reverse the first k and the remaining n - k elements separately
+  tricks: Take k modulo n first, since k may be zero or exceed the length
+  edge_cases:
+  - k = 0
+  - k larger than or equal to n
+  - A single element
   complexity:
     time: O(n)
     space: O(1)
@@ -3215,6 +3631,26 @@
   complexity:
     time: O(n²)
     space: O(n²)
+- slug: snapshot-array
+  number: 1146
+  title: Snapshot Array
+  difficulty: medium
+  topic: Design
+  tags:
+  - Binary search
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/snapshot-array/
+  summary: Per-index list of (snap id, value) changes, binary searched by snap id on get
+  tricks: Never copy the array on snap; overwrite the last entry when the index is set twice in the same snap, and use bisect_right minus one so untouched snaps read the earlier value
+  edge_cases:
+  - Index never set reads 0
+  - Several sets between two snaps
+  - Snaps in which an index is not touched
+  - Setting a value back to 0
+  complexity:
+    time: O(1) set and snap, O(log s) get
+    space: O(number of sets)
 - slug: sort-colors
   number: 75
   title: Sort Colors
@@ -3271,6 +3707,25 @@
   - Non-square
   complexity:
     time: O(m·n)
+    space: O(1)
+- slug: string-to-integer-atoi
+  number: 8
+  title: String to Integer (atoi)
+  difficulty: medium
+  topic: String
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/string-to-integer-atoi/
+  summary: 'Single left-to-right scan in phases: skip spaces, read one optional sign, accumulate digits, then clamp to the 32-bit range'
+  tricks: Compare characters to '0'..'9' instead of using isdigit, stop accumulating once past 2**31, and let a second sign or no digits fall out as 0
+  edge_cases:
+  - Empty, all-space and sign-only strings
+  - Leading zeros and letters after the digits
+  - Overflow clamping to 2**31 - 1 and -2**31
+  - Two signs or a space after the sign
+  complexity:
+    time: O(n)
     space: O(1)
 - slug: subarray-sum-equals-k
   number: 560
@@ -3545,6 +4000,25 @@
   complexity:
     time: O(m·n)
     space: O(n)
+- slug: valid-parenthesis-string
+  number: 678
+  title: Valid Parenthesis String
+  difficulty: medium
+  topic: Greedy
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/valid-parenthesis-string/
+  summary: Track the range [lo, hi] of possible open-parenthesis counts in one pass and require 0 to be reachable at the end
+  tricks: Clamp lo at 0 because a negative count just means a star should have been empty; return False the moment hi goes below 0
+  edge_cases:
+  - Star before an open parenthesis ("*(")
+  - Closing parenthesis first
+  - Only stars
+  - Single star
+  complexity:
+    time: O(n)
+    space: O(1)
 - slug: valid-sudoku
   number: 36
   title: Valid Sudoku
@@ -3579,6 +4053,25 @@
   complexity:
     time: O(n)
     space: O(h)
+- slug: walls-and-gates
+  number: 286
+  title: Walls and Gates
+  difficulty: medium
+  topic: Graph
+  tags:
+  - Matrix
+  blind75: false
+  premium: true
+  leetcode: https://leetcode.com/problems/walls-and-gates/
+  summary: Multi-source BFS seeded with every gate at once, writing distance + 1 into each empty room
+  tricks: Starting from the gates (not each room) makes it one O(mn) pass, and the INF check doubles as the visited set
+  edge_cases:
+  - No gates, so every room stays INF
+  - A room walled off from all gates stays INF
+  - Grid with only a wall or only a gate
+  complexity:
+    time: O(m·n)
+    space: O(m·n)
 - slug: word-break
   number: 139
   title: Word Break
@@ -3633,6 +4126,25 @@
   complexity:
     time: O(C) total characters
     space: O(1) alphabet
+- slug: basic-calculator
+  number: 224
+  title: Basic Calculator
+  difficulty: hard
+  topic: Stack
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/basic-calculator/
+  summary: One pass keeping a running result and sign, pushing (result, sign) on each open parenthesis and folding it back on the close
+  tricks: With only + and - a bracket is just a sign on its subtotal, so unary minus needs no special case since the committed number is 0
+  edge_cases:
+  - Unary minus at the start or right after a parenthesis
+  - Nested and redundant parentheses
+  - Spaces and multi-digit numbers
+  complexity:
+    time: O(n)
+    space: O(n)
 - slug: binary-tree-cameras
   number: 968
   title: Binary Tree Cameras
@@ -3825,6 +4337,26 @@
   complexity:
     time: O(m·n)
     space: O(m·n)
+- slug: maximum-profit-in-job-scheduling
+  number: 1235
+  title: Maximum Profit in Job Scheduling
+  difficulty: hard
+  topic: Dynamic programming
+  tags:
+  - Binary search
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/maximum-profit-in-job-scheduling/
+  summary: Sort jobs by end time, then best[k] is the top profit over the first k jobs, found by skipping a job or taking it after the prefix located by bisect
+  tricks: Use bisect_right on the end times so a job may start exactly when another ends; sorting by end makes compatible earlier jobs a prefix
+  edge_cases:
+  - Jobs that touch at a boundary are compatible
+  - One high-profit job spanning many small ones
+  - Jobs with the same end time
+  - Unsorted input
+  complexity:
+    time: O(n log n)
+    space: O(n)
 - slug: median-of-two-sorted-arrays
   number: 4
   title: Median of Two Sorted Arrays
@@ -3864,6 +4396,25 @@
   complexity:
     time: O(N log k)
     space: O(k)
+- slug: minimum-interval-to-include-each-query
+  number: 1851
+  title: Minimum Interval to Include Each Query
+  difficulty: hard
+  topic: Intervals
+  tags:
+  - Heap
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/minimum-interval-to-include-each-query/
+  summary: Sort intervals and queries, sweep queries upward pushing started intervals onto a min-heap keyed on size, and pop expired ones
+  tricks: Answer queries in sorted order but store results by original index; an expired interval stays expired, so lazy popping from the top is enough
+  edge_cases:
+  - Query covered by no interval returns -1
+  - Unsorted queries with duplicates
+  - A smaller interval that has already ended
+  complexity:
+    time: O((n + q) log(n + q))
+    space: O(n + q)
 - slug: minimum-window-substring
   number: 76
   title: Minimum Window Substring
@@ -3901,6 +4452,44 @@
   complexity:
     time: O(n!)
     space: O(n)
+- slug: reconstruct-itinerary
+  number: 332
+  title: Reconstruct Itinerary
+  difficulty: hard
+  topic: Graph
+  tags: []
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/reconstruct-itinerary/
+  summary: 'Hierholzer''s Eulerian path: DFS taking the smallest unused ticket, append airports in post-order, reverse at the end'
+  tricks: Store destinations sorted in reverse so pop() is the smallest; a dead end is appended first so it lands last after the reversal
+  edge_cases:
+  - A smaller branch that is a dead end must be visited last
+  - Several tickets between the same pair of airports
+  - A single ticket
+  complexity:
+    time: O(E log E)
+    space: O(E)
+- slug: regular-expression-matching
+  number: 10
+  title: Regular Expression Matching
+  difficulty: hard
+  topic: Dynamic programming
+  tags:
+  - String
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/regular-expression-matching/
+  summary: 2D DP where dp[i][j] means s[:i] matches p[:j]; a star either drops its item (zero copies) or consumes one more matching character
+  tricks: For the star's one-more case look at dp[i-1][j], same column, so the item can repeat; fill row 0 too so patterns like a*b* match the empty prefix
+  edge_cases:
+  - Star matching zero characters
+  - Dot star swallowing everything or backing off for a tail
+  - String longer than the pattern
+  - Exponential backtracking pattern a*a*a*b
+  complexity:
+    time: O(m * n)
+    space: O(m * n)
 - slug: reverse-nodes-in-k-group
   number: 25
   title: Reverse Nodes in k-Group
@@ -4017,6 +4606,25 @@
   complexity:
     time: O(n log(sum))
     space: O(1)
+- slug: swim-in-rising-water
+  number: 778
+  title: Swim in Rising Water
+  difficulty: hard
+  topic: Graph
+  tags:
+  - Heap
+  blind75: false
+  premium: false
+  leetcode: https://leetcode.com/problems/swim-in-rising-water/
+  summary: Dijkstra where a path costs its highest cell, always expanding the cheapest frontier cell until the corner is popped
+  tricks: The cost is max(path so far, cell), not a sum, and binary search on the water level plus BFS is an equivalent alternative
+  edge_cases:
+  - Single cell grid
+  - Start or end is the highest cell
+  - Shortest path is worse than a longer low path
+  complexity:
+    time: O(n² log n)
+    space: O(n²)
 - slug: trapping-rain-water
   number: 42
   title: Trapping Rain Water

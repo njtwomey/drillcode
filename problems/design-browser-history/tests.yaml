@@ -1,0 +1,22 @@
+kind: operations
+entry: BrowserHistory
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["BrowserHistory", ["leetcode.com"]], ["visit", ["google.com"]], ["visit", ["facebook.com"]], ["visit", ["youtube.com"]], ["back", [1]], ["back", [1]], ["forward", [1]], ["visit", ["linkedin.com"]], ["forward", [2]], ["back", [2]], ["back", [7]]]
+    expected: [null, null, null, null, "facebook.com", "google.com", "facebook.com", null, "linkedin.com", "google.com", "leetcode.com"]
+  - name: moves clamp at both ends
+    ops: [["BrowserHistory", ["a"]], ["forward", [5]], ["back", [3]], ["visit", ["b"]], ["back", [100]], ["forward", [100]]]
+    expected: [null, "a", "a", null, "a", "b"]
+  - name: visit discards forward pages
+    ops: [["BrowserHistory", ["a"]], ["visit", ["b"]], ["visit", ["c"]], ["back", [2]], ["visit", ["d"]], ["forward", [1]], ["back", [1]], ["forward", [5]]]
+    expected: [null, null, null, "a", null, "d", "a", "d"]
+  - name: zero steps stay put
+    ops: [["BrowserHistory", ["x"]], ["visit", ["y"]], ["back", [0]], ["forward", [0]]]
+    expected: [null, null, "y", "y"]
+  - name: visiting the same url twice
+    ops: [["BrowserHistory", ["a"]], ["visit", ["a"]], ["visit", ["a"]], ["back", [1]], ["back", [1]], ["back", [1]], ["forward", [2]]]
+    expected: [null, null, null, "a", "a", "a", "a"]
+  - name: back then forward through a longer trail
+    ops: [["BrowserHistory", ["p0"]], ["visit", ["p1"]], ["visit", ["p2"]], ["visit", ["p3"]], ["visit", ["p4"]], ["back", [3]], ["forward", [2]], ["back", [1]], ["forward", [3]]]
+    expected: [null, null, null, null, null, "p1", "p3", "p2", "p4"]

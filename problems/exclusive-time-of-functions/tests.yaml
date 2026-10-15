@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.exclusiveTime
+scaffolds: []
+args: [n, logs]
+cases:
+  - name: example 1 nested call
+    input: {n: 2, logs: ["0:start:0", "1:start:2", "1:end:5", "0:end:6"]}
+    expected: [3, 4]
+  - name: example 2 recursion
+    input: {n: 1, logs: ["0:start:0", "0:start:2", "0:end:5", "0:start:6", "0:end:6", "0:end:7"]}
+    expected: [8]
+  - name: example 3 recursion between functions
+    input: {n: 2, logs: ["0:start:0", "0:start:2", "0:end:5", "1:start:6", "1:end:6", "0:end:7"]}
+    expected: [7, 1]
+  - name: single instant call
+    input: {n: 1, logs: ["0:start:0", "0:end:0"]}
+    expected: [1]
+  - name: sequential calls
+    input: {n: 2, logs: ["0:start:0", "0:end:1", "1:start:2", "1:end:4"]}
+    expected: [2, 3]
+  - name: three deep chain
+    input: {n: 3, logs: ["0:start:0", "1:start:1", "2:start:2", "2:end:3", "1:end:4", "0:end:5"]}
+    expected: [2, 2, 2]
+  - name: callee ends at its start unit
+    input: {n: 2, logs: ["0:start:0", "1:start:1", "1:end:1", "0:end:2"]}
+    expected: [2, 1]
+  - name: two sibling calls to the same function
+    input: {n: 2, logs: ["0:start:0", "1:start:1", "1:end:2", "1:start:3", "1:end:3", "0:end:4"]}
+    expected: [2, 3]
+  - name: function absent from logs
+    input: {n: 3, logs: ["1:start:5", "1:end:7"]}
+    expected: [0, 3, 0]

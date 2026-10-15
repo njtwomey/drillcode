@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.longestPalindrome
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "abccccdd"}
+    expected: 7
+  - name: example 2 single character
+    input: {s: "a"}
+    expected: 1
+  - name: all pairs
+    input: {s: "aabbcc"}
+    expected: 6
+  - name: all distinct
+    input: {s: "abc"}
+    expected: 1
+  - name: case sensitive
+    input: {s: "Aa"}
+    expected: 1
+  - name: case sensitive pairs
+    input: {s: "AAaa"}
+    expected: 4
+  - name: several odd counts use only one centre
+    input: {s: "aaabbbccc"}
+    expected: 7
+  - name: one letter repeated
+    input: {s: "zzzzz"}
+    expected: 5
+  - name: mixed with one odd letter
+    input: {s: "aabbbCC"}
+    expected: 7

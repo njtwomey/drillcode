@@ -1,0 +1,23 @@
+kind: operations
+entry: UndergroundSystem
+scaffolds: []
+compare: float:0.00001
+cases:
+  - name: example 1
+    ops: [["UndergroundSystem", []], ["checkIn", [45, "Leyton", 3]], ["checkIn", [32, "Paradise", 8]], ["checkIn", [27, "Leyton", 10]], ["checkOut", [45, "Waterloo", 15]], ["checkOut", [27, "Waterloo", 20]], ["checkOut", [32, "Cambridge", 22]], ["getAverageTime", ["Paradise", "Cambridge"]], ["getAverageTime", ["Leyton", "Waterloo"]], ["checkIn", [10, "Leyton", 24]], ["getAverageTime", ["Leyton", "Waterloo"]], ["checkOut", [10, "Waterloo", 38]], ["getAverageTime", ["Leyton", "Waterloo"]]]
+    expected: [null, null, null, null, null, null, null, 14.0, 11.0, null, 11.0, null, 12.0]
+  - name: example 2 averages with a fraction
+    ops: [["UndergroundSystem", []], ["checkIn", [10, "Leyton", 3]], ["checkOut", [10, "Paradise", 8]], ["getAverageTime", ["Leyton", "Paradise"]], ["checkIn", [5, "Leyton", 10]], ["checkOut", [5, "Paradise", 16]], ["getAverageTime", ["Leyton", "Paradise"]], ["checkIn", [2, "Leyton", 21]], ["checkOut", [2, "Paradise", 30]], ["getAverageTime", ["Leyton", "Paradise"]]]
+    expected: [null, null, null, 5.0, null, null, 5.5, null, null, 6.666666666666667]
+  - name: direction matters
+    ops: [["UndergroundSystem", []], ["checkIn", [1, "A", 0]], ["checkOut", [1, "B", 10]], ["checkIn", [2, "B", 20]], ["checkOut", [2, "A", 50]], ["getAverageTime", ["A", "B"]], ["getAverageTime", ["B", "A"]]]
+    expected: [null, null, null, null, null, 10.0, 30.0]
+  - name: same customer id reused
+    ops: [["UndergroundSystem", []], ["checkIn", [1, "A", 0]], ["checkOut", [1, "B", 10]], ["checkIn", [1, "A", 100]], ["checkOut", [1, "B", 120]], ["getAverageTime", ["A", "B"]]]
+    expected: [null, null, null, null, null, 15.0]
+  - name: same end station different start
+    ops: [["UndergroundSystem", []], ["checkIn", [1, "A", 0]], ["checkOut", [1, "C", 10]], ["checkIn", [2, "B", 0]], ["checkOut", [2, "C", 40]], ["getAverageTime", ["A", "C"]], ["getAverageTime", ["B", "C"]]]
+    expected: [null, null, null, null, null, 10.0, 40.0]
+  - name: customers travelling at the same time
+    ops: [["UndergroundSystem", []], ["checkIn", [1, "A", 1]], ["checkIn", [2, "A", 2]], ["checkOut", [2, "B", 5]], ["checkOut", [1, "B", 9]], ["getAverageTime", ["A", "B"]]]
+    expected: [null, null, null, null, null, 5.5]

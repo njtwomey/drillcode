@@ -1,0 +1,22 @@
+kind: operations
+entry: KthLargest
+scaffolds: []
+cases:
+  - name: example 1
+    ops: [["KthLargest", [3, [4, 5, 8, 2]]], ["add", [3]], ["add", [5]], ["add", [10]], ["add", [9]], ["add", [4]]]
+    expected: [null, 4, 5, 5, 8, 8]
+  - name: empty initial list
+    ops: [["KthLargest", [1, []]], ["add", [-3]], ["add", [-2]], ["add", [-4]], ["add", [0]], ["add", [4]]]
+    expected: [null, -3, -2, -2, 0, 4]
+  - name: fewer than k initial values
+    ops: [["KthLargest", [2, [0]]], ["add", [-1]], ["add", [1]], ["add", [-2]], ["add", [-4]], ["add", [3]]]
+    expected: [null, -1, 0, 0, 0, 1]
+  - name: duplicates count separately
+    ops: [["KthLargest", [2, [5, 5]]], ["add", [5]], ["add", [6]], ["add", [7]]]
+    expected: [null, 5, 5, 6]
+  - name: k equals one tracks the maximum
+    ops: [["KthLargest", [1, [1, 2, 3]]], ["add", [0]], ["add", [10]], ["add", [9]]]
+    expected: [null, 3, 10, 10]
+  - name: k equals initial size
+    ops: [["KthLargest", [3, [10, 20, 30]]], ["add", [5]], ["add", [25]], ["add", [40]]]
+    expected: [null, 10, 20, 25]

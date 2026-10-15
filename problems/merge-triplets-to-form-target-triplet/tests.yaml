@@ -1,0 +1,32 @@
+kind: function
+entry: Solution.mergeTriplets
+scaffolds: []
+args: [triplets, target]
+cases:
+  - name: example 1
+    input: {triplets: [[2, 5, 3], [1, 8, 4], [1, 7, 5]], target: [2, 7, 5]}
+    expected: true
+  - name: example 2 impossible
+    input: {triplets: [[3, 4, 5], [4, 5, 6]], target: [3, 2, 5]}
+    expected: false
+  - name: example 3
+    input: {triplets: [[2, 5, 3], [2, 3, 4], [1, 2, 5], [5, 2, 3]], target: [5, 5, 5]}
+    expected: true
+  - name: single exact triplet
+    input: {triplets: [[1, 2, 3]], target: [1, 2, 3]}
+    expected: true
+  - name: only triplet exceeds target
+    input: {triplets: [[5, 1, 1]], target: [1, 1, 1]}
+    expected: false
+  - name: target value exceeded by every triplet
+    input: {triplets: [[1, 1, 1]], target: [2, 1, 1]}
+    expected: false
+  - name: matching value only in an unusable triplet
+    input: {triplets: [[2, 5, 1], [1, 1, 1]], target: [2, 1, 1]}
+    expected: false
+  - name: each coordinate from a different triplet
+    input: {triplets: [[2, 1, 1], [1, 3, 1], [1, 1, 4]], target: [2, 3, 4]}
+    expected: true
+  - name: bad triplet in the middle is skipped
+    input: {triplets: [[2, 1, 1], [1, 3, 1], [1, 1, 2]], target: [2, 1, 2]}
+    expected: true

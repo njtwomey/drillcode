@@ -1,0 +1,29 @@
+kind: function
+entry: Solution.minInterval
+scaffolds: []
+args: [intervals, queries]
+cases:
+  - name: example 1
+    input: {intervals: [[1, 4], [2, 4], [3, 6], [4, 4]], queries: [2, 3, 4, 5]}
+    expected: [3, 3, 1, 4]
+  - name: example 2
+    input: {intervals: [[2, 3], [2, 5], [1, 8], [20, 25]], queries: [2, 19, 5, 22]}
+    expected: [2, -1, 4, 6]
+  - name: unsorted queries with duplicates
+    input: {intervals: [[1, 3], [2, 2]], queries: [3, 2, 3, 0, 2]}
+    expected: [3, 1, 3, -1, 1]
+  - name: single point interval
+    input: {intervals: [[5, 5]], queries: [5]}
+    expected: [1]
+  - name: queries outside every interval
+    input: {intervals: [[5, 10]], queries: [4, 11]}
+    expected: [-1, -1]
+  - name: small interval expires
+    input: {intervals: [[1, 2], [1, 10]], queries: [5, 1]}
+    expected: [10, 2]
+  - name: nested intervals sharing an end
+    input: {intervals: [[1, 10], [3, 4], [3, 10]], queries: [10, 5, 4, 3]}
+    expected: [8, 8, 2, 2]
+  - name: expired small interval below the top
+    input: {intervals: [[1, 2], [1, 100]], queries: [50]}
+    expected: [100]

@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.calculate
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "1 + 1"}
+    expected: 2
+  - name: example 2 spaces
+    input: {s: " 2-1 + 2 "}
+    expected: 3
+  - name: example 3 nested
+    input: {s: "(1+(4+5+2)-3)+(6+8)"}
+    expected: 23
+  - name: unary minus before bracket
+    input: {s: "-(2+3)"}
+    expected: -5
+  - name: unary minus inside bracket
+    input: {s: "1-(-2)"}
+    expected: 3
+  - name: leading minus number
+    input: {s: "-2+ 1"}
+    expected: -1
+  - name: minus distributes over a bracket
+    input: {s: "1-(2-3)"}
+    expected: 2
+  - name: multi-digit numbers
+    input: {s: "10-(20+30)-(4-1)"}
+    expected: -43
+  - name: double negation
+    input: {s: "-(-(1))"}
+    expected: 1
+  - name: redundant brackets and spaces
+    input: {s: "( (7) ) - (0) + ( 4 )"}
+    expected: 11

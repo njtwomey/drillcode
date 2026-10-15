@@ -1,0 +1,31 @@
+kind: function
+entry: RandomizedSet
+call: false
+scaffolds: []
+args: [ops]
+compare: validator
+cases:
+  - name: example 1
+    input: {ops: [["insert", [1]], ["remove", [2]], ["insert", [2]], ["getRandom", []], ["remove", [1]], ["insert", [2]], ["getRandom", []]]}
+    expected: true
+  - name: remove the last element itself
+    input: {ops: [["insert", [1]], ["insert", [2]], ["remove", [2]], ["remove", [2]], ["getRandom", []], ["insert", [2]], ["getRandom", []]]}
+    expected: true
+  - name: swap with last repeatedly
+    input: {ops: [["insert", [1]], ["insert", [2]], ["insert", [3]], ["insert", [4]], ["remove", [2]], ["getRandom", []], ["remove", [4]], ["remove", [1]], ["getRandom", []], ["insert", [5]], ["remove", [3]], ["getRandom", []]]}
+    expected: true
+  - name: empty then reuse
+    input: {ops: [["insert", [7]], ["remove", [7]], ["remove", [7]], ["insert", [7]], ["insert", [7]], ["remove", [7]], ["insert", [8]], ["getRandom", []]]}
+    expected: true
+  - name: zero and negatives
+    input: {ops: [["insert", [0]], ["insert", [-1]], ["insert", [-100000]], ["remove", [0]], ["getRandom", []], ["insert", [0]], ["remove", [-1]], ["remove", [5]], ["getRandom", []]]}
+    expected: true
+  - name: many members
+    input: {ops: [["insert", [0]], ["insert", [1]], ["insert", [2]], ["insert", [3]], ["insert", [4]], ["insert", [5]], ["insert", [6]], ["insert", [7]], ["insert", [8]], ["insert", [9]], ["getRandom", []], ["remove", [0]], ["remove", [2]], ["remove", [4]], ["remove", [6]], ["remove", [8]], ["getRandom", []], ["getRandom", []], ["getRandom", []], ["insert", [0]], ["insert", [2]], ["insert", [4]], ["insert", [6]], ["insert", [8]], ["remove", [9]], ["getRandom", []]]}
+    expected: true
+  - name: larger set
+    input: {ops: [["insert", [1]], ["insert", [2]], ["insert", [3]], ["insert", [4]], ["insert", [5]], ["insert", [6]], ["insert", [7]], ["insert", [8]], ["insert", [9]], ["insert", [10]], ["insert", [11]], ["insert", [12]], ["insert", [13]], ["insert", [14]], ["insert", [15]], ["insert", [16]], ["insert", [17]], ["insert", [18]], ["insert", [19]], ["insert", [20]], ["insert", [21]], ["insert", [22]], ["insert", [23]], ["insert", [24]], ["insert", [25]], ["insert", [26]], ["insert", [27]], ["insert", [28]], ["insert", [29]], ["insert", [30]], ["insert", [31]], ["insert", [32]], ["insert", [33]], ["insert", [34]], ["insert", [35]], ["insert", [36]], ["insert", [37]], ["insert", [38]], ["insert", [39]], ["insert", [40]], ["getRandom", []], ["remove", [2]], ["remove", [4]], ["remove", [6]], ["remove", [8]], ["remove", [10]], ["remove", [12]], ["remove", [14]], ["remove", [16]], ["remove", [18]], ["remove", [20]], ["remove", [22]], ["remove", [24]], ["remove", [26]], ["remove", [28]], ["remove", [30]], ["remove", [32]], ["remove", [34]], ["remove", [36]], ["remove", [38]], ["remove", [40]], ["getRandom", []], ["getRandom", []], ["getRandom", []], ["getRandom", []], ["getRandom", []], ["insert", [1]], ["remove", [1]], ["insert", [100]], ["getRandom", []]]}
+    expected: true
+  - name: single element only
+    input: {ops: [["insert", [42]], ["getRandom", []], ["getRandom", []]]}
+    expected: true

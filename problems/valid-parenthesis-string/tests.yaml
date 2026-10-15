@@ -1,0 +1,35 @@
+kind: function
+entry: Solution.checkValidString
+scaffolds: []
+args: [s]
+cases:
+  - name: example 1
+    input: {s: "()"}
+    expected: true
+  - name: example 2 star as empty
+    input: {s: "(*)"}
+    expected: true
+  - name: example 3 star as open
+    input: {s: "(*))"}
+    expected: true
+  - name: lone star
+    input: {s: "*"}
+    expected: true
+  - name: wrong order
+    input: {s: ")("}
+    expected: false
+  - name: star before open must not close it
+    input: {s: "*("}
+    expected: false
+  - name: star cannot rescue a leading close
+    input: {s: ")*"}
+    expected: false
+  - name: unmatched opens
+    input: {s: "((*"}
+    expected: false
+  - name: star as close in the middle
+    input: {s: "(*()"}
+    expected: true
+  - name: only stars
+    input: {s: "***"}
+    expected: true
