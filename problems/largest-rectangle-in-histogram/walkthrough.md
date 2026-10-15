@@ -32,16 +32,16 @@ i=1  bar 1   top is bar 2 > 1
 i=2  bar 5   no pop                         push 2      stack [1, 2]
 i=3  bar 6   no pop                         push 3      stack [1, 2, 3]
 i=4  bar 2   top is bar 6 > 2
-             pop h=6, top is 2, left=3
+             pop h=6, top is index 2, left=3
              area = 6 * (4 - 3) = 6         best = 6
              top is bar 5 > 2
-             pop h=5, top is 1, left=2
+             pop h=5, top is index 1, left=2
              area = 5 * (4 - 2) = 10        best = 10
                                             push 4      stack [1, 4]
 i=5  bar 3   no pop                         push 5      stack [1, 4, 5]
-i=6  bar 0   pop h=3, top is 4, left=5
+i=6  bar 0   pop h=3, top is index 4, left=5
              area = 3 * (6 - 5) = 3
-             pop h=2, top is 1, left=2
+             pop h=2, top is index 1, left=2
              area = 2 * (6 - 2) = 8
              pop h=1, stack empty, left=0
              area = 1 * (6 - 0) = 6         best stays 10

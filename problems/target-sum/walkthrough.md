@@ -52,7 +52,7 @@ down: s=2: dp[2] += dp[1]=0;  s=1: dp[1] += dp[0]  -> [1, 1, 0]   (right)
 up:   s=1: dp[1] += dp[0];    s=2: dp[2] += dp[1]  -> [1, 1, 1]   (1 used twice)
 ```
 
-- Skipping the feasibility check. An odd `total + target` makes `goal` fractional, and a target past the total gives a negative `goal`.
+- Skipping the feasibility check. An odd `total + target` makes `goal` fractional, and a target below `-total` gives a negative `goal`.
 - Zeros: each zero can be `+0` or `-0`, so the count doubles. The update `dp[s] += dp[s - 0]` does that, and the range reaches down to `s = 0`.
 
 ## Cost

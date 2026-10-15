@@ -52,7 +52,7 @@ A missing child must return `False`, not be treated as a leaf. If the base case 
 
 Wrong: node 1 has remaining 0, its right child is None -> treat as end, True
 Right: 1 is not a leaf (it has a left child), so go down to 2:
-       remaining = -1, leaf  ──▶ False
+       remaining = -2, leaf  ──▶ False
 ```
 
 An empty tree is `False` even when the target is 0, because there is no path at all. Negative values are fine, since we only test equality at a leaf and never prune early.

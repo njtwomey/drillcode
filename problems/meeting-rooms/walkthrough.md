@@ -53,7 +53,7 @@ The comparison must be strict. Back-to-back meetings share an endpoint but do no
    right:  5 <  5  ──▶ no conflict
 ```
 
-Forgetting to sort is the other trap: `[[1,10],[11,12],[2,3]]` has no clash between its first two neighbours as given, yet `[2,3]` sits inside `[1,10]`.
+Forgetting to sort is the other trap: neighbours in unsorted order are meaningless. `[[7,10],[2,4]]` is fine to attend (the meetings are disjoint), but the unsorted check sees `2 < 10` and wrongly returns `False`.
 
 ## Cost
 

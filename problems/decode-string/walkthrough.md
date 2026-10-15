@@ -20,15 +20,15 @@ The three symbols mean:
 Decode `3[a2[c]]`. Each row shows the state after that character:
 
 ```text
-char   curr    num   stack
- 3     ""      3     []
- [     ""      0     [("", 3)]
- a     "a"     0     [("", 3)]
- 2     "a"     2     [("", 3)]
- [     ""      0     [("", 3), ("a", 2)]
- c     "c"     0     [("", 3), ("a", 2)]
- ]     "acc"   0     [("", 3)]          pop ("a",2): "a" + "c"*2
- ]     "accaccacc" 0 []                 pop ("",3):  "" + "acc"*3
+char   curr          num   stack
+ 3     ""            3     []
+ [     ""            0     [("", 3)]
+ a     "a"           0     [("", 3)]
+ 2     "a"           2     [("", 3)]
+ [     ""            0     [("", 3), ("a", 2)]
+ c     "c"           0     [("", 3), ("a", 2)]
+ ]     "acc"         0     [("", 3)]    pop ("a",2): "a" + "c"*2
+ ]     "accaccacc"   0     []           pop ("",3):  "" + "acc"*3
 ```
 
 The answer is `curr = "accaccacc"`. The stack gets as deep as the nesting:

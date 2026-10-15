@@ -45,7 +45,7 @@ start     -inf    -inf      0
 
 Notice the price-0 row. `held` is built from `rest` (1), the profit banked before the cooldown ended, not from `sold` (2), because buying the day after a sale is not allowed. The `sold = -1` there is just the poor option of selling at 0.
 
-The final answer is `max(sold, rest, 0) = max(3, 2, 0) = 3`: buy at 1, sell at 3, cool down, buy at 0, sell at 2.
+The final answer is `max(sold, rest, 0) = max(3, 2, 0) = 3`: buy at 1, sell at 2, cool down on day 3, buy at 0, sell at 2.
 
 ## Why it works
 

@@ -30,7 +30,7 @@ queue        (1,0)(0,1)   (1,1)(0,2)   (2,1)        (2,2)
 after        fresh = 4    fresh = 2    fresh = 1    fresh = 0
 ```
 
-In minute 2, `(1,0)` also touches `(1,1)`, but it is already rotten by then. In minute 3, `(0,2)` has no fresh neighbour: `(1,2)` is empty.
+In minute 2, `(1,0)` rots `(1,1)` first, so when `(0,1)` also touches it, it is already rotten. In minute 3, `(0,2)` has no fresh neighbour: `(1,2)` is empty.
 
 `fresh` reaches 0 during minute 4, the loop stops, and the answer is `4`.
 

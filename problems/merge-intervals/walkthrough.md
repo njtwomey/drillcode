@@ -32,14 +32,14 @@ If intervals are sorted by start, any overlap must be with the interval just bef
 On a number line (one column per unit, 1 to 18):
 
 ```text
-          1         10
- 1234567890123456789  (digits wrap at 10)
+                    1
+           1234567890123456789  (digits wrap at 10)
  [1,3]     ###
  [2,6]      #####
- [6,7]           ##
+ [6,7]          ##
  [8,10]            ###
  [15,18]                 ####
- result    #######  ###     ####
+ result    [#####][#]    [##]
 ```
 
 ## Why it works

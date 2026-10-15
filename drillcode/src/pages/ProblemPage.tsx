@@ -146,48 +146,49 @@ function ProblemView({ slug, mode }: { slug: string; mode: PageMode }) {
           </div>
         </article>
       ) : (
-        <div className="grid gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
-          <aside className="space-y-4 text-sm">
-            {description && <Description source={description} />}
-            <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
-              Full statement on LeetCode <ExternalLink className="size-3" />
-            </a>
-            {viewing ? (
-              <Tabs defaultValue="summary" className="rounded-md border p-3">
-                <TabsList>
-                  <TabsTrigger value="summary">Approach</TabsTrigger>
-                  <TabsTrigger value="tricks">Tricks</TabsTrigger>
-                  <TabsTrigger value="edge">Edge cases</TabsTrigger>
-                </TabsList>
-                <TabsContent value="summary" className="space-y-2">
-                  <p>{problem.summary}</p>
-                  <p className="text-xs text-muted-foreground">Time {problem.complexity.time} · space {problem.complexity.space}</p>
-                </TabsContent>
-                <TabsContent value="tricks">{problem.tricks}</TabsContent>
-                <TabsContent value="edge">
-                  <ul className="list-disc space-y-1 pl-5">{problem.edge_cases.map((e) => <li key={e}>{e}</li>)}</ul>
-                </TabsContent>
-              </Tabs>
-            ) : (
-              <p className="rounded-md border p-3 text-muted-foreground">
-                This page hides the approach, tricks, edge cases and walkthrough. Write the solution from the blank
-                skeleton, run the tests, and use “Reveal solution” if you get stuck.
-              </p>
-            )}
-            {defs && (
-              <div className="rounded-md border p-3">
-                <h2 className="mb-2 font-medium">Definitions</h2>
-                <pre className="overflow-auto font-mono text-xs">{defs}</pre>
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground">
-              {viewing
-                ? 'The comment at the top of the code repeats the approach, tricks and edge cases.'
-                : 'Your code is saved in this browser as you type.'}
-            </p>
-          </aside>
-
+        <div>
           <Workspace
+            left={
+          <aside className="space-y-4 text-sm">
+              {description && <Description source={description} />}
+              <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
+                Full statement on LeetCode <ExternalLink className="size-3" />
+              </a>
+              {viewing ? (
+                <Tabs defaultValue="summary" className="rounded-md border p-3">
+                  <TabsList>
+                    <TabsTrigger value="summary">Approach</TabsTrigger>
+                    <TabsTrigger value="tricks">Tricks</TabsTrigger>
+                    <TabsTrigger value="edge">Edge cases</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="summary" className="space-y-2">
+                    <p>{problem.summary}</p>
+                    <p className="text-xs text-muted-foreground">Time {problem.complexity.time} · space {problem.complexity.space}</p>
+                  </TabsContent>
+                  <TabsContent value="tricks">{problem.tricks}</TabsContent>
+                  <TabsContent value="edge">
+                    <ul className="list-disc space-y-1 pl-5">{problem.edge_cases.map((e) => <li key={e}>{e}</li>)}</ul>
+                  </TabsContent>
+                </Tabs>
+              ) : (
+                <p className="rounded-md border p-3 text-muted-foreground">
+                  This page hides the approach, tricks, edge cases and walkthrough. Write the solution from the blank
+                  skeleton, run the tests, and use “Reveal solution” if you get stuck.
+                </p>
+              )}
+              {defs && (
+                <div className="rounded-md border p-3">
+                  <h2 className="mb-2 font-medium">Definitions</h2>
+                  <pre className="overflow-auto font-mono text-xs">{defs}</pre>
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {viewing
+                  ? 'The comment at the top of the code repeats the approach, tricks and edge cases.'
+                  : 'Your code is saved in this browser as you type.'}
+              </p>
+            </aside>
+            }
             key={`${mode}-${variant.id}`}
             slug={slug}
             onResults={(results: CaseResult[]) => {

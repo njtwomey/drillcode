@@ -15,7 +15,7 @@ Invariant: everything left of `lo` is `< x`, and everything from `hi` onward is 
 
 ```text
 nums = [5, 7, 7, 8, 8, 10]      target = 8
-index    0  1  2  3  4  5
+index   0  1  2  3  4  5
 ```
 
 ## Step by step

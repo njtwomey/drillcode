@@ -27,13 +27,13 @@ Round 1   first=1 second=2
   prev.next = second          dummy ──▶ 2
 
   dummy ──▶ 2 ──▶ 1 ──▶ 3 ──▶ 4 ──▶ 5
-                  prev (now the old first)
+                prev (now the old first)
 
 Round 2   first=3 second=4
   3.next = 5,  4.next = 3,  1.next = 4
 
   dummy ──▶ 2 ──▶ 1 ──▶ 4 ──▶ 3 ──▶ 5 ──▶ None
-                              prev
+                            prev
 
 Check: prev.next is 5 and 5.next is None, only one node left. Stop.
 ```
@@ -49,8 +49,9 @@ At the start of each round, the nodes up to `prev` are final and `prev.next` beg
 Order matters. If `second.next = first` came first, the link from `second` to the rest of the list would be overwritten, and the nodes after the pair would be lost.
 
 ```text
-Wrong:  second.next = first       2 ──▶ 1 ──▶ 2 ...   a cycle,
-        first.next = second.next  and 3 is no longer reachable
+Wrong:  second.next = first       2 ──▶ 1
+        first.next = second.next  reads the NEW second.next, which is 1,
+                                  so 1 ──▶ 1: a self-loop, and 3 is lost
 ```
 
 Another slip is setting `prev = second`. The next pair starts after `first`, since `first` is now second in the pair.

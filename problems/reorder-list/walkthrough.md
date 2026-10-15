@@ -54,7 +54,7 @@ no cut: node 3 still points at 4, and the weave sets 4.next = 3
 ```
 
 - Overwriting `first.next` before saving it. Both `first_next` and `second_next` must be saved before either link changes.
-- Stopping on `fast.next` alone instead of `fast.next.next`, which moves `slow` one node too far for even lengths.
+- Stopping on `fast.next` alone instead of `fast.next.next`, which fails for even lengths: `fast` becomes `None` and the next check raises an error.
 
 ## Cost
 

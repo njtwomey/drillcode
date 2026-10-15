@@ -20,7 +20,7 @@ Invariant: `tank` is the fuel on arrival at `i + 1` if we began at `start` and n
 gas  = [1, 2, 3, 4, 5]
 cost = [3, 4, 5, 1, 2]
 gain = [-2, -2, -2, 3, 3]
-index     0   1   2  3  4
+index    0   1   2  3  4
 ```
 
 ## Step by step

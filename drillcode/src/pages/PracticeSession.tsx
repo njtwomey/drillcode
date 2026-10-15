@@ -74,24 +74,26 @@ function Current() {
         {outcome.attempts > 0 && <span className="text-xs text-muted-foreground">{outcome.attempts} run{outcome.attempts === 1 ? '' : 's'}</span>}
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
-        <aside className="space-y-4 text-sm">
-          {description && <Description source={description} />}
-          <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
-            Full statement on LeetCode <ExternalLink className="size-3" />
-          </a>
-          <p className="rounded-md border p-3 text-muted-foreground">
-            Practice mode: no solution, approach or hints. The first two test cases are shown as examples;
-            the rest stay hidden until one fails.
-          </p>
-          {defs && (
-            <div className="rounded-md border p-3">
-              <h2 className="mb-2 font-medium">Definitions</h2>
-              <pre className="overflow-auto font-mono text-xs">{defs}</pre>
-            </div>
-          )}
-        </aside>
+      <div>
         <Workspace
+          left={
+        <aside className="space-y-4 text-sm">
+            {description && <Description source={description} />}
+            <a href={problem.leetcode} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">
+              Full statement on LeetCode <ExternalLink className="size-3" />
+            </a>
+            <p className="rounded-md border p-3 text-muted-foreground">
+              Practice mode: no solution, approach or hints. The first two test cases are shown as examples;
+              the rest stay hidden until one fails.
+            </p>
+            {defs && (
+              <div className="rounded-md border p-3">
+                <h2 className="mb-2 font-medium">Definitions</h2>
+                <pre className="overflow-auto font-mono text-xs">{defs}</pre>
+              </div>
+            )}
+          </aside>
+          }
           key={slug}
           slug={slug}
           practice

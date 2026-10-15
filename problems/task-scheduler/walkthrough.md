@@ -53,7 +53,7 @@ frames = 2 * 3 + 4 = 10 < 12 tasks, so answer = 12 (no idle slot needed)
 - Forgetting the `max` with `len(tasks)`. If many task types exist, the formula gives a number below the task count, which cannot be right.
 - Using `n` where `n + 1` belongs. A frame holds the task itself plus its `n` cooldown slots.
 
-With `n = 0` the frame length is 1 and the formula gives `most`, which is at most `len(tasks)`, so the `max` returns the task count.
+With `n = 0` the frame length is 1 and the formula gives `most - 1 + tied`, which never exceeds `len(tasks)`, so the `max` returns the task count.
 
 ## Cost
 

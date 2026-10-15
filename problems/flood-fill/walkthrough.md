@@ -14,7 +14,7 @@ The early return `if old == color` matters: see below.
 
 ## Step by step
 
-Image with start `(1, 1)`, new colour `2`, `old = 1` (the corner `.` cells are 0):
+Image with start `(1, 1)`, new colour `2`, `old = 1` (the 0 cells are a different colour and are never touched):
 
 ```text
 start               after pop (1,1)

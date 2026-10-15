@@ -15,8 +15,8 @@ nums = [1, 3, 4, 2, 2]
 index    0  1  2  3  4
 
 As a list:  0 ──▶ 1 ──▶ 3 ──▶ 2 ──▶ 4
-                               ▲     │
-                               └─────┘
+                              ▲     │
+                              └─────┘
 ```
 
 The cycle is `2 -> 4 -> 2`, entered at node 2.

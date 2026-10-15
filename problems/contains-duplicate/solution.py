@@ -19,7 +19,8 @@ class Solution:
             seen.add(num)
         return False
 
-    # Alternative: sort, then compare neighbours. O(n log n) time, O(1) extra space.
+    # Alternative: sort, then compare neighbours. O(n log n) time; the sorted copy costs O(n) space
+    # (sorting nums in place instead would avoid the copy, at the price of mutating the input).
     def containsDuplicateSorted(self, nums: List[int]) -> bool:
         # After sorting, equal values must sit next to each other, so only neighbours matter.
         ordered = sorted(nums)

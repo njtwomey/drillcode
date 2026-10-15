@@ -14,9 +14,9 @@ Invariant: `[lo, hi]` always contains a peak. The outer neighbours are `-infinit
 
 ```text
 nums = [1, 2, 1, 3, 5, 6, 4]
-index    0  1  2  3  4  5  6
-         ▲              ▲  
-         lo             hi    (the cells beyond both ends are -inf)
+index   0  1  2  3  4  5  6
+        ▲                 ▲
+        lo                hi   (the cells beyond both ends are -inf)
 ```
 
 ## Step by step

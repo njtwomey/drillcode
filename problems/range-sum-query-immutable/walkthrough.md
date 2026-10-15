@@ -34,7 +34,7 @@ sumRange(0, 5)   prefix[6] - prefix[0] = -3 - 0     = -3
 A picture of the second query:
 
 ```text
-nums     -2    0 |  3   -5    2   -1
+nums       -2   0 |  3   -5    2   -1
 prefix  0  -2  -2 |  1   -4   -2   -3
                 ^                  ^
             prefix[2]          prefix[6]

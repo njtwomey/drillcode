@@ -12,10 +12,9 @@ Group the nodes at odd positions first, then the nodes at even positions, keepin
 Invariant: `odd` and `even` are always adjacent pieces of the original list, `odd` right before `even`.
 
 ```text
-odd even_head
- │   │
- 1 ──▶ 2 ──▶ 3 ──▶ 4 ──▶ 5 ──▶ None
-     even
+ odd    even, even_head
+  │      │
+  1 ──▶ 2 ──▶ 3 ──▶ 4 ──▶ 5 ──▶ None
 ```
 
 ## Step by step

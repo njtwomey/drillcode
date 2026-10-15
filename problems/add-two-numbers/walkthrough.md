@@ -27,11 +27,11 @@ Each round: `total = carry + l1 digit + l2 digit`, then `carry, digit = divmod(t
 ```text
 Round 1   2 + 5 + 0 = 7      carry 0, digit 7
   dummy ──▶ 7
-                tail
+            tail
 
 Round 2   4 + 6 + 0 = 10     carry 1, digit 0
   dummy ──▶ 7 ──▶ 0
-                   tail
+                  tail
 
 Round 3   3 + 4 + 1 = 8      carry 0, digit 8
   dummy ──▶ 7 ──▶ 0 ──▶ 8

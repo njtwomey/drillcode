@@ -20,7 +20,7 @@ fill[{}] = 0     every other entry starts at -1
 
 ## Step by step
 
-Masks are visited in increasing order. A subset is written by the indices it holds. Only states that are reachable are shown.
+Masks are visited in increasing order. A subset is written by the indices it holds. Only some of the reachable states are shown (the table skips `{2}`, `{0,2}`, `{0,1,3}` and others).
 
 ```text
 subset      numbers    sum  fill  note
@@ -36,7 +36,7 @@ subset      numbers    sum  fill  note
 {0,1,2,3}   1,2,2,3     8    0    everything placed, no partial bucket
 ```
 
-From `{0,3}` (fill 0), adding index 1 gives fill 2, then adding index 2 gives `2 + 2 = 4`, which wraps to 0. The full mask ends with `fill == 0`, so the answer is `True` (buckets `{1,3}` and `{2,2}`).
+From `{0,3}` (fill 0), adding index 1 gives fill 2, then adding index 2 gives `2 + 2 = 4`, which wraps to 0. The full mask ends with `fill == 0`, so the answer is `True` (buckets `{0,3}` = 1 + 3 and `{1,2}` = 2 + 2).
 
 ## Why it works
 

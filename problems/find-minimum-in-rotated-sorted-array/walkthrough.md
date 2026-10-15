@@ -12,9 +12,9 @@ Invariant: the minimum is always inside `[lo, hi]`. The loop runs while `lo < hi
 
 ```text
 nums = [4, 5, 6, 7, 0, 1, 2]
-index    0  1  2  3  4  5  6
-         ▲              ▲
-         lo             hi
+index   0  1  2  3  4  5  6
+        ▲                 ▲
+        lo                hi
 ```
 
 ## Step by step
@@ -26,7 +26,7 @@ Round 1  lo=0 hi=6  mid=3   nums[mid]=7 > nums[hi]=2
          7 is larger than the right end, so the drop is right of mid.
          lo = mid + 1 = 4
 
-                      lo       hi
+                       lo    hi
          [4  5  6  7 | 0  1  2]
 
 Round 2  lo=4 hi=6  mid=5   nums[mid]=1 <= nums[hi]=2

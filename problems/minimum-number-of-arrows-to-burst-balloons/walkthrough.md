@@ -13,11 +13,11 @@ So: sort by right edge, shoot at the first balloon's end, skip everything that a
 ```text
 sorted by end:   [1,6]  [2,8]  [7,12]  [10,16]
 
-  0    2    4    6    8   10   12   14   16
-  [1─────────6]
-     [2────────────8]
-              [7──────────12]
-                    [10────────────16]
+  0   2   4   6   8   10  12  14  16
+    [1───────6]
+      [2─────────8]
+                [7──────12]
+                      [10───────16]
 
 arrows = 0, arrow_x = None
 ```
@@ -32,13 +32,13 @@ For each `(start, end)` in order: if `arrow_x is None or start > arrow_x`, the b
 [7,12]   start 7 > 6? yes         -> new arrow at 12   arrows=2
 [10,16]  start 10 > 12? no        -> already popped    arrows=2
 
-  0    2    4    6    8   10   12   14   16
-  [1─────────6]
-     [2────────────8]
-              [7──────────12]
-                    [10────────────16]
-                 ^                ^
-              arrow 1          arrow 2
+  0   2   4   6   8   10  12  14  16
+    [1───────6]
+      [2─────────8]
+                [7──────12]
+                      [10───────16]
+              ^           ^
+           arrow 1     arrow 2
 ```
 
 The answer is `2`.

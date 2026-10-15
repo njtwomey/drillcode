@@ -441,7 +441,7 @@
   - Touching intervals (end == next start) do not conflict
   complexity:
     time: O(n log n)
-    space: O(1)
+    space: O(n)
 - slug: merge-sorted-array
   number: 88
   title: Merge Sorted Array

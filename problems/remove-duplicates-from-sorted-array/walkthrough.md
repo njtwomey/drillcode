@@ -13,9 +13,9 @@ Invariant: `nums[:write]` holds the distinct values seen so far, in sorted order
 
 ```text
 nums = [0, 0, 1, 1, 1, 2]
-         ^  ^
-         |  read = 1
-         write - 1 = 0, write = 1
+        ^  ^
+        |  read = 1
+        write - 1 = 0, write = 1
 ```
 
 ## Step by step
@@ -47,12 +47,13 @@ The function returns `3`. The first three slots are `0, 1, 2`; the leftover `1, 
 
 ## Where it goes wrong
 
-Comparing against `nums[read - 1]` instead of `nums[write - 1]` looks similar but is a different test. After copies have happened, `nums[read - 1]` may be a stale value from the old layout rather than the last kept value.
+Comparing against `nums[write]` instead of `nums[write - 1]` checks the slot that is about to be overwritten, not the last value kept. It can mistake a new value for a duplicate:
 
 ```text
-[0, 1, 2, 1, 1, 2]  after the last copy, write = 3
-   kept part: [0, 1, 2]     nums[write - 1] = 2 is the last kept value
-   leftovers: [1, 1, 2]     stale; nums[read - 1] could point into these
+nums = [1, 2, 3]   write = 1
+read=1  nums[1]=2 vs nums[write]=2   "same": skipped, though 2 is new
+read=2  nums[2]=3 vs nums[write]=2   new: nums[1] = 3, write -> 2
+result [1, 3, 3], returns 2   wrong (the answer is 3, with [1, 2, 3])
 ```
 
 Starting `write` at 0 would let `nums[0]` be compared with a non-existent `nums[-1]`, which in Python silently reads the last element. An array with one element never enters the loop and returns 1.

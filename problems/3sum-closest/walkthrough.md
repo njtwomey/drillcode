@@ -15,8 +15,8 @@ nums = [-1, 2, 1, -4]   target = 1     sorted -> [-4, -1, 1, 2]
 
  idx:   0   1   2   3
        -4  -1   1   2         best = -4 + -1 + 1 = -4
-        ^   ^        ^
-        i  left    right
+        ^   ^       ^
+        i  left   right
 ```
 
 ## Step by step

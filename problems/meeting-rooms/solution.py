@@ -5,7 +5,7 @@ Edge cases:
   - Single meeting
   - Touching intervals (end == next start) do not conflict
 
-Time O(n log n), space O(1).
+Time O(n log n), space O(n).
 """
 
 

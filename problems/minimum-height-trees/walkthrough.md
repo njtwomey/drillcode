@@ -54,7 +54,7 @@ Peeling a layer of leaves shortens every longest path by one on each end, so the
 
 - Without the `n <= 2` early return, a single node has no leaves (zero neighbours), and the loop logic breaks.
 - Stopping at `remaining > 2` rather than `> 0` matters: peeling past the centre would remove it.
-- A node must only be added to `next_leaves` when it drops to exactly one edge; zero edges means it is the last node and is already in `leaves`.
+- A node must only be added to `next_leaves` when it drops to exactly one edge; zero edges means it is the last node and is already in `next_leaves`.
 
 ## Cost
 

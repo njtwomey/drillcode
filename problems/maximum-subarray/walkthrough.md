@@ -16,7 +16,7 @@ Trying every subarray is O(n²). Kadane's algorithm uses one observation: the be
  num   cur + num   cur = max(num, cur+num)   best
  -2        -        -2                       -2     start
   1       -1         1  (restart)             1
- -3       -2        -2  (restart)             1
+ -3       -2        -2  (extend)              1
   4        2         4  (restart)             4
  -1        3         3  (extend)              4
   2        5         5  (extend)              5
@@ -30,7 +30,7 @@ The answer is 6, from the subarray `4, -1, 2, 1`. The restart at `4` is where th
 ```text
 index   0   1   2   3   4   5   6   7   8
 nums   -2   1  -3   4  -1   2   1  -5   4
-                     └───────────┘
+                    └───────────┘
                        sum = 6
 ```
 

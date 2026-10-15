@@ -32,7 +32,7 @@ mask  binary   bit2 bit1 bit0     subset
  7     111      3    2    1       [1, 2, 3]
 ```
 
-Reading the subsets in order gives `[]`, `[1]`, `[2]`, `[1,2]`, `[3]`, `[1,3]`, `[2,3]`, `[1,2,3]`, which is the order the tests expect.
+Reading the subsets in order gives `[]`, `[1]`, `[2]`, `[1,2]`, `[3]`, `[1,3]`, `[2,3]`, `[1,2,3]`, which matches the order of the examples.
 
 ## Why it works
 

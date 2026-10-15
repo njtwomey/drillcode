@@ -19,8 +19,8 @@ sorted ->
 
  idx:   0   1   2   3   4   5
        -2  -1   0   0   1   2
-        ^   ^   ^            ^
-        i   j  left        right
+        ^   ^   ^           ^
+        i   j  left       right
 ```
 
 ## Step by step
