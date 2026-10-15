@@ -10,6 +10,7 @@ Time O(n), space O(h).
 
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
-        if root is None:
+        if root is None:  # Base case: an empty tree has no levels.
             return 0
+        # This node adds one level on top of the deeper of its two subtrees.
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))

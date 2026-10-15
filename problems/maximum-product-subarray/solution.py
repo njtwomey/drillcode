@@ -14,8 +14,11 @@ Time O(n), space O(1).
 
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
+        # Track both the largest and smallest product of a subarray ending here. A negative
+        # number flips them, so today's smallest can become tomorrow's largest.
         cur_max = cur_min = best = nums[0]
         for num in nums[1:]:
+            # Each ending product either restarts at num (also handles zeros) or extends.
             candidates = (num, cur_max * num, cur_min * num)
             cur_max = max(candidates)
             cur_min = min(candidates)

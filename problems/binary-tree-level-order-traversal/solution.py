@@ -14,12 +14,16 @@ from collections import deque
 
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        # Guard: deque([None]) would crash on node.val.
         if root is None:
             return []
         levels = []
+        # BFS queue holds the nodes of the current level, then the next one.
         queue = deque([root])
         while queue:
             level = []
+            # len(queue) is frozen at the level's size, so children appended inside
+            # the loop wait for the next pass. Every node is handled once: O(n).
             for _ in range(len(queue)):
                 node = queue.popleft()
                 level.append(node.val)

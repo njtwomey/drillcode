@@ -14,12 +14,19 @@ Time O(n), space O(1).
 
 class Solution:
     def findDuplicate(self, nums: List[int]) -> int:
+        # Treat i -> nums[i] as a linked list. Values are in 1..n, so index 0 is never a
+        # target: start there, and a duplicate means two indices point at one node, i.e. a
+        # cycle whose entrance is the duplicate. (Floyd's cycle detection.)
+        # Phase 1: fast moves twice as fast; they must meet somewhere inside the cycle.
         slow = fast = nums[0]
         while True:
             slow = nums[slow]
             fast = nums[nums[fast]]
             if slow == fast:
                 break
+        # Phase 2: the distance from the start to the cycle entrance equals the distance
+        # from the meeting point to the entrance (mod cycle length). Walking both at the
+        # same speed makes them meet exactly at the entrance.
         slow = nums[0]
         while slow != fast:
             slow = nums[slow]

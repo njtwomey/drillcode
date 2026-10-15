@@ -22,7 +22,7 @@ interface Props {
 const external = Annotation.define<boolean>()
 
 const baseTheme = EditorView.theme({
-  '&': { height: '100%', fontSize: '13px' },
+  '&': { height: '100%', fontSize: '14px' },
   '.cm-scroller': { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' },
   '&.cm-focused': { outline: 'none' },
 })

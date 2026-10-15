@@ -14,15 +14,20 @@ Time O(n), space O(h).
 
 class Solution:
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        # Longest path found so far, measured in edges (not nodes).
         best = 0
 
+        # Returns the height of node's subtree, and records the best path bending at node.
         def height(node):
-            nonlocal best
+            nonlocal best  # Needed so the assignment below updates the outer variable.
             if node is None:
                 return 0
             left = height(node.left)
             right = height(node.right)
+            # The longest path through this node goes down both sides: left + right edges.
+            # Checking every node covers paths that never touch the root.
             best = max(best, left + right)
+            # A parent can only extend one branch, so report the taller side plus this node.
             return 1 + max(left, right)
 
         height(root)

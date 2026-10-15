@@ -13,7 +13,9 @@ Time O(L) per operation, space O(total chars).
 
 class _TrieNode:
     def __init__(self):
+        # One edge per next character; the path from the root spells the prefix.
         self.children = {}
+        # Marks that a word ends here; needed to tell "app" from a mere prefix of "apple".
         self.is_word = False
 
 
@@ -29,6 +31,7 @@ class Trie:
             node = node.children[ch]
         node.is_word = True
 
+    # Shared by search and startsWith: follow prefix, return its end node or None.
     def _walk(self, prefix):
         node = self.root
         for ch in prefix:
@@ -39,7 +42,9 @@ class Trie:
 
     def search(self, word: str) -> bool:
         node = self._walk(word)
+        # Reaching the node is not enough; a word must actually end there.
         return node is not None and node.is_word
 
     def startsWith(self, prefix: str) -> bool:
+        # Any existing path counts as a prefix, word or not.
         return self._walk(prefix) is not None

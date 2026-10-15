@@ -1,82 +1,61 @@
-import { Trash2 } from 'lucide-react'
+import { Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { caseHelp, formatCase, parseCaseLine } from '@/lib/caseFormat'
 import { useStore } from '@/lib/store'
 import type { TestCase, TestsSpec } from '@/lib/types'
 
 const NONE: TestCase[] = []
 
-function parseJson(text: string, label: string): { value?: unknown; error?: string } {
-  try {
-    return { value: JSON.parse(text) }
-  } catch (e) {
-    return { error: `${label} is not valid JSON: ${(e as Error).message}` }
-  }
-}
-
+/** One field: write the call the way the tests list it, e.g. `[-1,0,3,5,9], 9 → 4`. */
 export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
   const cases = useStore((s) => s.customCases[slug]) ?? NONE
   const { addCustomCase, removeCustomCase } = useStore()
-  const isOps = spec.kind === 'operations'
-  const template = isOps
-    ? spec.cases[0]?.ops
-    : Object.fromEntries((spec.args ?? []).map((a) => [a, spec.cases[0]?.input?.[a] ?? null]))
-  const [name, setName] = useState('')
-  const [input, setInput] = useState('')
-  const [expected, setExpected] = useState('')
-  const [error, setError] = useState('')
+  const [text, setText] = useState('')
+  const parsed = text.trim() ? parseCaseLine(spec, text) : null
+  const example = formatCase(spec, spec.cases[0])
 
-  function save() {
-    if (!name.trim()) return setError('Give the case a name.')
-    const parsedInput = parseJson(input, isOps ? 'Ops' : 'Input')
-    if (parsedInput.error) return setError(parsedInput.error)
-    const parsedExpected = parseJson(expected, 'Expected')
-    if (parsedExpected.error) return setError(parsedExpected.error)
-    const value = parsedInput.value
-    if (isOps) {
-      const ok = Array.isArray(value) && value.length > 0 && value.every((op) => Array.isArray(op) && typeof op[0] === 'string' && Array.isArray(op[1]))
-      if (!ok) return setError('Ops must be a list of [name, [args...]] pairs.')
-    } else {
-      if (typeof value !== 'object' || value === null || Array.isArray(value)) return setError('Input must be a JSON object.')
-      const missing = (spec.args ?? []).filter((a) => !(a in (value as object)))
-      if (missing.length) return setError(`Input is missing: ${missing.join(', ')}`)
-    }
-    addCustomCase(slug, {
-      name: name.trim(),
-      custom: true,
-      expected: parsedExpected.value,
-      ...(isOps ? { ops: value as TestCase['ops'] } : { input: value as TestCase['input'] }),
-    })
-    setName(''); setInput(''); setExpected(''); setError('')
+  function add() {
+    if (!parsed?.case) return
+    const used = new Set(cases.map((c) => c.name))
+    let n = cases.length + 1
+    while (used.has(`my case ${n}`)) n++
+    addCustomCase(slug, { name: `my case ${n}`, ...parsed.case })
+    setText('')
   }
 
   return (
-    <div className="space-y-2 text-sm">
-      <div className="grid gap-2 sm:grid-cols-2">
-        <Input className="h-8 sm:col-span-2" placeholder="Case name" value={name} onChange={(e) => setName(e.target.value)} />
-        <Textarea
-          className="font-mono text-xs"
-          rows={3}
-          placeholder={`${isOps ? 'Ops' : 'Input'} as JSON, e.g. ${JSON.stringify(template)}`}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <Textarea className="font-mono text-xs" rows={3} placeholder="Expected as JSON" value={expected} onChange={(e) => setExpected(e.target.value)} />
-      </div>
-      <div className="flex items-center gap-2">
-        <Button size="sm" onClick={save}>Add case</Button>
-        {error && <span className="text-xs text-destructive">{error}</span>}
+    <div className="space-y-3 text-sm">
+      <div className="space-y-1.5">
+        <Label htmlFor="custom-case">Add your own test case</Label>
+        <div className="flex gap-2">
+          <Input
+            id="custom-case"
+            className="font-mono text-xs"
+            placeholder={example}
+            value={text}
+            spellCheck={false}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && add()}
+          />
+          <Button size="sm" onClick={add} disabled={!parsed?.case}>
+            <Plus /> Add
+          </Button>
+        </div>
+        <p className="text-xs text-muted-foreground">{caseHelp(spec)}</p>
+        {parsed?.error && <p className="text-xs text-destructive">{parsed.error}</p>}
+        {parsed?.case && <p className="text-xs text-green-700 dark:text-green-400">Looks good. Press Enter or Add.</p>}
       </div>
       {cases.length > 0 && (
         <ul className="divide-y rounded-md border">
           {cases.map((c) => (
-            <li key={c.name} className="flex items-center justify-between gap-2 px-2 py-1">
-              <span className="truncate">
-                {c.name} <Badge variant="outline">custom</Badge>
-                <span className="ml-2 font-mono text-xs text-muted-foreground">{JSON.stringify(c.input ?? c.ops)} → {JSON.stringify(c.expected)}</span>
+            <li key={c.name} className="flex items-center justify-between gap-2 px-3 py-1.5">
+              <span className="min-w-0 truncate">
+                <Badge variant="outline" className="mr-2">custom</Badge>
+                <span className="font-mono text-xs">{formatCase(spec, c)}</span>
               </span>
               <Button size="icon" variant="ghost" aria-label={`Delete ${c.name}`} onClick={() => removeCustomCase(slug, c.name)}>
                 <Trash2 />

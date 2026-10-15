@@ -12,6 +12,9 @@ Time O(n · 2^n), space O(n).
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
         n = len(nums)
+        # Each subset is an n-bit mask: bit i says whether nums[i] is included.
+        # Counting 0 .. 2^n - 1 enumerates every combination exactly once.
+        # (mask >> i & 1 parses as (mask >> i) & 1.)
         return [[nums[i] for i in range(n) if mask >> i & 1] for mask in range(1 << n)]
 
     # Alternative: include/exclude DFS, same time, O(n) recursion depth.
@@ -20,13 +23,15 @@ class Solution:
         current = []
 
         def dfs(i):
+            # Every element has been decided: current is one finished subset.
+            # Copy it, since backtracking keeps mutating the list.
             if i == len(nums):
                 result.append(current[:])
                 return
-            dfs(i + 1)
+            dfs(i + 1)  # branch 1: skip nums[i]
             current.append(nums[i])
-            dfs(i + 1)
-            current.pop()
+            dfs(i + 1)  # branch 2: take nums[i]
+            current.pop()  # backtrack so the caller sees current unchanged
 
         dfs(0)
         return result

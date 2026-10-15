@@ -16,16 +16,22 @@ import heapq
 
 class MedianFinder:
     def __init__(self):
+        # Invariants: every value in low <= every value in high, and
+        # len(low) is len(high) or len(high) + 1. So the median is always at the tops.
         self.low = []   # max-heap via negation
         self.high = []  # min-heap
 
     def addNum(self, num: int) -> None:
+        # Route through low then into high: this guarantees the largest of the lower
+        # half moves up, so the ordering invariant holds whatever num is, without
+        # comparing against the tops by hand.
         heapq.heappush(self.low, -num)
         heapq.heappush(self.high, -heapq.heappop(self.low))
+        # Rebalance so low keeps the extra element when the count is odd.
         if len(self.high) > len(self.low):
             heapq.heappush(self.low, -heapq.heappop(self.high))
 
     def findMedian(self) -> float:
         if len(self.low) > len(self.high):
-            return float(-self.low[0])
-        return (-self.low[0] + self.high[0]) / 2
+            return float(-self.low[0])  # odd count: the middle is low's top
+        return (-self.low[0] + self.high[0]) / 2  # even: average the two middles

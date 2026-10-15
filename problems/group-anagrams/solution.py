@@ -15,10 +15,13 @@ from collections import defaultdict
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # Key = letter-count signature, identical for all anagrams of each other.
         groups = defaultdict(list)
         for word in strs:
+            # Counting is O(L) per word, versus O(L log L) for sorting the letters.
             counts = [0] * 26
             for ch in word:
                 counts[ord(ch) - ord("a")] += 1
+            # Lists can't be dict keys, so freeze the counts into a tuple.
             groups[tuple(counts)].append(word)
         return list(groups.values())

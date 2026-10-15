@@ -14,13 +14,17 @@ Time O(n), space O(1).
 
 class Solution:
     def rob(self, nums: List[int]) -> int:
+        # With one house, the two slices below would both be empty and give 0.
         if len(nums) == 1:
             return nums[0]
 
+        # Same recurrence as House Robber I on a straight street.
         def rob_line(houses):
             prev, curr = 0, 0
             for num in houses:
                 prev, curr = curr, max(curr, prev + num)
             return curr
 
+        # Houses are in a circle, so first and last are neighbours and can't both be robbed.
+        # Try without the last, try without the first; one of them holds the optimum.
         return max(rob_line(nums[:-1]), rob_line(nums[1:]))

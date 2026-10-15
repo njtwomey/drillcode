@@ -19,13 +19,19 @@ class Solution:
             for c in range(cols):
                 if grid[r][c] != "1":
                     continue
+                # Unvisited land: this must be a brand new island, because any
+                # earlier flood would already have sunk every cell connected to it.
                 count += 1
-                grid[r][c] = "0"
+                grid[r][c] = "0"  # sink on push, so a cell is never queued twice
+                # Iterative DFS (explicit stack) avoids hitting Python's recursion
+                # limit on a large grid that is one big island.
                 stack = [(r, c)]
                 while stack:
                     y, x = stack.pop()
+                    # Four directions only: diagonal land is not connected.
                     for ny, nx in ((y + 1, x), (y - 1, x), (y, x + 1), (y, x - 1)):
                         if 0 <= ny < rows and 0 <= nx < cols and grid[ny][nx] == "1":
                             grid[ny][nx] = "0"
                             stack.append((ny, nx))
+        # Each cell is pushed at most once overall, so the nested loops are O(m*n).
         return count

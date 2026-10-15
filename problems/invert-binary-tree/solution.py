@@ -13,7 +13,9 @@ Time O(n), space O(h).
 
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if root is None:
+        if root is None:  # Base case: nothing to swap, and it ends the recursion.
             return None
+        # Invert each subtree, then swap them. The right-hand side is evaluated fully
+        # before assignment, so no temp variable is needed.
         root.left, root.right = self.invertTree(root.right), self.invertTree(root.left)
         return root

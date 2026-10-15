@@ -20,11 +20,15 @@ class Solution:
             mid = (lo + hi) // 2
             if nums[mid] == target:
                 return mid
+            # The rotation point lies in only one half, so at least one half is
+            # fully sorted. Find it, then check whether target is inside its range.
+            # <= (not <) so a one-element left half counts as sorted.
             if nums[lo] <= nums[mid]:  # left half sorted
+                # Bounds are exclusive at mid because mid was already ruled out.
                 if nums[lo] <= target < nums[mid]:
                     hi = mid - 1
                 else:
-                    lo = mid + 1
+                    lo = mid + 1  # not in the sorted half, so must be in the other
             else:  # right half sorted
                 if nums[mid] < target <= nums[hi]:
                     lo = mid + 1

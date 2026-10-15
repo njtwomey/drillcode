@@ -14,9 +14,12 @@ Time O(n), space O(n).
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # seen maps value -> index for elements strictly before the current one.
         seen = {}
         for i, num in enumerate(nums):
+            # If the partner appeared earlier we are done. Checking before inserting
+            # stops an element pairing with itself, yet [3, 3] still works.
             if target - num in seen:
                 return [seen[target - num], i]
             seen[num] = i
-        return []
+        return []  # unreachable: the problem guarantees one answer

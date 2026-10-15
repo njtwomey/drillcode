@@ -13,10 +13,12 @@ Time O(n), space O(1).
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
+        # Fast gains one node on slow per step. Inside a cycle the gap shrinks by 1 each
+        # step, so fast must land exactly on slow. Without a cycle fast hits the end.
         slow = fast = head
-        while fast and fast.next:
+        while fast and fast.next:  # Both checks keep fast.next.next from hitting None.
             slow = slow.next
             fast = fast.next.next
-            if slow is fast:
+            if slow is fast:  # Compare identity, not values: values can repeat.
                 return True
         return False

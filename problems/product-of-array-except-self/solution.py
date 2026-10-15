@@ -16,10 +16,16 @@ class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         n = len(nums)
         out = [1] * n
+        # Answer[i] = (product of everything left of i) * (product right of i).
+        # Pass 1 fills in the left part. The product is taken before multiplying in
+        # nums[i], so index i itself is excluded.
         prefix = 1
         for i in range(n):
             out[i] = prefix
             prefix *= nums[i]
+        # Pass 2 multiplies in the right part with one running variable, walking
+        # backwards. Reusing out as storage keeps extra space O(1) (output excluded).
+        # No division, so zeros need no special handling.
         suffix = 1
         for i in range(n - 1, -1, -1):
             out[i] *= suffix

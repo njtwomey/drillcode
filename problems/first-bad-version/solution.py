@@ -16,11 +16,14 @@ Time O(log n), space O(1).
 
 class Solution:
     def firstBadVersion(self, n: int) -> int:
+        # Invariant: the first bad version is always within [lo, hi].
         lo, hi = 1, n
-        while lo < hi:
+        while lo < hi:  # Stop when one candidate is left; it must be the answer.
             mid = lo + (hi - lo) // 2
             if isBadVersion(mid):
+                # mid might itself be the first bad one, so keep it in range.
                 hi = mid
             else:
+                # mid is good, so everything up to and including it is good too.
                 lo = mid + 1
         return lo

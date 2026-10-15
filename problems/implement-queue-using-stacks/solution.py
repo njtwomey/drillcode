@@ -12,6 +12,7 @@ Time O(1) amortised, space O(n).
 
 class MyQueue:
     def __init__(self):
+        # in_stack receives pushes (newest on top); out_stack serves pops (oldest on top).
         self.in_stack = []
         self.out_stack = []
 
@@ -19,6 +20,9 @@ class MyQueue:
         self.in_stack.append(x)
 
     def _shift(self) -> None:
+        # Only refill when out_stack is empty. Moving earlier would put newer items under
+        # older ones and break FIFO order. Popping in_stack into out_stack reverses it,
+        # so the oldest element ends up on top. Each element moves once, hence amortised O(1).
         if not self.out_stack:
             while self.in_stack:
                 self.out_stack.append(self.in_stack.pop())
@@ -32,4 +36,5 @@ class MyQueue:
         return self.out_stack[-1]
 
     def empty(self) -> bool:
+        # Elements may sit in either stack, so both must be empty.
         return not self.in_stack and not self.out_stack

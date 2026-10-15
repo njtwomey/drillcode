@@ -13,9 +13,12 @@ Time O(1) per operation, space O(n).
 
 class MinStack:
     def __init__(self):
+        # Each entry stores (value, min of the stack up to and including it), so the
+        # min is restored automatically on pop without searching. All ops are O(1).
         self.stack = []
 
     def push(self, val: int) -> None:
+        # Empty stack: val is the min. Otherwise compare with the min below it.
         current_min = min(val, self.stack[-1][1]) if self.stack else val
         self.stack.append((val, current_min))
 

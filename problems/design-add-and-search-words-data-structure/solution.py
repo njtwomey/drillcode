@@ -13,24 +13,31 @@ Time O(L) add, O(26^L) worst-case search, space O(total chars).
 
 class WordDictionary:
     def __init__(self):
+        # Trie as nested dicts: each key is a letter, "$" marks the end of a word.
         self.root = {}
 
     def addWord(self, word: str) -> None:
         node = self.root
         for ch in word:
+            # Walk down, creating missing nodes. Cost is O(len(word)).
             node = node.setdefault(ch, {})
-        node["$"] = True
+        node["$"] = True  # a prefix alone is not a word; the marker says one ends here
 
     def search(self, word: str) -> bool:
+        # dfs(node, i): can word[i:] be matched starting below this trie node?
         def dfs(node, i):
+            # Consumed the whole word: it only counts if a word ends here.
             if i == len(word):
                 return "$" in node
             ch = word[i]
+            # Wildcard: try every child branch. Skip the "$" key, which is not a letter.
+            # Worst case visits the whole trie, but plain letters follow a single path.
             if ch == ".":
                 for key, child in node.items():
                     if key != "$" and dfs(child, i + 1):
                         return True
                 return False
+            # Ordinary letter: follow the one matching edge, or fail if absent.
             child = node.get(ch)
             return child is not None and dfs(child, i + 1)
 

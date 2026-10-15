@@ -15,11 +15,15 @@ Time O(n), space O(n).
 
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        # Old node -> new node. None maps to None so null next/random need no special case.
         copies = {None: None}
+        # Pass 1: create every copy first, so pass 2 can point at nodes that come later
+        # (random can point forward or backward).
         node = head
         while node:
             copies[node] = Node(node.val)
             node = node.next
+        # Pass 2: wire pointers by translating each original target through the map.
         node = head
         while node:
             copies[node].next = copies[node.next]

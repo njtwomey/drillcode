@@ -13,11 +13,14 @@ Time O(n), space O(1).
 
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # Invariant: prev heads the already-reversed part, curr heads the untouched rest.
         prev = None
         curr = head
         while curr:
-            next_node = curr.next
+            next_node = curr.next  # save it, or re-pointing below loses the rest
             curr.next = prev
+            # Advance both pointers one step. When curr runs off the end, prev is the
+            # old tail, i.e. the new head.
             prev = curr
             curr = next_node
         return prev
