@@ -25,7 +25,7 @@ class Solution:
             node["$"] = word
 
         rows, cols = len(board), len(board[0])
-        found = []
+        result = []
 
         # dfs(r, c, parent): board[r][c] is already known to be a child of `parent`.
         def dfs(r, c, parent):
@@ -35,7 +35,7 @@ class Solution:
             # several paths.
             word = node.pop("$", None)
             if word is not None:
-                found.append(word)
+                result.append(word)
             board[r][c] = "#"  # mark as used on this path; "#" is never in the trie
             for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
                 nr, nc = r + dr, c + dc
@@ -52,4 +52,4 @@ class Solution:
             for c in range(cols):
                 if board[r][c] in root:
                     dfs(r, c, root)
-        return found
+        return result

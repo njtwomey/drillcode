@@ -16,15 +16,15 @@ class Solution:
         # The dummy gives the head a predecessor, so removing the first node needs
         # no special case.
         dummy = ListNode(0, head)
-        lead = trail = dummy
+        fast = slow = dummy
         # Open a gap of n + 1 nodes between the pointers. The extra 1 means that when
-        # lead falls off the end, trail sits just BEFORE the node to delete.
+        # fast falls off the end, slow sits just BEFORE the node to delete.
         for _ in range(n + 1):
-            lead = lead.next
+            fast = fast.next
         # Move both in lockstep; the gap stays fixed, so one pass finds the spot
         # without needing the list length.
-        while lead:
-            lead = lead.next
-            trail = trail.next
-        trail.next = trail.next.next  # unlink the target
+        while fast:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next  # unlink the target
         return dummy.next  # not head: head itself may have been removed

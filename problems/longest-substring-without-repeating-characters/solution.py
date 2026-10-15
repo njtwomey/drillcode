@@ -14,16 +14,16 @@ Time O(n), space O(min(n, alphabet)).
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        # last[c] = most recent index of c. Window is s[left..right] with no repeats.
-        last = {}
+        # seen[c] = most recent index of c. Window is s[left..right] with no repeats.
+        seen = {}
         left = 0
         best = 0
         for right, c in enumerate(s):
             # Jump left past the previous copy of c instead of shrinking step by step.
-            # max() matters: last[c] may sit left of the window already (stale entry),
+            # max() matters: seen[c] may sit left of the window already (stale entry),
             # and moving left backwards would readmit duplicates.
-            if c in last:
-                left = max(left, last[c] + 1)
-            last[c] = right
+            if c in seen:
+                left = max(left, seen[c] + 1)
+            seen[c] = right
             best = max(best, right - left + 1)
         return best

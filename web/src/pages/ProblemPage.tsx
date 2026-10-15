@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { bySlug, definitions, descriptionSource, problems, skeletonSource, solutionVariants, testsSpec } from '@/lib/catalogue'
 import { draftKey, useStore } from '@/lib/store'
+import { techniquesForProblem } from '@/lib/techniques'
 import type { Mode } from '@/lib/types'
 
 export function ProblemPage() {
@@ -56,6 +57,7 @@ function ProblemView({ slug }: { slug: string }) {
   }
 
   const viewing = mode === 'view'
+  const tips = techniquesForProblem(slug)
   const defs = definitions(slug)
   const description = descriptionSource(slug)
 
@@ -78,6 +80,15 @@ function ProblemView({ slug }: { slug: string }) {
           <Button size="icon" variant="outline" aria-label="Next problem" disabled={!neighbours.next} onClick={() => go(neighbours.next)}><ArrowRight /></Button>
         </div>
       </div>
+
+      {viewing && tips.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-muted-foreground">Techniques:</span>
+          {tips.map((t) => (
+            <Link key={t.slug} to={`/tips/${t.slug}`}><Badge variant="outline" className="hover:bg-muted">{t.title}</Badge></Link>
+          ))}
+        </div>
+      )}
 
       <div className="grid gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
         <aside className="space-y-4 text-sm">

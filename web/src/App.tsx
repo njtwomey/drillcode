@@ -6,10 +6,13 @@ import { Practice } from '@/pages/Practice'
 import { PracticeSession } from '@/pages/PracticeSession'
 import { ProblemPage } from '@/pages/ProblemPage'
 import { Profile } from '@/pages/Profile'
+import { TipPage } from '@/pages/TipPage'
+import { Tips } from '@/pages/Tips'
 
 const NAV = [
   { to: '/', label: 'Problems', end: true },
   { to: '/practice', label: 'Practice', end: false },
+  { to: '/tips', label: 'Tips', end: false },
   { to: '/profile', label: 'Profile', end: false },
 ]
 
@@ -41,6 +44,8 @@ export default function App() {
           <Route path="/p/:slug" element={<ProblemPage />} />
           <Route path="/practice" element={<Practice />} />
           <Route path="/practice/session" element={<PracticeSession />} />
+          <Route path="/tips" element={<Tips />} />
+          <Route path="/tips/:slug" element={<TipPage />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>

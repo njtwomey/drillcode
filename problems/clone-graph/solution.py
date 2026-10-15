@@ -21,13 +21,13 @@ class Solution:
         copies = {node: Node(node.val)}
         queue = deque([node])
         while queue:
-            current = queue.popleft()
-            for neighbour in current.neighbors:
+            curr = queue.popleft()
+            for neighbour in curr.neighbors:
                 # First sighting: create the clone now so the edge below can point at it
                 # before the neighbour itself is processed.
                 if neighbour not in copies:
                     copies[neighbour] = Node(neighbour.val)
                     queue.append(neighbour)
                 # Every edge is added from its source side, so each is copied exactly once.
-                copies[current].neighbors.append(copies[neighbour])
+                copies[curr].neighbors.append(copies[neighbour])
         return copies[node]

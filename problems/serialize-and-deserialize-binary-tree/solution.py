@@ -18,18 +18,18 @@ class Codec:
         # Pre-order (node, left, right) with "#" for null. Recording the nulls is what
         # makes the shape unambiguous from one traversal. Iterative to avoid deep
         # recursion; push right first so left is popped (visited) first.
-        out = []
+        result = []
         stack = [root]
         while stack:
             node = stack.pop()
             if node is None:
-                out.append("#")
+                result.append("#")
             else:
-                out.append(str(node.val))
+                result.append(str(node.val))
                 stack.append(node.right)
                 stack.append(node.left)
         # Commas delimit tokens so multi-digit and negative values stay intact.
-        return ",".join(out)
+        return ",".join(result)
 
     def deserialize(self, data):
         """Decodes your encoded data to tree."""

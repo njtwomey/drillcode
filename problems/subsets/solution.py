@@ -20,18 +20,18 @@ class Solution:
     # Alternative: include/exclude DFS, same time, O(n) recursion depth.
     def subsetsDfs(self, nums: List[int]) -> List[List[int]]:
         result = []
-        current = []
+        path = []
 
         def dfs(i):
-            # Every element has been decided: current is one finished subset.
+            # Every element has been decided: path is one finished subset.
             # Copy it, since backtracking keeps mutating the list.
             if i == len(nums):
-                result.append(current[:])
+                result.append(path[:])
                 return
             dfs(i + 1)  # branch 1: skip nums[i]
-            current.append(nums[i])
+            path.append(nums[i])
             dfs(i + 1)  # branch 2: take nums[i]
-            current.pop()  # backtrack so the caller sees current unchanged
+            path.pop()  # backtrack so the caller sees path unchanged
 
         dfs(0)
         return result

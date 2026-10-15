@@ -17,10 +17,10 @@ class Solution:
         prev = None
         curr = head
         while curr:
-            next_node = curr.next  # save it, or re-pointing below loses the rest
+            nxt = curr.next  # save it, or re-pointing below loses the rest
             curr.next = prev
             # Advance both pointers one step. When curr runs off the end, prev is the
             # old tail, i.e. the new head.
             prev = curr
-            curr = next_node
+            curr = nxt
         return prev

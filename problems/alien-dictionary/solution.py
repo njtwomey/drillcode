@@ -35,14 +35,14 @@ class Solution:
         # Phase 2: Kahn's topological sort. Letters with indegree 0 have nothing that
         # must precede them, so they are safe to emit now.
         queue = deque(c for c in indegree if indegree[c] == 0)
-        order = []
+        result = []
         while queue:
             c = queue.popleft()
-            order.append(c)
+            result.append(c)
             for nxt in edges[c]:
                 indegree[nxt] -= 1
                 if indegree[nxt] == 0:
                     queue.append(nxt)
         # If a cycle exists, its letters never reach indegree 0 and are never emitted,
         # so a short result means the rules contradict each other.
-        return "".join(order) if len(order) == len(edges) else ""
+        return "".join(result) if len(result) == len(edges) else ""

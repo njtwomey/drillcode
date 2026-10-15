@@ -17,7 +17,7 @@ class Solution:
         # Guard: deque([None]) would crash on node.val.
         if root is None:
             return []
-        levels = []
+        result = []
         # BFS queue holds the nodes of the current level, then the next one.
         queue = deque([root])
         while queue:
@@ -31,5 +31,5 @@ class Solution:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
-            levels.append(level)
-        return levels
+            result.append(level)
+        return result

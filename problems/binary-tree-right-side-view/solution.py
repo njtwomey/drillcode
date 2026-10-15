@@ -15,7 +15,7 @@ class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         if root is None:
             return []
-        view = []
+        result = []
         # Level-order BFS; the last node of each level is the one visible from the right.
         queue = deque([root])
         while queue:
@@ -24,26 +24,26 @@ class Solution:
                 node = queue.popleft()
                 # Last in this level = rightmost.
                 if i == size - 1:
-                    view.append(node.val)
+                    result.append(node.val)
                 if node.left:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
-        return view
+        return result
 
     # DFS alternative: visit right before left, keep the first node seen at each depth.
     def rightSideViewDFS(self, root: Optional[TreeNode]) -> List[int]:
-        view = []
+        result = []
 
         # Right-first order means the first node reaching a new depth is the rightmost.
         def dfs(node, depth):
             if node is None:
                 return
-            # view has one entry per depth seen so far; equal length means a new depth.
-            if depth == len(view):
-                view.append(node.val)
+            # result has one entry per depth seen so far; equal length means a new depth.
+            if depth == len(result):
+                result.append(node.val)
             dfs(node.right, depth + 1)
             dfs(node.left, depth + 1)
 
         dfs(root, 0)
-        return view
+        return result
