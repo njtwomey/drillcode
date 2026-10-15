@@ -93,7 +93,7 @@ Comparators (`compare`): `exact` (default); `unordered` (sort the outer list onl
 
 ## Decisions the original brief left open
 
-- The add-problem skill's step 7 says `uv run python ...` rather than the brief's bare `python ...`, to follow the always-uv rule. Step 6 also asks for `description.md` and a `sync_headers.py` run, which the original brief did not have.
+- The add-problem skill has grown past the original brief's wording and is kept in step with this file: commands use `uv run python`; step 6 also writes `description.md`, generates `skeleton.py` and the `solution.py` docstring (`gen_skeletons.py`, `sync_headers.py`) and asks for teaching comments and the shared variable names; step 7 adds the problem to `techniques/`; step 8 also runs `check_techniques.py`, `sync_headers.py --check` and `verify_links.py` (plain HEAD requests to LeetCode get 403, so the GraphQL check replaces "verify the URL resolves"). When a convention changes, update the skill too.
 - uv with a `pyproject.toml` (PyYAML for scripts only) instead of bare Python; PyYAML is not standard library, so the CLI scripts use it while the harness stays pure standard library and receives already-parsed specs.
 - Extra harness features beyond the brief's list: `linked_list_array`, `linked_list_cycle:<arg>`, result converter `node_val`, `call: false`, a validator that receives raw results plus converted args, an optional `entry` for operations problems (needed for skeleton generation and the catalogue check), and the worker/CLI message carrying `validatorSource`.
 - LeetCode links are verified through the GraphQL endpoint (`scripts/verify_links.py`), because plain HEAD requests get 403 from bot protection even for non-existent slugs. The same check also confirms number and premium flag.
