@@ -1,7 +1,9 @@
 import { Plus, Trash2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { skeletonSource } from '@/lib/catalogue'
@@ -12,15 +14,19 @@ import type { TestCase, TestsSpec } from '@/lib/types'
 const NONE: TestCase[] = []
 const show = (v: unknown) => JSON.stringify(v)
 
-/** `{ nums: 'List[int]', target: 'int' }` read from the skeleton's method signature. */
-function parameterTypes(slug: string): Record<string, string> {
-  const header = skeletonSource(slug).match(/def \w+\(self,?([\s\S]*?)\)\s*(?:->[^:]*)?:/)
+/** `{ nums: 'List[int]', target: 'int' }` read from the skeleton's method signature, plus the return type under `->`. */
+function parameterTypes(slug: string, entry: string): Record<string, string> {
+  // Ignore comment lines (the commented node definitions contain a `def __init__`) and match the entry method by name.
+  const code = skeletonSource(slug).split('\n').filter((line) => !line.trimStart().startsWith('#')).join('\n')
+  const method = entry.includes('.') ? entry.split('.')[1] : '\\w+'
+  const header = code.match(new RegExp(`def ${method}\\(self,?([\\s\\S]*?)\\)\\s*(?:->\\s*([^:]*))?:`))
   if (!header) return {}
   const types: Record<string, string> = {}
   for (const param of splitTopLevel(header[1], ',')) {
     const [name, type] = param.split(/:(.*)/s).map((x) => x?.trim())
     if (name && type) types[name] = type.replace(/^'|'$/g, '')
   }
+  if (header[2]) types['->'] = header[2].trim().replace(/^'|'$/g, '')
   return types
 }
 
@@ -29,13 +35,14 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
   const cases = useStore((s) => s.customCases[slug]) ?? NONE
   const { addCustomCase, removeCustomCase } = useStore()
   const names = useMemo(() => inputNames(spec), [spec])
-  const types = useMemo(() => parameterTypes(slug), [slug])
+  const types = useMemo(() => parameterTypes(slug, spec.entry), [slug, spec.entry])
   const isOps = spec.kind === 'operations'
   const example = spec.cases[0]
 
   const [values, setValues] = useState<Record<string, string>>({})
   const [calls, setCalls] = useState('')
   const [expected, setExpected] = useState('')
+  const [expectedOpen, setExpectedOpen] = useState(false)
 
   const inPlace = spec.compare?.startsWith('in_place:') ? spec.compare.split(':')[1] : null
 
@@ -116,26 +123,47 @@ export function CustomCases({ slug, spec, allowReference }: { slug: string; spec
             </div>
           ))
         )}
-        <div className="space-y-1">
-          <Label htmlFor="cc-expected" className="gap-1.5 text-xs">
-            <span className="font-mono font-medium">expected</span>
-            <span className="font-normal text-muted-foreground">
-              {isOps ? 'one result per call, null for no result' : inPlace ? `the final ${inPlace}` : 'the return value'}
-              {allowReference ? ' · leave blank to use the reference solution’s answer' : ''}
-            </span>
-          </Label>
-          <Input
-            id="cc-expected"
-            className={`font-mono text-xs ${expectedParsed?.error ? 'border-destructive' : ''}`}
-            spellCheck={false}
-            value={expected}
-            onChange={(e) => setExpected(e.target.value)}
-            onKeyDown={onEnter}
-            placeholder={allowReference ? 'blank: the reference solution decides' : show(example.expected)}
-          />
-          {expectedParsed?.error && <p className="text-xs text-destructive">Not a valid value. Use JSON, e.g. {show(example.expected)}</p>}
-          {!allowReference && blankExpected && <p className="text-xs text-muted-foreground">Fill this in: the answer is not looked up for this problem.</p>}
-        </div>
+        {(() => {
+          // The type of the expected value: the return type, the in-place argument, or a list for design problems.
+          const type = isOps ? 'list' : inPlace ? types[inPlace] : types['->']
+          const field = (
+            <div className="space-y-1">
+              <Input
+                id="cc-expected"
+                className={`font-mono text-xs ${expectedParsed?.error ? 'border-destructive' : ''}`}
+                spellCheck={false}
+                value={expected}
+                onChange={(e) => setExpected(e.target.value)}
+                onKeyDown={onEnter}
+                placeholder={show(example.expected)}
+                aria-label="expected"
+              />
+              {expectedParsed?.error && <p className="text-xs text-destructive">Not a valid value. Use JSON, e.g. {show(example.expected)}</p>}
+            </div>
+          )
+          const typeText = type && <span className="font-mono font-normal text-muted-foreground">{type}</span>
+          if (!allowReference) {
+            // Required here (practice, or the answer is not the return value): always visible.
+            return (
+              <div className="space-y-1">
+                <Label htmlFor="cc-expected" className="gap-1.5 text-xs"><span className="font-mono font-medium">expected</span>{typeText}</Label>
+                {field}
+              </div>
+            )
+          }
+          return (
+            <Collapsible open={expectedOpen} onOpenChange={setExpectedOpen} className="space-y-1">
+              <CollapsibleTrigger className="flex items-center gap-1.5 text-xs">
+                {expectedOpen ? <ChevronDown className="size-3.5" /> : <ChevronRight className="size-3.5" />}
+                <span className="font-mono font-medium">expected</span>
+                {typeText}
+                <span className="font-normal text-muted-foreground">optional</span>
+                {!expectedOpen && expected.trim() && <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">set</Badge>}
+              </CollapsibleTrigger>
+              <CollapsibleContent>{field}</CollapsibleContent>
+            </Collapsible>
+          )
+        })()}
       </div>
       <Button size="sm" onClick={add} disabled={!ready}>
         <Plus /> Add case
