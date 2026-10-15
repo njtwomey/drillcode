@@ -50,11 +50,11 @@ export function pythonToJson(text: string): string {
   return out
 }
 
-function parseJson(text: string, what: string): { value?: unknown; error?: string } {
+function parseJson(text: string, what: string, shown = text): { value?: unknown; error?: string } {
   try {
     return { value: JSON.parse(pythonToJson(text)) }
   } catch {
-    return { error: `Could not read ${what}: ${text.trim() || '(empty)'}` }
+    return { error: `Could not read ${what}: ${shown.trim() || '(empty)'}` }
   }
 }
 
@@ -107,7 +107,7 @@ export function parseCaseLine(spec: TestsSpec, text: string): { case?: Omit<Test
     for (const call of splitTopLevel(left, ';')) {
       const m = call.trim().match(/^([A-Za-z_]\w*)\s*\(([\s\S]*)\)$/)
       if (!m) return { error: `Could not read the call “${call.trim()}”. Use name(arg, arg).` }
-      const args = parseJson(`[${m[2]}]`, `the arguments of ${m[1]}`)
+      const args = parseJson(`[${m[2]}]`, `the arguments of ${m[1]}`, m[2])
       if (args.error) return { error: args.error }
       ops.push([m[1], args.value as unknown[]])
     }
@@ -118,7 +118,7 @@ export function parseCaseLine(spec: TestsSpec, text: string): { case?: Omit<Test
     return { case: { ops, expected: expected.value, custom: true } }
   }
 
-  const values = parseJson(`[${left}]`, 'the input values')
+  const values = parseJson(`[${left}]`, 'the input values', left)
   if (values.error) return { error: values.error }
   const names = inputNames(spec)
   const list = values.value as unknown[]
