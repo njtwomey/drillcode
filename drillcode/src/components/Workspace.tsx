@@ -8,7 +8,7 @@ import { TestsPanel } from '@/components/TestsPanel'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { testsSpec, validatorSource } from '@/lib/catalogue'
+import { solutionVariants, testsSpec, validatorSource } from '@/lib/catalogue'
 import { useStore } from '@/lib/store'
 import type { CaseResult, TestCase } from '@/lib/types'
 import { useIsWide } from '@/lib/useIsWide'
@@ -83,7 +83,9 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
       subset.forEach((c) => delete next[c.name])
       return next
     })
-    const job = { solutionSource: source, validatorSource: validatorSource(slug), spec }
+    // Practice never gets the reference solution's answers: a blank expected value stays blank there.
+    const referenceSource = practice ? undefined : solutionVariants(slug)[0].source
+    const job = { solutionSource: source, validatorSource: validatorSource(slug), referenceSource, spec }
     const out = await pyRunner.runCases(job, subset, (partial) =>
       setResults((prev) => ({ ...prev, ...Object.fromEntries(partial.map((r) => [r.name, r])) })),
     )
@@ -180,7 +182,7 @@ export function Workspace({ slug, draftKey, originalSource, left, toolbar, pract
         />
       </section>
       <section className="rounded-md border p-3">
-        <CustomCases slug={slug} spec={spec} />
+        <CustomCases slug={slug} spec={spec} allowReference={!practice && spec.call !== false} />
       </section>
     </div>
   )

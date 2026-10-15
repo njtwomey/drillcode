@@ -6,6 +6,8 @@ export const CASE_TIMEOUT_MS = 5000
 interface Job {
   solutionSource: string
   validatorSource?: string
+  /** The reference solution, used to fill in expected values left blank. */
+  referenceSource?: string
   spec: TestsSpec
 }
 
@@ -86,6 +88,7 @@ class PyRunner {
         id,
         solutionSource: job.solutionSource,
         validatorSource: job.validatorSource,
+        referenceSource: job.referenceSource,
         testsSpec: job.spec,
         case: testCase,
       })

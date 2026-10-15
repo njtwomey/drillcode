@@ -113,7 +113,10 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                     <div className="break-all font-mono text-xs text-muted-foreground">{formatCase(spec, c)}</div>
                     {r?.status === 'fail' && (
                       <div className="grid gap-2 rounded-md bg-muted/50 p-2 font-mono text-xs sm:grid-cols-2">
-                        <div className="break-all"><span className="text-muted-foreground">expected </span>{show(r.expected)}</div>
+                        <div className="break-all">
+                          <span className="text-muted-foreground">expected </span>{show(r.expected)}
+                          {r.expected_source === 'reference' && <span className="ml-1 font-sans text-muted-foreground">(from the reference solution)</span>}
+                        </div>
                         <div className="break-all"><span className="text-muted-foreground">got </span>{show(r.actual)}</div>
                         {r.message && r.message !== 'Output does not match expected' && (
                           <div className="break-all text-muted-foreground sm:col-span-2">{r.message}</div>
@@ -124,6 +127,9 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                       <pre className="max-h-48 overflow-auto rounded-md bg-muted/50 p-2 text-xs whitespace-pre-wrap">{r.message}</pre>
                     )}
                     {!r && <p className="text-xs text-muted-foreground">Not run yet.</p>}
+                    {r?.status === 'pass' && r.expected_source === 'reference' && (
+                      <p className="break-all text-xs text-muted-foreground">Matched the reference solution’s answer: <span className="font-mono">{show(r.expected)}</span></p>
+                    )}
                     {r?.status === 'pass' && !hasOutput(r) && <p className="text-xs text-muted-foreground">Passed. Nothing was printed.</p>}
                     {hasOutput(r) && (
                       <Collapsible>

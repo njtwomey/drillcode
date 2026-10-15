@@ -186,8 +186,11 @@ def needed_inputs(spec):
     return names
 
 
-def run_case(solution_source, spec, case, validator_source=None):
-    """Run one case and return a plain dict. Never raises (except SystemExit/KeyboardInterrupt)."""
+def run_case(solution_source, spec, case, validator_source=None, reference_source=None):
+    """Run one case and return a plain dict. Never raises (except SystemExit/KeyboardInterrupt).
+
+    If the case has no `expected` key and `reference_source` is given, the expected value is what the
+    reference solution returns for the same input."""
     out, err = io.StringIO(), io.StringIO()
     result = {
         "name": case.get("name", ""),
@@ -198,9 +201,12 @@ def run_case(solution_source, spec, case, validator_source=None):
         "message": "",
         "stdout": "",
         "stderr": "",
+        "expected_source": None,
     }
     try:
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            if "expected" not in case and reference_source is not None:
+                case, result["expected"], result["expected_source"] = _derive_expected(spec, case, reference_source)
             namespace = build_namespace(spec)
             # Register the source so tracebacks can show the offending line of the reader's code.
             linecache.cache[USER_FILE] = (len(solution_source), None, solution_source.splitlines(True), USER_FILE)
@@ -230,9 +236,24 @@ def run_case(solution_source, spec, case, validator_source=None):
     return result
 
 
-def run_case_json(solution_source, spec_json, case_json, validator_source=None):
+def _derive_expected(spec, case, reference_source):
+    """Run the reference solution on the case's input and use its answer as the expected value."""
+    ref_spec = dict(spec, call=True)
+    if str(spec.get("compare", "")) == "validator":
+        ref_spec["compare"] = "exact"  # we only want its output, not a verdict
+    placeholder = [] if spec.get("kind") == "operations" else None
+    ref = run_case(reference_source, ref_spec, dict(case, expected=placeholder))
+    if ref["status"] in ("error", "timeout"):
+        raise CaseError(
+            "No expected value was given, and the reference solution could not answer this input"
+            " (check it is valid for the problem, or fill in the expected value yourself).\n" + ref["message"]
+        )
+    return dict(case, expected=ref["actual"]), ref["actual"], "reference"
+
+
+def run_case_json(solution_source, spec_json, case_json, validator_source=None, reference_source=None):
     """String-in, string-out wrapper for the Pyodide worker."""
-    result = run_case(solution_source, json.loads(spec_json), json.loads(case_json), validator_source)
+    result = run_case(solution_source, json.loads(spec_json), json.loads(case_json), validator_source, reference_source)
     return json.dumps(result)
 
 
@@ -375,7 +396,9 @@ def _run_operations(namespace, spec, case, result):
     expected = to_json(case.get("expected"))
     ok = _compare(mode, actual, expected)
     result["status"] = "pass" if ok else "fail"
-    if not ok:
+    if not ok and not isinstance(expected, list):
+        result["message"] = "The expected value for a design problem must be a list with one result per call."
+    elif not ok:
         for i, (a, e) in enumerate(zip(actual, expected)):
             if not _compare(mode, a, e):
                 result["message"] = f"First difference at op {i} ({ops[i][0]}): expected {e!r}, got {a!r}"

@@ -21,7 +21,8 @@ export interface TestCase {
   name: string
   input?: Record<string, unknown>
   ops?: [string, unknown[]][]
-  expected: unknown
+  /** Absent on a case you added with the expected value left blank: the reference solution supplies it. */
+  expected?: unknown
   custom?: boolean
 }
 
@@ -49,6 +50,8 @@ export interface CaseResult {
   message: string
   stdout: string
   stderr: string
+  /** 'reference' when the expected value came from the reference solution. */
+  expected_source?: 'reference' | null
   custom?: boolean
 }
 

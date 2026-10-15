@@ -35,6 +35,8 @@ export interface PracticeOutcome {
 
 export interface PracticeSession {
   slugs: string[]
+  /** Time-based seed the problems were shuffled with. */
+  seed?: number
   index: number
   startedAt: number
   problemStartedAt: number
@@ -83,7 +85,7 @@ interface State {
   removeCustomCase: (slug: string, name: string) => void
   setTheme: (theme: Theme) => void
   setPracticeConfig: (patch: Partial<PracticeConfig>) => void
-  startPractice: (slugs: string[]) => void
+  startPractice: (slugs: string[], seed?: number) => void
   practiceAttempt: (slug: string, passed: boolean) => void
   practiceAdvance: (skip: boolean) => void
   finishPractice: () => void
@@ -156,7 +158,7 @@ export const useStore = create<State>()(
         })),
       setTheme: (theme) => set({ theme }),
       setPracticeConfig: (patch) => set((s) => ({ practiceConfig: { ...s.practiceConfig, ...patch } })),
-      startPractice: (slugs) =>
+      startPractice: (slugs, seed) =>
         set((s) => {
           const drafts = { ...s.drafts }
           for (const slug of slugs) delete drafts[practiceDraftKey(slug)]
@@ -164,7 +166,7 @@ export const useStore = create<State>()(
           return {
             drafts,
             practice: {
-              slugs, index: 0, startedAt: now, problemStartedAt: now, finished: false,
+              slugs, seed, index: 0, startedAt: now, problemStartedAt: now, finished: false,
               outcomes: Object.fromEntries(slugs.map((slug) => [slug, { status: 'pending', attempts: 0, seconds: 0 }])),
             },
           }

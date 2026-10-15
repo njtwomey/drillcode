@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { problems, TOPICS } from '@/lib/catalogue'
 import { matchesFilter } from '@/lib/filter'
+import { seededShuffle, timeSeed } from '@/lib/random'
 import { useStore } from '@/lib/store'
 
 export function Practice() {
@@ -25,12 +26,9 @@ export function Practice() {
   const count = Math.min(config.count, pool.length)
 
   function start() {
-    const slugs = [...pool]
-    for (let i = slugs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[slugs[i], slugs[j]] = [slugs[j], slugs[i]]
-    }
-    startPractice(slugs.slice(0, count).map((p) => p.slug))
+    // Seeded from the current time; the seed is kept with the session so its order can be reproduced.
+    const seed = timeSeed()
+    startPractice(seededShuffle(pool, seed).slice(0, count).map((p) => p.slug), seed)
     navigate('/practice/session')
   }
 

@@ -25,7 +25,7 @@ function parameterTypes(slug: string): Record<string, string> {
 }
 
 /** Function problems: one labelled field per argument, then the expected result. Design problems: calls and results. */
-export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
+export function CustomCases({ slug, spec, allowReference }: { slug: string; spec: TestsSpec; allowReference: boolean }) {
   const cases = useStore((s) => s.customCases[slug]) ?? NONE
   const { addCustomCase, removeCustomCase } = useStore()
   const names = useMemo(() => inputNames(spec), [spec])
@@ -45,11 +45,16 @@ export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
     return { name, text, parsed: text.trim() ? parseJson(`[${text}]`, name, text) : null }
   })
   const expectedParsed = expected.trim() ? parseJson(expected, 'the expected result') : null
-  const opsParsed = isOps && calls.trim() ? parseCaseLine(spec, `${calls} → ${expected.trim() || 'null'}`) : null
+  // Blank expected on a design problem: parse the calls against placeholder nulls, then drop them.
+  const blankExpected = !expected.trim()
+  const placeholder = JSON.stringify(Array(splitTopLevel(calls, ';').length).fill(null))
+  const opsParsed = isOps && calls.trim() ? parseCaseLine(spec, `${calls} → ${blankExpected ? placeholder : expected.trim()}`) : null
 
+  // A blank expected value is fine when the reference solution can supply it.
+  const expectedOk = blankExpected ? allowReference : !!expectedParsed && !expectedParsed.error
   const ready = isOps
-    ? !!opsParsed?.case && !!expected.trim()
-    : fields.every((f) => f.parsed && !f.parsed.error) && !!expectedParsed && !expectedParsed.error
+    ? !!opsParsed?.case && expectedOk
+    : fields.every((f) => f.parsed && !f.parsed.error) && expectedOk
 
   function add() {
     if (!ready) return
@@ -58,11 +63,13 @@ export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
     while (used.has(`my case ${n}`)) n++
     const name = `my case ${n}`
     if (isOps) {
-      addCustomCase(slug, { name, ...opsParsed!.case! })
+      const parsedCase = { ...opsParsed!.case! }
+      if (blankExpected) delete parsedCase.expected
+      addCustomCase(slug, { name, ...parsedCase })
       setCalls('')
     } else {
       const input = Object.fromEntries(fields.map((f) => [f.name, (f.parsed!.value as unknown[])[0]]))
-      addCustomCase(slug, { name, input, expected: expectedParsed!.value, custom: true })
+      addCustomCase(slug, { name, input, ...(blankExpected ? {} : { expected: expectedParsed!.value }), custom: true })
       setValues({})
     }
     setExpected('')
@@ -114,6 +121,7 @@ export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
             <span className="font-mono font-medium">expected</span>
             <span className="font-normal text-muted-foreground">
               {isOps ? 'one result per call, null for no result' : inPlace ? `the final ${inPlace}` : 'the return value'}
+              {allowReference ? ' · leave blank to use the reference solution’s answer' : ''}
             </span>
           </Label>
           <Input
@@ -123,9 +131,10 @@ export function CustomCases({ slug, spec }: { slug: string; spec: TestsSpec }) {
             value={expected}
             onChange={(e) => setExpected(e.target.value)}
             onKeyDown={onEnter}
-            placeholder={show(example.expected)}
+            placeholder={allowReference ? 'blank: the reference solution decides' : show(example.expected)}
           />
           {expectedParsed?.error && <p className="text-xs text-destructive">Not a valid value. Use JSON, e.g. {show(example.expected)}</p>}
+          {!allowReference && blankExpected && <p className="text-xs text-muted-foreground">Fill this in: the answer is not looked up for this problem.</p>}
         </div>
       </div>
       <Button size="sm" onClick={add} disabled={!ready}>

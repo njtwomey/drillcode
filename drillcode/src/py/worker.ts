@@ -25,13 +25,14 @@ self.onmessage = async (event: MessageEvent) => {
       self.postMessage({ type: 'init-error', message: String(error) })
     }
   } else if (msg.type === 'run-case') {
-    const { solutionSource, validatorSource, testsSpec, case: testCase, id } = msg
+    const { solutionSource, validatorSource, referenceSource, testsSpec, case: testCase, id } = msg
     try {
       const json = runCaseJson!(
         solutionSource,
         JSON.stringify(testsSpec),
         JSON.stringify(testCase),
         validatorSource ?? null,
+        referenceSource ?? null,
       )
       self.postMessage({ type: 'result', id, result: JSON.parse(json) })
     } catch (error) {

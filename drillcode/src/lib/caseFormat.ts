@@ -14,15 +14,16 @@ export function inputNames(spec: TestsSpec): string[] {
 }
 
 const show = (v: unknown) => JSON.stringify(v)
+const showExpected = (c: TestCase) => (c.expected === undefined ? '(reference solution)' : show(c.expected))
 
 /** One readable line: `[2,7,11,15], 9 → [0,1]` or `LRUCache(2); put(1, 1); get(1) → [null,null,1]`. */
 export function formatCase(spec: TestsSpec, c: TestCase): string {
   if (spec.kind === 'operations') {
     const calls = (c.ops ?? []).map(([name, args]) => `${name}(${args.map(show).join(', ')})`)
-    return `${calls.join('; ')} → ${show(c.expected)}`
+    return `${calls.join('; ')} → ${showExpected(c)}`
   }
   const values = inputNames(spec).map((n) => show(c.input?.[n]))
-  return `${values.join(', ')} → ${show(c.expected)}`
+  return `${values.join(', ')} → ${showExpected(c)}`
 }
 
 /** Python-ish literals to JSON: True/False/None, single-quoted strings, trailing commas left alone. */
