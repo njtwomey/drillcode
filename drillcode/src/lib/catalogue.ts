@@ -82,6 +82,22 @@ export function skeletonSource(slug: string) {
 export function descriptionSource(slug: string): string | undefined {
   return file(slug, 'description.md')
 }
+// Walkthroughs are long and only the Read page and the modal use them, so they load on demand
+// (a separate chunk each) instead of weighing down the main bundle.
+const walkthroughLoaders = import.meta.glob('../../../problems/*/walkthrough.md', {
+  query: '?raw',
+  import: 'default',
+}) as Record<string, () => Promise<string>>
+
+const walkthroughPath = (slug: string) => `../../../problems/${slug}/walkthrough.md`
+
+export function hasWalkthrough(slug: string): boolean {
+  return walkthroughPath(slug) in walkthroughLoaders
+}
+
+export async function loadWalkthrough(slug: string): Promise<string | undefined> {
+  return walkthroughLoaders[walkthroughPath(slug)]?.()
+}
 export function validatorSource(slug: string) {
   return file(slug, 'validator.py')
 }

@@ -120,7 +120,7 @@ function Summary() {
         <TableBody>
           {outcomes.map((o) => (
             <TableRow key={o.slug}>
-              <TableCell><Link className="hover:underline" to={`/p/${o.slug}`}>{bySlug.get(o.slug)!.title}</Link></TableCell>
+              <TableCell><Link className="hover:underline" to={`/p/${o.slug}/view`}>{bySlug.get(o.slug)!.title}</Link></TableCell>
               <TableCell>{o.status === 'passed' ? 'Solved' : o.status === 'skipped' ? 'Skipped' : 'Not finished'}</TableCell>
               <TableCell>{o.attempts}</TableCell>
               <TableCell>{o.status === 'passed' ? formatDuration(o.seconds) : '–'}</TableCell>

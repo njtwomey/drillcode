@@ -40,7 +40,7 @@ export function TipPage() {
             if (!problem) return null
             return (
               <li key={p}>
-                <Link to={`/p/${p}`} className="flex items-center gap-3 px-3 py-2 hover:bg-muted/50">
+                <Link to={`/p/${p}/view`} className="flex items-center gap-3 px-3 py-2 hover:bg-muted/50">
                   <span className="w-10 text-muted-foreground tabular-nums">{problem.number}</span>
                   <span className="flex-1 font-medium">{problem.title}</span>
                   <DifficultyBadge difficulty={problem.difficulty} />

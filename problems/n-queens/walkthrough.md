@@ -33,7 +33,7 @@ Following the search for `n = 4`, starting with column 0 in row 0:
   row 1: c0 same column, c1 diag 0 clash, c2 ok -> (1,2)
     row 2: c0 col, c1 anti 3 clash, c2 col, c3 diag -1 clash   DEAD END
   undo (1,2), try c3 -> (1,3)
-    row 2: c1 ok -> (2,1)
+    row 2: c0 col, c1 ok -> (2,1)
       row 3: c0 col, c1 col, c2 diag 1 clash, c3 col           DEAD END
     undo (2,1), c2 diag 0 clash, c3 col                        DEAD END
   row 1 exhausted -> undo (0,0)

@@ -31,7 +31,7 @@ TOPICS = [
     "Trie",
     "Two pointers",
 ]
-REQUIRED_FILES = ["solution.py", "skeleton.py", "tests.yaml", "description.md"]
+REQUIRED_FILES = ["solution.py", "skeleton.py", "tests.yaml", "description.md", "walkthrough.md"]
 
 # The harness imports the scaffolds as flat top-level modules.
 sys.path.insert(0, str(PROBLEMS / "_scaffolds"))

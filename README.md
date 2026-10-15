@@ -30,7 +30,7 @@ All Python goes through `uv` (`uv run python scripts/run_tests.py [slug ...]`).
 2. In the repository settings, set Pages -> Source to **GitHub Actions**.
 3. Push to `main`. `.github/workflows/deploy.yml` checks the catalogue, runs the tests, builds `drillcode/dist` and deploys it.
 
-The build uses a relative base path and hash routes (`/#/p/two-sum`), so it works at `https://<user>.github.io/<repo>/` without further configuration. Run `make build && make preview` to try the production build locally.
+The app uses real URLs (`/p/two-sum/read`). The workflow builds with `BASE_PATH=/<repo name>/` and the build copies `index.html` to `404.html`, so deep links work at `https://<user>.github.io/<repo>/`. Run `make build && make preview` to try the production build locally (base path `/`).
 
 ## Adding a problem
 

@@ -8,6 +8,7 @@ problems:
   - palindrome-linked-list
   - reverse-linked-list-ii
   - reverse-nodes-in-k-group
+  - rotate-array
 related: [fast-slow-pointers, dummy-head]
 ---
 
@@ -74,6 +75,7 @@ The extra memory of copying values into an array or building a new list. Each no
 - Pull to the front: `reverse-linked-list-ii` does not flip links one at a time. `before` is the node ahead of position `left` and `curr = before.next` is the segment's first node, which never moves. Each of `right - left` rounds takes `nxt = curr.next`, unlinks it, and inserts it at `before.next`. `curr` ends as the segment tail, already linked to the rest. A dummy covers `left == 1`.
 - Reverse in groups: `reverse-nodes-in-k-group` first walks `kth` forward `k` nodes from `group_prev` and returns if the list ends first, so a short remainder stays in order. It then runs the template loop with `prev` started at `group_next`, the first node of the following group, instead of `None`. The old group head is then already linked onward. `group_prev.next` is set to the new head, and `group_prev` moves to the old head, the group's tail.
 - Recursive: `reverse-linked-list` also has `solution_recursive.py`. Reverse `head.next`, then set `head.next.next = head` and `head.next = None`. It uses O(n) stack space.
+- Array rotation by three reversals: `rotate-array` takes `k %= n`, then calls a local `reverse(lo, hi)` on `(0, n - 1)`, `(0, k - 1)` and `(k, n - 1)`. The first call puts the last `k` elements at the front but backwards, and the other two restore each block. `reverse` swaps from both ends inward (see `opposite-ends`) with no `prev`, `curr` or `nxt`, since an array needs no link surgery. Without `k %= n`, `k > n` would index past the end of `nums`. With `k = 0`, `reverse(0, -1)` does nothing.
 
 ## Worked example
 

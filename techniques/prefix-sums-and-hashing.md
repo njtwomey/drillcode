@@ -8,6 +8,7 @@ problems:
   - contiguous-array
   - subarray-sums-divisible-by-k
   - car-pooling
+  - random-pick-with-weight
 related: [prefix-and-suffix-passes, seen-before-insert, sliding-window, index-as-hash]
 ---
 
@@ -70,6 +71,7 @@ The O(n^2) loop over every start and end, and the failure of the sliding window 
 - Divisible by k: `subarray-sums-divisible-by-k` keeps `prefix = (prefix + num) % k` and counts how many earlier prefixes have the same remainder, since equal remainders mean the stretch between is a multiple of `k`. `count_of` is seeded with `{0: 1}`. It relies on Python giving a result in `[0, k)` for negative numbers. The map has at most `k` keys.
 - Range updates, then one read: `car-pooling` builds a difference array `change` over stops. Each trip adds `passengers` at `start` and subtracts them at `to`. A running `load` over `change` is the number of passengers in the car after each stop, and it must never exceed `capacity`. This is the inverse of a prefix sum.
 - Tree version: `path-sum-iii` is the same idea on a tree. The map counts the prefix sums on the current root path, is seeded with `{0: 1}`, and the entry is decremented when the call returns so sibling subtrees do not see each other. It is listed under the tree techniques, not here.
+- Weights to ranges: `random-pick-with-weight` stores `self.prefix = list(accumulate(w))` and `self.total = self.prefix[-1]`. Index `i` owns the integer targets in `(prefix[i-1], prefix[i]]`, a block of size `w[i]`. A uniform `target = random.randint(1, self.total)` then lands in block `i` with probability `w[i] / total`. No hash map; the prefix array is searched with `bisect_left`, as in `binary-search-shapes`.
 
 ## Worked example
 

@@ -6,6 +6,7 @@ problems:
   - move-zeroes
   - remove-duplicates-from-sorted-array
   - sort-colors
+  - longest-common-prefix
 related: [opposite-ends, seen-before-insert]
 ---
 ## Reach for it when
@@ -46,6 +47,8 @@ It removes the second array. Instead of building a filtered copy and copying it 
 - Two-pointer partition (`move-zeroes`): the template. The solution swaps rather than copies, so zeros drift to the back and one pass suffices.
 - Copy-forward on sorted input (`remove-duplicates-from-sorted-array`): `write = 1` is the length of the unique prefix. A value is kept when `nums[read] != nums[write - 1]`, because sorted order makes any difference from the last kept value a new value. It is copied, not swapped, since the tail beyond `write` is ignored. Return `write`.
 - Three-way partition (`sort-colors`): the Dutch national flag. The solution names the pointers `lo`, `mid`, `hi`. A 0 swaps with `lo`, and both `lo` and `mid` advance. A 1 advances `mid`. A 2 swaps with `hi` and only `hi` moves.
+- Column scan, not a filter (`longest-common-prefix`): a vertical scan over `first = strs[0]`. For each index `i` and character `c`, every `s` in `strs` is checked with `i == len(s) or s[i] != c`. The length test comes first so a short string stops the scan before indexing. On the first failure it returns `first[:i]`. If no column fails, `first` itself is the answer. Listed here as the nearest pointer-over-array page. The shared idea is one index advanced in lockstep over several sequences, stopping at the first disagreement.
+- Merge into the free tail: see `opposite-ends` for `merge-sorted-array`, where the write index `k` starts at the end so nothing unread is overwritten.
 
 ## Worked example
 Problem: `sort-colors`

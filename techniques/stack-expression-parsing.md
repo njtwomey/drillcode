@@ -6,6 +6,7 @@ problems:
   - evaluate-reverse-polish-notation
   - basic-calculator-ii
   - decode-string
+  - basic-calculator
 related: [stack-matching, monotonic-stack]
 ---
 ## Reach for it when
@@ -59,11 +60,14 @@ It removes building a parse tree and handling precedence by cases. Terms are sig
 - Spaces: skip them with `continue` before the operator branch, or a space triggers an operator step.
 - Single-digit parsing: `"12"` read as two numbers. Multi-digit counts like `100[a]` need `num * 10`.
 - In `decode-string`, pushing `curr` but not `num`, or not resetting both after `[`. The frame must hold both, and `curr, num = "", 0` starts the inner level clean.
+- In `basic-calculator`, forgetting to commit `sign * num` before parking state on `(` or after a `)`. The number just before `)` is still pending and is lost. Also forgetting the final `result + sign * num` after the loop.
+- In the same problem, popping in the wrong order on `)`. The solution pushes `result` then `sign`, so the first pop is the sign (multiply) and the second is the outer total (add).
 - Reading `stack[0]` of an RPN stack after a bad expression: a valid one leaves exactly one value.
 
 ## Variants
 - Postfix (`evaluate-reverse-polish-notation`): no precedence and no `op`. Push numbers. On an operator, pop `b` then `a` and push the result, using `int(a / b)` to truncate toward zero. Listed also on `stack-matching`.
 - Calculator with precedence (`basic-calculator-ii`): the template. `stack` holds terms. `+` pushes `num`, `-` pushes `-num`, `*` and `/` rewrite the top. The answer is `sum(stack)`. The sentinel `"+"` flushes the last number.
+- Parentheses with only `+` and `-` (`basic-calculator`): no precedence, so `stack` is not a list of terms. Keep `result` for the current bracket level, `sign` for the pending number and `num`. On `+` or `-`, commit `result += sign * num` and reset `num`. On `(`, push `result` and then `sign`, and start again with `result, sign = 0, 1`. On `)`, commit, then `result *= stack.pop()` (the sign before the bracket) and `result += stack.pop()` (the outer total). `a - (b + c)` becomes `a - b - c`. A leading `-` works because the committed number is 0.
 - Nested repeats (`decode-string`): `stack` holds `(curr, num)` frames. On `[`, push `(curr, num)` and reset both. On `]`, `prev, count = stack.pop()` and `curr = prev + curr * count`. Letters extend `curr`. The answer is `curr` after the loop.
 
 ## Worked example

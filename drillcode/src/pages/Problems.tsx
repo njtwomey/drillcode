@@ -63,7 +63,7 @@ function TopicLink({ topic, primary }: { topic: string; primary?: boolean }) {
   )
 }
 
-export function Landing() {
+export function Problems() {
   const navigate = useNavigate()
   const done = useStore((s) => s.done)
   const filters = useStore((s) => s.filters)
@@ -91,7 +91,7 @@ export function Landing() {
 
   function randomProblem() {
     const pick = filtered[Math.floor(Math.random() * filtered.length)]
-    if (pick) navigate(`/p/${pick.slug}`)
+    if (pick) navigate(`/p/${pick.slug}/view`)
   }
 
   return (
@@ -182,7 +182,7 @@ export function Landing() {
                 {stats.get(p.slug) ? `${stats.get(p.slug)!.count}×` : '–'}
               </TableCell>
               <TableCell className="text-muted-foreground">{p.number}</TableCell>
-              <TableCell><Link to={`/p/${p.slug}`} className="font-medium hover:underline">{p.title}</Link></TableCell>
+              <TableCell><Link to={`/p/${p.slug}/view`} className="font-medium hover:underline">{p.title}</Link></TableCell>
               <TableCell><DifficultyBadge difficulty={p.difficulty} /></TableCell>
               <TableCell><TopicLink topic={p.topic} primary /></TableCell>
               <TableCell className="space-x-1">{p.tags.map((t) => <TopicLink key={t} topic={t} />)}</TableCell>

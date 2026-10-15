@@ -14,6 +14,7 @@ problems:
   - sqrtx
   - time-based-key-value-store
   - median-of-two-sorted-arrays
+  - random-pick-with-weight
 related: [binary-search-on-answer, opposite-ends, math-tricks, divide-and-conquer]
 ---
 ## Reach for it when
@@ -83,6 +84,7 @@ It removes the linear scan. Each probe throws away half the range, so n elements
 - `time-based-key-value-store`: `bisect_right(times, timestamp)` over the per-key `times` list, which is sorted because `set` is called with increasing timestamps. The entry before that position is the latest one not after the query. Index 0 means no entry, so return `""`.
 - `median-of-two-sorted-arrays`: exact-match style (`while lo <= hi`) on the cut `i` in the shorter array `a`, with `j = half - i` in `b`. If `a_left > b_right`, `hi = i - 1`. If `b_left > a_right`, `lo = i + 1`. Otherwise the cut is valid and the median is read from the four neighbours.
 - `search-a-2d-matrix`: exact match over `0..rows * cols - 1`, with the flat index mapped back by `mid // cols` for the row and `mid % cols` for the column (`divmod(mid, cols)` gives both at once).
+- `random-pick-with-weight`: `bisect_left(self.prefix, target)` over the prefix sums of the weights, which are non-decreasing. It returns the first index whose prefix is at least `target`, so the targets run 1 to `total` and not 0 to `total - 1`. The predicate is `prefix[mid] >= target`, the same first-true shape as `search-insert-position`.
 
 ## Worked example
 

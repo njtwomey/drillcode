@@ -3,9 +3,11 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// Relative base + HashRouter, so the built site works from any GitHub Pages path.
+// Real URLs (BrowserRouter). Locally the base is '/'. For GitHub Pages the workflow sets
+// BASE_PATH=/drillcode/ (the repository name) and the build copies index.html to 404.html so
+// deep links such as /p/two-sum/read load the app.
 export default defineConfig({
-  base: './',
+  base: process.env.BASE_PATH ?? '/',
   plugins: [react(), tailwindcss()],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
   server: { fs: { allow: [fileURLToPath(new URL('..', import.meta.url))] } },

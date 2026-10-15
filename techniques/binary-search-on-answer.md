@@ -7,6 +7,7 @@ problems:
   - capacity-to-ship-packages-within-d-days
   - split-array-largest-sum
   - longest-increasing-subsequence
+  - kth-smallest-element-in-a-sorted-matrix
 related: [binary-search-shapes, dp-space-and-loop-order, greedy-one-pass-invariants]
 ---
 ## Reach for it when
@@ -47,6 +48,7 @@ It removes searching the input or trying every candidate answer. The check costs
 - Integer ceiling: `(pile + mid - 1) // mid` is `ceil(pile / mid)`. Using `pile // mid` undercounts the hours for a partial pile.
 - Wrong lower bound when the pieces are indivisible: for `capacity-to-ship-packages-within-d-days` and `split-array-largest-sum`, `lo` must be `max(...)`, not 1. A capacity below the heaviest item cannot carry it, and the greedy count would be meaningless.
 - Greedy check that resets `load` to 0 and then forgets to add the current item: the item that overflowed is dropped. Both solutions reset first and add after.
+- In `kth-smallest-element-in-a-sorted-matrix`, searching positions instead of values. The answer is a value in the matrix range `[matrix[0][0], matrix[-1][-1]]`, and the count must be of entries `<= mid`, with `lo = mid + 1` when the count is below `k`. This is a note about the alternative: the catalogue solution uses a heap, not this search.
 - LIS: the `tails` list is not the subsequence. Only its length is meaningful.
 - LIS: `bisect_right` instead of `bisect_left` lets equal values extend the run, which is wrong for a strictly increasing subsequence (`[2, 2]` would give 2).
 
@@ -55,6 +57,7 @@ It removes searching the input or trying every candidate answer. The check costs
 - `koko-eating-bananas`: search the speed. The check sums `ceil(pile / speed)` over the piles and compares it with `h`.
 - `capacity-to-ship-packages-within-d-days`: search the capacity over `[max(weights), sum(weights)]`. `days_needed(cap)` loads packages in order, starting a new day (`count += 1`) when `load + weight > cap`. Feasible when `days_needed(mid) <= days`.
 - `split-array-largest-sum`: the same problem in other words. Search the largest piece sum over `[max(nums), sum(nums)]`. `pieces_needed(cap)` is the identical greedy, with `total` for `load`. Feasible when it is `<= k`. Fewer pieces than `k` is fine, because a piece can always be split further.
+- `kth-smallest-element-in-a-sorted-matrix` (alternative to its heap solution): search the value. Feasible when the number of entries `<= mid` is at least `k`. Count by the staircase: start at the bottom-left, move up while the entry exceeds `mid`, right otherwise, adding the column's cells. That is O(n) per check and O(n log range) overall. The catalogue solution uses the heap of row heads; see `heap-patterns`.
 - `longest-increasing-subsequence`: a different use of binary search, on a list the algorithm builds. `tails[i]` is the smallest possible last value of an increasing subsequence of length `i + 1`. For each `num`, `bisect_left(tails, num)` finds the first tail `>= num`. Replace it, or append when none is found. `tails` stays sorted, which is why it can be searched. The length of `tails` is the answer. The solution also keeps an O(n^2) DP version as `lengthOfLISQuadratic`.
 
 ## Worked example

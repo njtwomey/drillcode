@@ -121,7 +121,7 @@ export function Tips() {
                   <div className="relative z-10 mt-auto flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
                     <span>Used in</span>
                     {t.problems.slice(0, 3).map((slug) => (
-                      <Link key={slug} to={`/p/${slug}`} className="rounded-md bg-muted px-1.5 py-0.5 hover:underline">
+                      <Link key={slug} to={`/p/${slug}/view`} className="rounded-md bg-muted px-1.5 py-0.5 hover:underline">
                         {bySlug.get(slug)?.title ?? slug}
                       </Link>
                     ))}

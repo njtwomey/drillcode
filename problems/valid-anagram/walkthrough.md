@@ -26,7 +26,7 @@ Counting is just walking the string and adding one to each letter's slot:
  read 'a'            2  0            read 'b'            1  1
  read 'b'            2  1            read 'a'            2  1
                     -----                               -----
-                    a:2 b:1                              a:2 b:1   equal -> True
+                    a:2 b:1                              a:2 b:1   equal
 ```
 
 A mismatch looks like this:

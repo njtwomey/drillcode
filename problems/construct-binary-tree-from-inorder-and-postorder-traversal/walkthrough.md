@@ -38,7 +38,7 @@ The inorder slice shrinks around each root:
 
 ```text
 inorder:  [ 9 | 3 | 15  20  7 ]        root 3 at index 1
-                    [15 | 20 | 7]      root 20 at index 3
+                    15 [20]  7         root 20 at index 3
 ```
 
 ## Why it works

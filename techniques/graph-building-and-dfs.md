@@ -8,6 +8,7 @@ problems:
   - course-schedule
   - is-graph-bipartite
   - evaluate-division
+  - reconstruct-itinerary
 related: [topological-sort, union-find, grid-traversal, bfs-shortest-paths]
 ---
 ## Reach for it when
@@ -61,6 +62,9 @@ def clone(start):
 - Searching from one node only. A disconnected graph needs a start from every unvisited node (`is-graph-bipartite` loops over all `start` values; an odd cycle in a later component is missed otherwise).
 - Self-loops and duplicate edges in the input. A self-loop is a cycle of length one; duplicates inflate an in-degree count unless guarded.
 - Cloning only the node and not its neighbour list. The copy then still points at original nodes.
+- In `reconstruct-itinerary`, walking greedily and returning the walk. Taking the smallest ticket can strand you at an airport with no tickets while others remain unused (`JFK -> A`, `JFK -> B`, `B -> JFK`: the smallest-first walk goes to `A` and stops). Append on the way out and reverse, so the dead end lands last.
+- In the same problem, popping from the front of a sorted list (O(n) per pop) or forgetting the reverse sort. Sort tickets in reverse so `pop()` from the end gives the smallest destination.
+- In the same problem, marking airports visited. Airports repeat; tickets are the things that are used once, and `pop()` is what uses them up.
 - Cycle detection on a directed graph with a single visited set. Reaching a finished node is fine; only reaching a node still in progress is a cycle. Use three states, or count in-degrees as `course-schedule` does.
 - An empty input. `clone-graph` returns `None` for a null node.
 
@@ -70,6 +74,7 @@ def clone(start):
 - Build then process: `course-schedule` builds `graph` and `indegree` from the pairs, then runs Kahn's algorithm. See `topological-sort`.
 - Two-colouring: `is-graph-bipartite` keeps `colour`, a dict from node to 0 or 1, which is also the visited set. It starts a BFS from every node not yet coloured, because the graph may be disconnected, gives each new neighbour `1 - colour[curr]`, and returns `False` when an already-coloured neighbour has the same colour as `curr`. An odd cycle is the only way this happens.
 - Weighted edges: `evaluate-division` stores `graph[a][b] = v` and `graph[b][a] = 1 / v`, then runs a BFS per query carrying `product`. A variable missing from `graph` gives `-1.0` even for `x / x`; different components also give `-1.0`.
+- Eulerian path, `reconstruct-itinerary` (Hierholzer's algorithm): every ticket is an edge to use exactly once. Build `graph` from `sorted(tickets, reverse=True)` so each list ends with its smallest destination. `visit(airport)` loops `while graph[airport]` calling `visit(graph[airport].pop())`, then appends `airport` to `route`. This is post-order: an airport is recorded only after every ticket out of it is spent, so a dead end is appended first. `route[::-1]` is the itinerary. A plain greedy walk fails because the lexically smallest ticket may lead to a dead end while other tickets remain; Hierholzer's splices that stuck sub-trip into the back of the route instead. The edge is consumed by `pop`, so no `visited` is needed.
 - Components and cycles in an undirected graph: `union-find` does it without a walk.
 - The O(1) space version of the list copy interleaves copies after the originals. The catalogue solution uses the map.
 

@@ -49,7 +49,7 @@ Inside a cycle, `fast` closes the gap to `slow` by one each round, so they must 
 
 ## Where it goes wrong
 
-Starting both at `n` would make `slow != fast` false immediately, so the loop would not run. That is why `fast` starts one step ahead. Also, check for 1 before comparing, as the loop condition does: on a happy number the pointers might also coincide at 1, and that should still return True, which `fast == 1` handles.
+Starting both at `n` would make `slow != fast` false immediately, so the loop would not run. That is why `fast` starts one step ahead. The final answer is `fast == 1`, not `slow == fast`: the pointers can also coincide on 1 or on a cycle, and only the first is happy.
 
 ## Other approaches
 

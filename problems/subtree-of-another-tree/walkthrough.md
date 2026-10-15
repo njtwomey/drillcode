@@ -42,7 +42,7 @@ Now a main tree where node 2 has an extra child `0`:
         3              _same(4, 4)   equal
        / \               _same(1, 1)   True
       4   5              _same(2, 2)   equal values, then
-     / \                   _same(None, 0)   one side missing -> False
+     / \                   _same(0, None)   one side missing -> False
     1   2                returns False
        /
       0                  so isSubtree moves on to 1, 2, 0, 5: nothing matches

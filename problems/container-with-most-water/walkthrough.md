@@ -13,9 +13,9 @@ Invariant: every container that uses a wall outside `[left, right]` has already 
 
 ```text
 height = [3, 1, 4, 2, 5]
-index      0  1  2  3  4
-           ▲              ▲
-          left          right
+index     0  1  2  3  4
+          ▲           ▲
+          left        right
 ```
 
 ## Step by step
@@ -26,7 +26,7 @@ Each round measures `min(height[left], height[right]) * (right - left)`, then mo
 Round 1  left=0 (3), right=4 (5)   area = 3 * 4 = 12   best = 12
          3 < 5, so left moves.
 
-          ▲ left          ▲ right
+          ▲ left      ▲ right
          [3  1  4  2  5]
 
 Round 2  left=1 (1), right=4 (5)   area = 1 * 3 = 3    best = 12

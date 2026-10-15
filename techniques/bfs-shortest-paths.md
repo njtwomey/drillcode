@@ -8,6 +8,7 @@ problems:
   - shortest-path-in-binary-matrix
   - word-ladder
   - open-the-lock
+  - walls-and-gates
   - binary-tree-level-order-traversal
 related: [weighted-shortest-paths, grid-traversal, tree-bfs-by-level, graph-building-and-dfs]
 ---
@@ -66,11 +67,13 @@ def spread_time(grid):
 - Returning `minutes` without checking `fresh`. A fresh orange walled off from every rotten one must give `-1`.
 - Fresh oranges but nothing rotten. The queue is empty, `fresh` is above 0, and the answer is `-1`.
 - Forgetting forbidden or missing start states. `open-the-lock` with `"0000"` in `deadends` must give `-1`, not 0, and `word-ladder` without `endWord` in the list gives 0.
+- In `walls-and-gates`, running a BFS from each room. Seed every gate at once; the first time a room is reached is from its nearest gate. Test `rooms[nr][nc] == INF` so walls (`-1`) and rooms already labelled are skipped.
 - Reading `len(queue)` inside the loop condition. It changes as you append and the levels merge.
 
 ## Variants
 - Multi-source grid BFS: `rotting-oranges`, shown below.
 - Multi-source distances: `01-matrix` seeds `queue` with every 0 and fills `result`, which starts at `-1` and doubles as the visited mark. It has no level loop: each cell stores `result[r][c] + 1` for its neighbour, so the distance lives in the grid.
+- Multi-source in place, `walls-and-gates`: `queue` starts with every cell equal to 0 (a gate). A neighbour is expanded only if it is still `INF`, which is the visited check, and gets `rooms[r][c] + 1`. There is no level loop and no separate `visited`; the distance is written into the grid. Unreachable rooms stay `INF`, and a grid with no gates is left unchanged.
 - Eight directions: `shortest-path-in-binary-matrix` loops `dr` and `dc` over `(-1, 0, 1)` and carries `length` in the queue tuple. It rejects a blocked start or end first and adds to `seen` at enqueue.
 - Implicit graph with wildcard buckets: `word-ladder` groups words under patterns such as `h*t` in `buckets`, then BFS on `(word, steps)`. `buckets.pop(...)` empties a pattern after its first use, since all its words are queued by then. It returns 0 if `endWord` is not in the list.
 - Implicit graph with forbidden states: `open-the-lock` starts with `seen = set(deadends)`, so dead ends are pre-visited nodes. It returns `-1` at once if `"0000"` is dead, builds neighbours by turning each wheel by `+1` and `-1` modulo 10, and carries `turns` in the tuple.

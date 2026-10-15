@@ -5,12 +5,14 @@ topics: [Graph, Heap]
 problems:
   - network-delay-time
   - cheapest-flights-within-k-stops
+  - swim-in-rising-water
 related: [bfs-shortest-paths, heap-patterns, graph-building-and-dfs, minimum-spanning-tree]
 ---
 ## Reach for it when
 - Edges have different costs (time, price, distance) and you want the cheapest path.
 - The question is how long until a signal reaches every node, or the cheapest route from one source.
 - A cap on the number of edges or stops is part of the question. That points to Bellman-Ford, not Dijkstra.
+- The cost of a path is its worst edge or cell (the highest water level, the widest gap) rather than the sum.
 - Edge weights may be zero or positive, and the graph is directed or undirected. Negative weights rule out Dijkstra.
 
 ## Setup
@@ -56,11 +58,13 @@ def shortest_distances(n, edges, source):
 - Nodes labelled from 1. Index `n + 1` entries, or use a dict as the solution does.
 - Bellman-Ford relaxed in place. One round can then chain several edges, and the hop limit is ignored. Relax from a snapshot of the previous round.
 - Off by one on stops. `k` stops means `k + 1` flights, so run `k + 1` rounds.
+- In `swim-in-rising-water`, pushing `best + grid[nr][nc]`. The cost of a path is the highest cell on it, so the pushed cost is `max(best, grid[nr][nc])`. A sum answers a different question.
 - Relaxing from an unreached node. `cost[u] + price` with `cost[u] = INF` stays infinite and loses the comparison, so it is harmless in Python; with a finite sentinel such as `10**9` the sum could look like a real price.
 
 ## Variants
 - Dijkstra with a stale skip: `network-delay-time` pushes `(d + w, nxt)` only for nodes not yet in `dist`, records `dist[node] = d` on pop, and returns `max(dist.values())` when `len(dist) == n`, else `-1`.
 - Bellman-Ford with a hop limit: `cheapest-flights-within-k-stops` loops `k + 1` times. Each round copies `cost` into `nxt` and relaxes every `(u, v, price)` from the old `cost` into `nxt`, then assigns `cost = nxt`. A heap search does not fit because the cheapest route to a node may use too many stops, and the dearer route with fewer stops is the one that matters. Its snapshot is named `nxt`, which in other solutions is the neighbour.
+- Minimax path, `swim-in-rising-water`: Dijkstra with the sum replaced by `max`. The solution takes the heap approach, not the binary-search-plus-BFS alternative that its comment mentions. `heap` holds `(best, r, c)`, where `best` is the highest elevation on the path so far. Pop the smallest, return `best` when `(n - 1, n - 1)` is popped, otherwise push each unvisited neighbour with `max(best, grid[nr][nc])`. It marks `visited` on push, not on pop. That is safe here because the first push of a neighbour comes from the cheapest popped cell, and `max(best, height)` cannot be lowered by any later cell, which also means no stale-entry skip is needed. Its `best` is the path cost, not the answer so far.
 - Unit weights: `rotting-oranges` and the BFS problems on `bfs-shortest-paths` need only a queue.
 - Dijkstra's heap is the same one as in `heap-patterns`. `minimum-spanning-tree` has the same loop with the key changed from path length to edge weight.
 

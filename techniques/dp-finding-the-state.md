@@ -19,7 +19,9 @@ problems:
   - best-time-to-buy-and-sell-stock-with-cooldown
   - burst-balloons
   - russian-doll-envelopes
-related: [dp-space-and-loop-order, knapsack-patterns, two-string-dp, grid-dp, tree-dp-states, backtracking-template, greedy-one-pass-invariants]
+  - maximum-profit-in-job-scheduling
+  - regular-expression-matching
+related: [dp-state-machines, dp-space-and-loop-order, knapsack-patterns, two-string-dp, grid-dp, tree-dp-states, backtracking-template, greedy-one-pass-invariants]
 ---
 ## Reach for it when
 - The question asks to count the ways, find a minimum cost, or decide whether something is possible.
@@ -81,8 +83,10 @@ The state shape follows the input.
 - A position in a string: `decode-ways` (count), `word-break` (boolean, last word `s[j:i]`).
 - A grid cell: `unique-paths`; more in `grid-dp`.
 - Knapsack, edit and subsequence tables have their own pages: `knapsack-patterns`, `two-string-dp`.
-- A small set of modes per step (a state machine): `best-time-to-buy-and-sell-stock-with-cooldown` keeps one variable per mode: `held` (holding a share), `sold` (sold today, so tomorrow is a cooldown) and `rest` (empty-handed and free to buy). Each day sets `sold = held + price`, then `held = max(held, rest - price)`, then `rest = max(rest, prev_sold)`, with `prev_sold` saved first so each line reads yesterday's values. The answer is `max(sold, rest, 0)`. The state names the mode at the end of the day, not the day alone.
+- A small set of modes per step (a state machine, see `dp-state-machines`): `best-time-to-buy-and-sell-stock-with-cooldown` keeps one variable per mode: `held` (holding a share), `sold` (sold today, so tomorrow is a cooldown) and `rest` (empty-handed and free to buy). Each day sets `sold = held + price`, then `held = max(held, rest - price)`, then `rest = max(rest, prev_sold)`, with `prev_sold` saved first so each line reads yesterday's values. The answer is `max(sold, rest, 0)`. The state names the mode at the end of the day, not the day alone.
 - An interval and the last choice: `burst-balloons` pads `vals = [1] + nums + [1]`. `dp[l][r]` is the best score for the balloons strictly between `l` and `r`. The state is the last balloon `k` burst there, scoring `vals[l] * vals[k] * vals[r] + dp[l][k] + dp[k][r]`. Choosing the first balloon would make the neighbours depend on later choices; choosing the last fixes them and splits the interval into independent halves. The loop is by `gap`, since shorter intervals must be ready.
+- Sorted jobs, take or skip: `maximum-profit-in-job-scheduling` sorts `jobs = sorted(zip(endTime, startTime, profit))`, so the jobs that finish before a given start are a prefix. `best[k]` is the top profit over the first `k` jobs. For each job, `k = bisect_right(ends, start)` counts the earlier jobs with end at or before its start, and `best.append(max(best[-1], best[k] + gain))` is skip versus take. `bisect_right`, not `bisect_left`, lets a job start when another ends.
+- Pattern against a string: `regular-expression-matching` has `dp[i][j]` for `s[:i]` against `p[:j]`; see `two-string-dp` and `dp-state-machines`.
 - A sorted input then LIS: `russian-doll-envelopes` sorts by width ascending and height descending, then runs the `tails` array with `bisect_left` on heights. The descending tie-break stops equal widths from chaining. See `binary-search-on-answer` for the `tails` idea.
 - A tree: `house-robber-iii` carries two values per node (robbed and not robbed); see `tree-dp-states`.
 

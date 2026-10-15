@@ -10,12 +10,14 @@ problems:
   - meeting-rooms-ii
   - interval-list-intersections
   - minimum-number-of-arrows-to-burst-balloons
+  - minimum-interval-to-include-each-query
 related: [heap-patterns, greedy-one-pass-invariants, opposite-ends]
 ---
 ## Reach for it when
 
 - The input is a list of intervals, meetings, ranges or schedules given as `[start, end]` pairs.
 - The question is about overlap: merge, count conflicts, remove the fewest, find a gap, or count how many are active at once.
+- Many point queries ask which interval covers them, and the queries can be answered in any order.
 - Comparing every pair would be O(n^2) and the data can be sorted first.
 
 ## Setup
@@ -60,6 +62,8 @@ def merge_overlapping(intervals):
 - Advancing the wrong pointer when intersecting two lists. Move the interval that ends first; moving the other can skip an overlap with the next interval. Advancing both on every step misses `[[1, 10]]` against `[[2, 3], [4, 5]]`.
 - Testing `lo < hi` for an intersection. Intervals that touch at one point, such as `[1, 2]` and `[2, 3]`, then lose the overlap `[2, 2]`.
 - Using `>=` where `>` is needed in the arrows count. Balloons `[1, 2]` and `[2, 3]` share an arrow at 2, so a new arrow is needed only when `start > arrow_x`; with `>=` the answer is one too high.
+- In `minimum-interval-to-include-each-query`, answering queries in input order, or writing answers by sorted position. Sort `(q, idx)` pairs and store at `result[idx]`; queries may repeat.
+- In the same problem, leaving an interval on the heap whose end is before `q`. Pop while `heap[0][1] < q` before reading the root, or the answer can be an interval that ended earlier.
 - Using `<` in the sweep with separate sorted starts and ends when the touching rule says an ending meeting frees its room. Use `s >= ends[j]`.
 
 ## Variants
@@ -71,6 +75,7 @@ def merge_overlapping(intervals):
 - Count the peak, `meeting-rooms-ii`: sort by start and keep a min-heap of end times; reuse the room whose end is at or before the next start. Or sort starts and ends separately and sweep with two pointers, since only the count of open meetings matters. See `heap-patterns`.
 - Intersect two sorted lists, `interval-list-intersections`: no sort. `lo = max(starts)`, `hi = min(ends)`; if `lo <= hi` append `[lo, hi]`. Then advance `i` when `firstList[i][1] < secondList[j][1]`, else `j`. One pass, O(m + n).
 - Stab all intervals with the fewest points, `minimum-number-of-arrows-to-burst-balloons`: sort by end, as in `non-overlapping-intervals`. Shoot at the first balloon's end (`arrow_x = end`); every later balloon with `start <= arrow_x` is already hit. A balloon with `start > arrow_x` needs a new arrow. Touching counts as hit, the opposite of the removal count in `non-overlapping-intervals`, where touching is fine to keep.
+- Offline queries against intervals, `minimum-interval-to-include-each-query`: sort `intervals` by start and the queries in increasing order. For each `q`, push `(right - left + 1, right)` for every interval with `left <= q`, drop heap tops with end `< q`, and read the size at `heap[0][0]`, else `-1`. Sorted queries mean the started set only grows and an expired interval stays expired. See `heap-patterns`.
 
 ## Worked example
 

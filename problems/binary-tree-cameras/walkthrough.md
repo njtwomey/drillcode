@@ -53,7 +53,7 @@ Leaves always report `NEEDS`, which forces the camera onto their parent, the bes
 
 ## Where it goes wrong
 
-- Placing a camera on the leaf. For a chain of four nodes this gives 2 or more, but putting one on the second node from the bottom and one on the second from the top is also 2; on longer chains the leaf rule wastes cameras.
+- Placing a camera on the leaf. For a root with two leaf children, leaf cameras cost 2, while one camera on the root watches all three nodes.
 - Forgetting the root. It has no parent to cover it, so if `dfs(root)` returns `NEEDS` the code adds one more camera.
 - Returning `NEEDS` for `None`. Then every leaf would force a camera onto a phantom child.
 

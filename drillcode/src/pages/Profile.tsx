@@ -53,7 +53,7 @@ function SolveList({ title, rows, detail }: { title: string; rows: [string, { co
       <ul className="divide-y rounded-md border text-sm">
         {rows.map(([slug, st]) => (
           <li key={slug}>
-            <Link to={`/p/${slug}`} className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-muted/50">
+            <Link to={`/p/${slug}/view`} className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-muted/50">
               <span className="truncate font-medium">{bySlug.get(slug)!.title}</span>
               <span className="shrink-0 text-xs text-muted-foreground">{detail(st)}</span>
             </Link>

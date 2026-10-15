@@ -39,7 +39,7 @@ Block 2: kth = 4, group_next = 5, prev = 5
    group_prev = 3
 
    dummy ──▶ 2 ──▶ 1 ──▶ 4 ──▶ 3 ──▶ 5
-                                ^group_prev
+                               ^group_prev
 
 Block 3: kth walks 3 -> 5 -> None. Fewer than 2 nodes left, so return.
 ```

@@ -14,7 +14,11 @@ export function Markdown({ source, copyCode }: { source: string; copyCode?: bool
           pre: ({ children }) => <>{children}</>,
           code({ className, children }) {
             const text = String(children).replace(/\n$/, '')
-            if (/language-/.test(className ?? '') || text.includes('\n')) return <CodeBlock code={text} copy={copyCode} />
+            if (/language-python/.test(className ?? '')) return <CodeBlock code={text} copy={copyCode} />
+            // Any other fence (```text diagrams) is shown as-is in a monospace box.
+            if (/language-/.test(className ?? '') || text.includes('\n')) {
+              return <pre className="my-3 overflow-x-auto rounded-md border bg-muted/40 p-3 font-mono text-[13px] leading-snug">{text}</pre>
+            }
             if (techniqueBySlug.has(text)) {
               return (
                 <Link to={`/tips/${text}`} className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
@@ -24,6 +28,8 @@ export function Markdown({ source, copyCode }: { source: string; copyCode?: bool
             }
             return <code className="rounded bg-muted px-1 py-0.5 font-mono text-[0.85em]">{children}</code>
           },
+          h2: ({ children }) => <h2 className="mt-6 text-base font-semibold first:mt-0">{children}</h2>,
+          h3: ({ children }) => <h3 className="mt-4 text-sm font-semibold">{children}</h3>,
           table: ({ children }) => <div className="overflow-x-auto"><table className="w-full border-collapse text-sm">{children}</table></div>,
           th: ({ children }) => <th className="border-b px-3 py-2 text-left font-medium">{children}</th>,
           td: ({ children }) => <td className="border-b px-3 py-2 align-top">{children}</td>,

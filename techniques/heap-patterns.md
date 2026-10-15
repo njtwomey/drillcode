@@ -15,6 +15,10 @@ problems:
   - reorganize-string
   - task-scheduler
   - sliding-window-median
+  - kth-largest-element-in-a-stream
+  - design-twitter
+  - minimum-interval-to-include-each-query
+  - kth-smallest-element-in-a-sorted-matrix
 related: [interval-patterns, dummy-head, design-structures, sliding-window, greedy-one-pass-invariants]
 ---
 ## Reach for it when
@@ -25,6 +29,7 @@ related: [interval-patterns, dummy-head, design-structures, sliding-window, gree
 - A schedule or arrangement must separate equal items by a gap.
 - A running median or other order statistic is needed while data keeps arriving.
 - The next thing to handle is always the earliest-ending (or smallest, or nearest) of many pending things, as in room allocation.
+- Queries or events can be answered offline in sorted order while a heap holds the candidates that are still valid.
 - Sorting everything would work but costs O(n log n) when O(n log k) is wanted.
 
 ## Setup
@@ -72,6 +77,10 @@ def top_k_largest(items, k):
 - Pushing a spent item back. In `reorganize-string`, a letter whose count reached zero must not return to the heap, or the loop emits it again.
 - Taking only one item per round where two are needed, or leaving a lone last letter unhandled. `reorganize-string` ends with at most one entry in the heap and must append it.
 - Using the formula `(most - 1) * (n + 1) + tied` without the floor. `task-scheduler` with many distinct tasks and a small `n` gives a number below `len(tasks)`; the answer is the larger of the two.
+- In `kth-largest-element-in-a-stream`, replacing the root before the heap holds k values. `add` must `heappush` until `len(heap) == k`; only then does `heap[0]` mean the kth largest. The constructor feeds `nums` through `add`, so a short or empty initial list is handled by the same code.
+- In `design-twitter`, pushing every tweet of every followee. Only the newest per user is needed; push the previous one (`idx - 1`) after popping a user's tweet, and stop at 10.
+- In `minimum-interval-to-include-each-query`, answering queries in input order. The sweep needs them sorted, so keep each query's original index and write `result[idx]`. Also check `heap[0][1] < q` only at the top: an expired interval buried lower is removed when it surfaces, which is enough.
+- In `kth-smallest-element-in-a-sorted-matrix`, seeding all n rows when k is small, or pushing `c + 1` without the `c + 1 < n` check. Seed `min(n, k)` rows and stop a row at its last column.
 - Treating the heap as sorted. Only `heap[0]` is guaranteed; iterating the list does not give sorted order.
 
 ## Variants
@@ -87,6 +96,10 @@ def top_k_largest(items, k):
 - Lazy k-way merge of an implicit grid, `find-k-pairs-with-smallest-sums`: each `i` is a sorted row of sums `nums1[i] + nums2[j]`. Seed `(sum, i, 0)` for the first `min(k, len(nums1))` rows, pop, then push `(i, j + 1)`. Rows past k can never reach the top k.
 - Pair the two largest, `reorganize-string`: return `""` when the top count exceeds `(len(s) + 1) // 2`. Otherwise pop two `(-count, letter)` entries each round, append both letters, and push back those with count left.
 - A formula in place of a heap, `task-scheduler`: the most frequent task fixes `(most - 1)` frames of length `n + 1`, plus a last row of `tied` tasks. The answer is `max(len(tasks), frames)`. A heap simulation gives the same answer in more code.
+- Bounded min-heap over a stream, `kth-largest-element-in-a-stream`: `heap` holds the k largest values seen, so `heap[0]` is the kth largest. `add` pushes while `len(heap) < k`, then uses `heapreplace` only when `val > heap[0]`; anything else cannot be in the top k. The constructor calls `add` for each of `nums`.
+- Merge of time-ordered lists, `design-twitter`: each user's `tweets[user]` is already sorted by time, so `getNewsFeed` is a k-way merge. The heap holds `(-time, tweetId, user, idx)` for each followee's newest tweet. After a pop, push the same user's tweet at `idx - 1`. Stop at 10 results. See `design-structures`.
+- Offline sweep with lazy deletion, `minimum-interval-to-include-each-query`: sort `intervals` by start and iterate `sorted((q, idx) for idx, q in enumerate(queries))`. For each `q`, push `(right - left + 1, right)` for every interval with `left <= q`, then pop while `heap[0][1] < q`. The root is the smallest interval containing `q`, and `-1` stays if the heap is empty. Queries only grow, so an expired interval never becomes valid again. See `interval-patterns`.
+- Heap of row heads, `kth-smallest-element-in-a-sorted-matrix`: seed `(matrix[r][0], r, 0)` for `r in range(min(n, k))`, heapify, pop `k - 1` times pushing `(matrix[r][c + 1], r, c + 1)` when `c + 1 < n`, and return `heap[0][0]`. Same shape as `find-k-pairs-with-smallest-sums`. The other approach is binary search on the value with a staircase count; see `binary-search-on-answer`.
 - Order statistic of a window, `sliding-window-median`: the catalogue solution keeps `window` as a sorted list, removing the outgoing value with `bisect_left` and adding the new one with `insort`. It is O(n * k) because of the shifting, but simple. Two heaps with lazy deletion are the O(n log k) alternative. See `sliding-window`.
 
 ## Worked example

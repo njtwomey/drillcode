@@ -49,7 +49,7 @@ Take the balloon with the smallest end. Any valid plan must put an arrow inside 
 
 ## Where it goes wrong
 
-- Sorting by start instead of end. With `[1,10] [2,3] [4,5] [6,7]` sorted by start, the first arrow would sit at 10 and the next balloons look "popped" only if you track the wrong edge. Sorted by end, the arrow lands at 3, then 5, then 7: three arrows, which is right.
+- Sorting by start instead of end. `[1,10] [2,3] [4,5] [6,7]` is already sorted by start. The first arrow would go at 10, and the small balloons all start before 10, so they look popped: one arrow, which is wrong. Sorted by end, the arrows land at 3, 5 and 7: three arrows, which is right.
 - Using `>=` instead of `>`. Balloons that only touch, like `[1,2]` and `[2,3]`, share the point 2, so one arrow at 2 pops both. The test is `start > arrow_x`, strict.
 - Subtracting values to compare can overflow in languages with 32-bit integers; comparing does not.
 

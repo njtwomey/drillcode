@@ -31,7 +31,7 @@ right=2  c='b'  seen at 1, so left = max(0, 1 + 1) = 2.
   char:  a b b a
              L,R            seen = {a:0, b:2} len 1   best 2
 
-right=3  c='a'  seen at 0, so left = max(2, 0 + 1) = 2.   (stale entry, no move)
+right=3  c='a'  seen at 0, so left = max(2, 0 + 1) = 2.   (stale, no move)
   index: 0 1 2 3
   char:  a b b a
              L R            seen = {a:3, b:2} len 2   best 2

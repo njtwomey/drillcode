@@ -1,25 +1,32 @@
 import { CircleUser } from 'lucide-react'
-import { HashRouter, Link, NavLink, Route, Routes } from 'react-router'
+import { BrowserRouter, Link, Navigate, NavLink, Route, Routes, useParams } from 'react-router'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useApplyTheme } from '@/lib/useApplyTheme'
-import { Landing } from '@/pages/Landing'
+import { Home } from '@/pages/Home'
 import { Practice } from '@/pages/Practice'
 import { PracticeSession } from '@/pages/PracticeSession'
 import { ProblemPage } from '@/pages/ProblemPage'
+import { Problems } from '@/pages/Problems'
 import { Profile } from '@/pages/Profile'
 import { TipPage } from '@/pages/TipPage'
 import { Tips } from '@/pages/Tips'
 
 const NAV = [
-  { to: '/', label: 'Problems', end: true },
+  { to: '/problems', label: 'Problems', end: false },
   { to: '/practice', label: 'Practice', end: false },
   { to: '/tips', label: 'Tips', end: false },
 ]
 
+/** /p/:slug on its own is the solution view. */
+function ToView() {
+  const { slug } = useParams()
+  return <Navigate to={`/p/${slug}/view`} replace />
+}
+
 export default function App() {
   useApplyTheme()
   return (
-    <HashRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <header className="flex h-12 items-center gap-6 border-b px-4">
         <Link to="/" className="text-sm font-semibold">DrillCode</Link>
         <nav className="flex items-center gap-1 text-sm">
@@ -52,8 +59,12 @@ export default function App() {
       </header>
       <main className="mx-auto w-full max-w-[1800px] p-4">
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/p/:slug" element={<ProblemPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/problems" element={<Problems />} />
+          <Route path="/p/:slug" element={<ToView />} />
+          <Route path="/p/:slug/view" element={<ProblemPage mode="view" />} />
+          <Route path="/p/:slug/impl" element={<ProblemPage mode="impl" />} />
+          <Route path="/p/:slug/read" element={<ProblemPage mode="read" />} />
           <Route path="/practice" element={<Practice />} />
           <Route path="/practice/session" element={<PracticeSession />} />
           <Route path="/tips" element={<Tips />} />
@@ -61,6 +72,6 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
-    </HashRouter>
+    </BrowserRouter>
   )
 }

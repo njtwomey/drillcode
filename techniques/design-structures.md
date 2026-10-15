@@ -11,6 +11,14 @@ problems:
   - implement-trie-prefix-tree
   - design-add-and-search-words-data-structure
   - lfu-cache
+  - insert-delete-getrandom-o1
+  - design-twitter
+  - detect-squares
+  - design-underground-system
+  - design-browser-history
+  - snapshot-array
+  - logger-rate-limiter
+  - design-hit-counter
 related: [dummy-head, heap-patterns, trie-patterns, stack-matching, fenwick-tree]
 ---
 ## Reach for it when
@@ -19,6 +27,7 @@ related: [dummy-head, heap-patterns, trie-patterns, stack-matching, fenwick-tree
 - One structure gives fast lookup but no order, or order but slow lookup, and the problem needs both.
 - The input is a sequence of operation calls rather than one array, so each call must be cheap and state must persist between calls.
 - Data must be turned into a string and back with no loss.
+- The operations are "record an event" and "answer a question about the past": a window of the last 300 seconds, the average of past trips, the value at an old snapshot, the squares through a point.
 
 ## Setup
 
@@ -95,6 +104,14 @@ After `get, put = make_cache(2)`, the calls `put(1, 1)`, `put(2, 2)`, `get(1)`, 
 - Reading `peek` or `pop` without shifting first when `out_stack` is empty and `in_stack` is not.
 - In `lfu-cache`, forgetting to move `min_freq` when `_touch` empties the lowest bucket, or to reset it to 1 when a new key is added. The next eviction then looks in an empty bucket and raises `KeyError`.
 - In `lfu-cache`, accepting a `put` with capacity 0, or evicting before checking whether the key exists. Capacity 0 must store nothing; an existing key is a use, not a new entry.
+- In `insert-delete-getrandom-o1`, deleting `pos[val]` before updating `pos[last]`. When `val` is the last element, the dict entry for `val` is re-created and a removed value stays a member. Move `last` into the hole, update `pos[last]`, pop the list, then delete `pos[val]`.
+- In `design-hit-counter`, evicting with `<` instead of `<=`. The window is `timestamp - 299 .. timestamp`, so a hit exactly 300 seconds old has expired.
+- In `logger-rate-limiter`, writing the new deadline on a rejected message. Each rejected retry then pushes the deadline further out.
+- In `snapshot-array`, copying the array on `snap`, or appending a second `(snap_id, val)` entry for an index set twice in the same snap. Copying costs O(length) per snap; the duplicate entry breaks the strictly increasing `snap_id` order that `bisect_right` needs.
+- In `design-browser-history`, forgetting `del self.history[self.curr + 1:]` in `visit`. Forward then returns pages that were supposed to be discarded.
+- In `design-underground-system`, keying a route by an unordered pair, or not popping the open check-in. A to B and B to A are separate routes, and a reused customer id then reads a stale entry.
+- In `design-twitter`, ordering the feed by `tweetId`. Newest means latest posted, which is what the global `self.time` counter records.
+- In `detect-squares`, skipping the `px == x` test. With equal x the side length is zero (a stored copy of the query point itself passes the `abs` test), and the product would count a degenerate square.
 - Splitting an encoded string on the delimiter. A string containing `#` breaks it. Read the length, then slice exactly that many characters.
 
 ## Variants
@@ -107,7 +124,14 @@ After `get, put = make_cache(2)`, the calls `put(1, 1)`, `put(2, 2)`, `get(1)`, 
 - Tries as the data structure, `implement-trie-prefix-tree` and `design-add-and-search-words-data-structure`: the design is the trie itself. See `trie-patterns`.
 - Frequency buckets, `lfu-cache`: three dicts, `values`, `freq` and `buckets`, where each bucket is an `OrderedDict` used as an ordered set. `_touch` moves a key from bucket `f` to `f + 1` and bumps `min_freq` only if it emptied bucket `min_freq`. Eviction is `buckets[min_freq].popitem(last=False)`, which gives least frequent, then least recent. Every operation is O(1).
 - Prefix structure for updates, `range-sum-query-mutable`: a Fenwick tree. See `fenwick-tree`.
-- Dict plus list with swap-and-pop gives constant-time insert, delete and random element. It is not in this catalogue.
+- Dict plus list with swap-and-pop, `insert-delete-getrandom-o1`: `values` is a list for `random.choice`, `pos` maps each value to its index. `insert` appends and records the index. `remove` copies the last element into the hole at `pos[val]`, sets `pos[last] = idx`, pops the list, then deletes `pos[val]`. Order is not kept, which is why deletion is O(1).
+- Per-key history with bisect, `snapshot-array`: `history[index]` is a list of `(snap_id, value)` pairs, starting `[(0, 0)]`. `set` overwrites the last pair when it already has the current `snap_id`, otherwise appends. `snap` only increments `snap_id`. `get` runs `bisect_right` on the `snap_id` key and reads the pair before the insertion point, so a snap where the index was untouched reads the earlier value.
+- Deque eviction, `design-hit-counter`: `window` is a deque of timestamps. `hit` appends. `getHits` pops from the left while `window[0] <= timestamp - 300`, then returns `len(window)`. Timestamps never go backwards, so an evicted hit is never needed again. See `sliding-window`.
+- Dict of deadlines, `logger-rate-limiter`: `next_allowed` maps a message to the earliest time it may print. Print and set `timestamp + 10` only when `timestamp >= next_allowed.get(message, 0)`.
+- Two dicts, `design-underground-system`: `open` maps a customer id to `(station, time)` and is popped on check-out. `trips` maps `(start, end)` to `[total, count]`, and the average is `total / count` when asked. Storing a sum and a count rather than every trip keeps each call O(1).
+- Array plus index, `design-browser-history`: `history` is a list and `curr` the index shown. `visit` truncates after `curr` and appends. `back` and `forward` clamp with `max(0, ...)` and `min(len(history) - 1, ...)`.
+- Heap merge for a feed, `design-twitter`: `tweets[user]` is a time-ordered list of `(time, tweetId)` and `following[user]` a set. `getNewsFeed` seeds a heap with each followee's newest tweet (and the user's own) as `(-time, tweetId, user, idx)`, pops up to 10, and after each pop pushes the same user's previous tweet at `idx - 1`. It is a k-way merge. See `heap-patterns`.
+- Counter keyed by a tuple, `detect-squares`: `points` is a `Counter` of `(x, y)`. For the query `(x, y)`, each stored point `(px, py)` is the opposite corner when `abs(px - x) == abs(py - y)` and `px != x`. The other corners are `(px, y)` and `(x, py)`, and the count adds `diag * points[(px, y)] * points[(x, py)]`, so duplicates multiply. `count` is O(p), not O(1).
 
 ## Worked example
 

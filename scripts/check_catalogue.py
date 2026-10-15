@@ -1,6 +1,7 @@
 """uv run python scripts/check_catalogue.py  -- validate index.yaml against problems/ directories."""
 
 import ast
+import re
 import sys
 
 from _common import PROBLEMS, REQUIRED_FILES, TOPICS, load_index, load_spec, problem_dirs, solution_files
@@ -17,6 +18,34 @@ def defined_names(source):
         if isinstance(node, ast.ClassDef):
             classes[node.name] = {n.name for n in node.body if isinstance(n, ast.FunctionDef)}
     return classes
+
+
+def check_walkthrough(slug, text):
+    """A walkthrough needs a text diagram, parseable python excerpts and only ## headings."""
+    problems = []
+    in_fence, lang, buf, diagrams = False, "", [], 0
+    for line in text.split("\n"):
+        fence = re.match(r"^```(\w*)\s*$", line)
+        if fence and not in_fence:
+            in_fence, lang, buf = True, fence.group(1), []
+        elif in_fence and line.strip() == "```":
+            in_fence = False
+            if lang == "text":
+                diagrams += 1
+            elif lang == "python":
+                try:
+                    ast.parse("\n".join(buf))
+                except SyntaxError as e:
+                    problems.append(f"{slug}: walkthrough python block does not parse: {e}")
+        elif in_fence:
+            buf.append(line)
+        elif re.match(r"^#{1,6}\s", line) and not line.startswith("## "):
+            problems.append(f"{slug}: walkthrough heading must be '## ...': {line.strip()}")
+    if diagrams == 0:
+        problems.append(f"{slug}: walkthrough has no ```text diagram")
+    if len(text.split()) < 120:
+        problems.append(f"{slug}: walkthrough is under 120 words")
+    return problems
 
 
 def main():
@@ -52,6 +81,7 @@ def main():
             errors.append(f"{slug}: missing {f}")
         if missing:
             continue
+        errors.extend(check_walkthrough(slug, (directory / "walkthrough.md").read_text()))
         spec = load_spec(slug)
         if spec.get("compare") == "validator" and not (directory / "validator.py").exists():
             errors.append(f"{slug}: compare is validator but validator.py is missing")

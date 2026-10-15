@@ -21,14 +21,14 @@ groups = {}            (empty)
 Input: `["eat", "tea", "tan", "ate", "nat", "bat"]`. Writing each fingerprint as its non-zero counts:
 
 ```text
-word   counts                fingerprint key   groups afterwards
-─────  ────────────────────  ────────────────  ─────────────────────────────
-eat    a1 e1 t1              (a1 e1 t1)        {aet: [eat]}
-tea    a1 e1 t1              (a1 e1 t1)        {aet: [eat, tea]}
-tan    a1 n1 t1              (a1 n1 t1)        {aet: [eat, tea], ant: [tan]}
-ate    a1 e1 t1              (a1 e1 t1)        {aet: [eat, tea, ate], ant: [tan]}
-nat    a1 n1 t1              (a1 n1 t1)        {aet: [...3], ant: [tan, nat]}
-bat    a1 b1 t1              (a1 b1 t1)        {aet: [...3], ant: [...2], abt: [bat]}
+word   counts       groups afterwards
+─────  ───────────  ──────────────────────────────────────
+eat    a1 e1 t1     aet: [eat]
+tea    a1 e1 t1     aet: [eat, tea]
+tan    a1 n1 t1     aet: [eat, tea]            ant: [tan]
+ate    a1 e1 t1     aet: [eat, tea, ate]       ant: [tan]
+nat    a1 n1 t1     aet: [eat, tea, ate]       ant: [tan, nat]
+bat    a1 b1 t1     (same two groups)          abt: [bat]
 ```
 
 Here `aet`, `ant` and `abt` are just short labels for the real 26-number tuples. At the end `list(groups.values())` gives:

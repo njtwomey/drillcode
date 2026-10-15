@@ -12,6 +12,7 @@ problems:
   - squares-of-a-sorted-array
   - boats-to-save-people
   - trapping-rain-water
+  - merge-sorted-array
 related: [read-write-pointers, sliding-window]
 ---
 ## Reach for it when
@@ -68,6 +69,7 @@ It replaces the nested loop over all pairs with one pass, O(n) instead of O(n²)
 - Output from the outside in (`squares-of-a-sorted-array`): the largest square is at `left` or `right`, so `result` is filled from the back with the larger `abs`, and only the pointer that was used moves. This is a merge of two sorted runs, read from the large end.
 - Pair by greedy (`boats-to-save-people`): sort, then the heaviest person at `right` always takes a boat. The lightest at `left` joins if `people[left] + people[right] <= limit`; otherwise `right` goes alone. `right -= 1` and `count += 1` happen every round, and the loop is `while left <= right`.
 - Carry a running maximum per side (`trapping-rain-water`): `left_max` and `right_max`. If `height[left] < height[right]`, some bar on the right is at least as tall as anything on the left, so the water at `left` depends only on `left_max`. It is decided and `left` can move. The solution compares the heights at the pointers, not the two maxima.
+- Merge from the back (`merge-sorted-array`): `i, j = m - 1, n - 1` point at the last real element of `nums1` and `nums2`, and `k` runs from `m + n - 1` down to 0 as the write position. The larger of `nums1[i]` and `nums2[j]` goes to `nums1[k]`, and only its pointer moves. Writing from the free tail never overwrites an unread element of `nums1`. When `j < 0` the loop breaks, since the rest of `nums1` is already in place. If `i < 0`, the `else` branch takes `nums2[j]`. It is the same large-end fill as `squares-of-a-sorted-array`, with a third index `k` as the write pointer.
 
 ## Worked example
 Problem: `3sum`

@@ -8,7 +8,8 @@ problems:
   - distinct-subsequences
   - interleaving-string
   - longest-palindromic-subsequence
-related: [dp-finding-the-state, dp-space-and-loop-order, expand-around-centre]
+  - regular-expression-matching
+related: [dp-state-machines, dp-finding-the-state, dp-space-and-loop-order, expand-around-centre]
 ---
 ## Reach for it when
 - The input is two strings (or one string and its reverse), and the question compares them: common subsequence, edit cost, how many times one spells the other.
@@ -63,6 +64,7 @@ def table_over_prefixes(a, b):
 - Edit cost: `edit-distance` seeds `dp[i][0] = i` and `dp[0][j] = j`. A match copies the diagonal; a mismatch adds 1 to the minimum of three neighbours.
 - Counting with match-or-skip: `distinct-subsequences` has `dp[i][j]` for `s[:i]` spelling `t[:j]`. It always copies `dp[i - 1][j]` and adds `dp[i - 1][j - 1]` when `s[i - 1] == t[j - 1]`.
 - Two strings interleaving a third: `interleaving-string` has the cell `dp[i][j]` for `s3[:i + j]` built from `s1[:i]` and `s2[:j]`. `from_s1` needs `dp[i - 1][j]` and `s1[i - 1] == ch`; `from_s2` needs `dp[i][j - 1]` and `s2[j - 1] == ch`. The third string needs no index of its own, because its prefix length is `i + j`.
+- String against a pattern: `regular-expression-matching` has `dp[i][j]` true when `s[:i]` matches `p[:j]`. Row 0 is filled by the same loop as the rest, so `a*b*` matches the empty string. A plain character or `.` copies `dp[i - 1][j - 1]`. A `*` first takes zero copies, `dp[i][j - 2]`, then, if `p[j - 2]` matches `s[i - 1]`, ORs in `dp[i - 1][j]`. Staying on column `j` lets the star repeat. Details in `dp-state-machines`.
 - One string, an interval table: `longest-palindromic-subsequence` does not compare with the reverse. It uses an `n x n` table where `dp[i][j]` covers `s[i..j]`. Equal ends give `dp[i + 1][j - 1] + 2`; otherwise `max(dp[i + 1][j], dp[i][j - 1])`. `i` runs from `n - 1` down and `j` from `i + 1` up. The reverse-and-LCS version is the same table in disguise.
 
 ## Worked example

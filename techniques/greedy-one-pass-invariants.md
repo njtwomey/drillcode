@@ -12,6 +12,9 @@ problems:
   - gas-station
   - candy
   - partition-labels
+  - valid-parenthesis-string
+  - merge-triplets-to-form-target-triplet
+  - hand-of-straights
 related: [interval-patterns, opposite-ends, dp-finding-the-state, prefix-and-suffix-passes]
 ---
 ## Reach for it when
@@ -67,6 +70,9 @@ def one_pass(nums):
 - Layers of reach, `jump-game-ii`: `farthest = max(farthest, i + nums[i])` each step; when `i == end`, add a jump and set `end = farthest`. A greedy form of breadth-first search, with no queue.
 - Restart on failure, `gas-station`: `tank` collects `gas[i] - cost[i]` and `total` collects the same over the circle. When `tank < 0`, no start in `[start, i]` can work, so set `start = i + 1` and `tank = 0`. Return `start` if `total >= 0`, else -1.
 - Two passes, `candy`: `candies = [1] * n`; left to right, a child rated above the left neighbour gets `candies[i - 1] + 1`; right to left, the same for the right neighbour with `max`. The answer is `sum(candies)`. See `prefix-and-suffix-passes`.
+- A range instead of one number, `valid-parenthesis-string`: `lo` and `hi` are the smallest and largest open counts any choice of stars could have produced. `(` adds 1 to both, `)` subtracts 1 from both, `*` does `lo -= 1` and `hi += 1`. Return False when `hi < 0`, since even all stars as `(` cannot save a `)`. Clamp `lo = max(lo, 0)` after each character. The answer is `lo == 0`. Without the clamp, `"*("` passes wrongly.
+- Filter then check, `merge-triplets-to-form-target-triplet`: merging is a coordinate-wise max, which never decreases, so a triplet with any coordinate above `target` is skipped. For the rest, `found[i]` is set when `triplet[i] == target[i]`, and the answer is `all(found)`. A matching value inside a skipped triplet does not count.
+- Sorted counter, `hand-of-straights`: this is a greedy over a `Counter` and a sort, not a pure single scan. Check `len(hand) % groupSize` first. Then, for each `card` in `sorted(count)`, `need = count[card]` runs must start there (nothing smaller is left to extend downward), so subtract `need` from each of `card .. card + groupSize - 1`, returning False if any `count[val] < need`. A gap reads as 0 on a `Counter` without inserting a key.
 - Cut when the forced end is reached, `partition-labels`: `last` maps each letter to its final index. `end = max(end, last[c])`; at `i == end` record `end - start + 1` and set `start = i + 1`.
 
 ## Worked example

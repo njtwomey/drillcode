@@ -44,7 +44,7 @@ right=5  add 3   total=9  >= 7
 
 ```text
 final window state:   [2, 3, 1, 2, 4, 3]
-                                     ^ left=5, right=5
+                                      ^ left=5, right=5
 best = 2  (window [4, 3])
 ```
 
@@ -61,7 +61,8 @@ When the window `[left, right]` first reaches `target`, shrinking from the left 
 ```text
 if instead of while, right=4:
   window [3,1,2,4] total 10 -> drop one -> [1,2,4] total 7, still enough,
-  but the loop moves on: the length-3 answer is never recorded.
+  but the loop moves on: the length-3 window is never recorded, the window
+  stays too wide, and the function returns 4 instead of 2.
 ```
 
 ## Cost

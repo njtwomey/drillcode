@@ -12,6 +12,7 @@ problems:
   - isomorphic-strings
   - valid-sudoku
   - top-k-frequent-elements
+  - longest-palindrome
 related: [prefix-and-suffix-passes, heap-patterns]
 ---
 
@@ -69,6 +70,7 @@ The inner loop that compares each element with every other. A hash lookup is O(1
 - Run starts: `longest-consecutive-sequence` puts values in a set and counts upward only from values whose predecessor `num - 1` is absent, so each run is walked once.
 - One set per unit: `valid-sudoku` keeps a set for each row, column and box, and fails when a digit is already in any of its three.
 - Bucket by frequency: `top-k-frequent-elements` makes `buckets[count]` a list of values. Counts are at most n, so the top k come from the high end in O(n), where a heap is O(n log k).
+- Pairs plus one centre: `longest-palindrome` builds `count = Counter(s)` (case-sensitive). For each `c` in `count.values()` it adds `c // 2 * 2` to `result` and sets `has_odd` if `c % 2`. It returns `result + 1` when any letter had a leftover, once, because only one letter can sit in the middle.
 
 ## Worked example
 

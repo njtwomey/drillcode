@@ -8,6 +8,7 @@ problems:
   - min-stack
   - implement-queue-using-stacks
   - asteroid-collision
+  - exclusive-time-of-functions
 related: [monotonic-stack, design-structures, stack-expression-parsing]
 ---
 ## Reach for it when
@@ -47,6 +48,8 @@ It removes the repeated search for the nearest unmatched opener: LIFO order puts
 - In RPN, using `a // b` for division: it floors, so `-7 / 2` gives -4 instead of -3. Use `int(a / b)`.
 - In `implement-queue-using-stacks`, refilling `out_stack` while it is not empty: newer items end up under older ones and FIFO order breaks.
 - In the same problem, `empty` checking only one stack.
+- In `exclusive-time-of-functions`, using `stamp - start` for the span. Both timestamps are inclusive, so the span is `stamp - start + 1`.
+- In the same problem, not subtracting the span from the caller. The inclusive span of a callee also counts against `stack[-1]`'s function, so subtract it from `result[stack[-1][0]]` or the caller is over-counted.
 - In `asteroid-collision`, pushing the newcomer without a survival flag: after it destroys the top it must keep fighting, and after it loses it must not be pushed. Compare magnitudes with `-asteroid`, and treat equal sizes as both exploding.
 
 ## Variants
@@ -54,6 +57,7 @@ It removes the repeated search for the nearest unmatched opener: LIFO order puts
 - Postfix evaluation (`evaluate-reverse-polish-notation`): push numbers, and on an operator pop two and push the result. A valid expression leaves one value.
 - Stack with a running minimum (`min-stack`): the solution stores `(val, current_min)` tuples on one stack, so the minimum is restored on `pop` with no search. A parallel stack that gets a push only when the value is `<=` the current minimum also works, but the solution does not use it.
 - Collisions (`asteroid-collision`): `stack` holds survivors in order. Only a negative `asteroid` meeting a positive `stack[-1]` collides. A `while alive and ...` loop pops smaller tops, pops an equal top and clears `alive`, or clears `alive` for a larger top. If `alive` is still true, the asteroid is pushed.
+- Call stack from logs (`exclusive-time-of-functions`): a start pushes `(fid, stamp)` onto `stack`. An end pops the matching entry, so starts and ends nest like brackets. It computes `span = stamp - start + 1`, adds it to `result[fid]`, and subtracts it from `result[stack[-1][0]]` if a caller remains. Each entry is a call, not a function id, so recursion works. Functions missing from the logs stay 0.
 - Two-stack queue (`implement-queue-using-stacks`): push to `in_stack`, pop from `out_stack`, and refill `out_stack` from `in_stack` only when it is empty.
 
 ## Worked example

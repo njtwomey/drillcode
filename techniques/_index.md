@@ -43,3 +43,4 @@ When a problem looks awkward, find the signal below and open the page. Each page
 | Split in halves, solve each, combine; sort a linked list; median of two arrays | `divide-and-conquer` |
 | Evaluate or expand a nested or arithmetic expression in a string | `stack-expression-parsing` |
 | Power, square root, or a number sequence that may loop | `math-tricks` |
+| A few states per step with a transition between them (holding, sold, cooling); the last item handled in a range | `dp-state-machines` |

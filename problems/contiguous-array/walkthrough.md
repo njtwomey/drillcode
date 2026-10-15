@@ -41,7 +41,7 @@ The answer is 6: indexes 3 to 8, which are `1,1,1,0,0,0`.
 ```text
 index    0  1  2 │ 3  4  5  6  7  8
 num      0  1  1 │ 1  1  1  0  0  0
-                   └───── 6 long ─────┘
+                   └─── 6 long ───┘
 ```
 
 ## Why it works

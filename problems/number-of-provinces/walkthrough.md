@@ -51,9 +51,10 @@ Every link is examined once. Two linked cities end up with the same root: either
 - Merging `i` and `j` directly (`parent[i] = j`) instead of their roots. That can detach cities already in a province.
 
 ```text
-cities 0-1 and 2-3 are already merged; linking 1 and 2:
-  wrong:  parent[1] = 2   (0 still points at 1 but 3 not reached correctly)
-  right:  parent[find(1)] = find(2)
+0 and 1 already share root 1; 2 is alone. Link (1,2):
+  wrong:  parent[1] = 2 is fine here, but parent[0] = 2 (using i, not its root)
+          would leave 1 behind: 0 -> 2, while 1 is still its own root
+  right:  parent[find(0)] = find(2)
 ```
 
 ## Cost

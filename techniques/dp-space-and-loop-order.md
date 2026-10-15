@@ -20,6 +20,7 @@ problems:
   - triangle
   - burst-balloons
   - longest-palindromic-subsequence
+  - min-cost-climbing-stairs
 related: [dp-finding-the-state, knapsack-patterns, two-string-dp, grid-dp, greedy-one-pass-invariants]
 ---
 ## Reach for it when
@@ -81,6 +82,7 @@ def count_sequences(nums, target):
 - Unbounded counting, coins outer: `coin-change-ii` (`for coin in coins`, then `a` upward) counts combinations. Unbounded minimum: `perfect-squares` over `squares`.
 - 0/1 counting with a reduction: `target-sum` counts subsets reaching `goal = (total + target) // 2`, downward. See `knapsack-patterns`.
 - Fill order set by dependencies, not row-major: `longest-palindromic-subsequence` has `dp[i][j]` read `dp[i + 1][j - 1]`, `dp[i + 1][j]` and `dp[i][j - 1]`, so `i` runs backwards and `j` forwards. `burst-balloons` fills by interval length `gap`, because `dp[l][k]` and `dp[k][r]` are shorter.
+- Rolling pair with a min and a top that is not a step: `min-cost-climbing-stairs` starts `prev, curr = cost[0], cost[1]` (each step's own cost, since starting on step 0 or 1 is allowed), then `prev, curr = curr, step_cost + min(prev, curr)` over `cost[2:]`. Both states are the cheapest path that ends standing on a step. The top lies one past the last step and is reachable from either of the last two, so it returns `min(prev, curr)`, not `curr`.
 - Kadane: `maximum-subarray`; max and min pair: `maximum-product-subarray`.
 
 ## Worked example
