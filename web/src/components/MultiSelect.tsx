@@ -36,7 +36,11 @@ export function MultiSelect<T extends string>({ label, allLabel, options, value,
           </Button>
         </PopoverTrigger>
         <PopoverContent align="start" className={columns === 2 ? 'w-80' : 'w-48'}>
-          <div className={columns === 2 ? 'grid grid-cols-2 gap-x-2 gap-y-1.5' : 'grid gap-1.5'}>
+          {/* Two columns fill top to bottom, then left to right, so the alphabetical order reads like a glossary. */}
+          <div
+            className="grid gap-x-2 gap-y-1.5"
+            style={columns === 2 ? { gridAutoFlow: 'column', gridTemplateRows: `repeat(${Math.ceil(options.length / 2)}, auto)`, gridTemplateColumns: '1fr 1fr' } : undefined}
+          >
             {options.map((option) => (
               <Label key={option} className="gap-2 text-sm font-normal">
                 <Checkbox checked={value.includes(option)} onCheckedChange={() => toggle(option)} />
