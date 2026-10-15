@@ -60,6 +60,8 @@ const hasOutput = (r?: CaseResult) => !!r && !!(r.stdout.trim() || r.stderr.trim
 /** Every test case: tick the ones to run, open one to see its input, result and console output, or run it alone. */
 export function TestsPanel({ spec, cases, results, selected, running, onToggle, onSelectAll, onSelectNone, onSelectMine, onRunOne, editing, onEdit, onDelete, renderEditor, visibleExamples, errorCase, onShowError }: Props) {
   const [open, setOpen] = useState<Record<string, boolean>>({})
+  // Which tests have their console output open. Kept here, not in the row, so it survives a re-run (the row is empty while it runs).
+  const [consoleOpen, setConsoleOpen] = useState<Record<string, boolean>>({})
   // Failures open themselves once per run, so the reason is on screen; the reader can still close them.
   const autoOpened = useRef(new Set<string>())
   useEffect(() => {
@@ -185,7 +187,7 @@ export function TestsPanel({ spec, cases, results, selected, running, onToggle, 
                     )}
                     {r?.status === 'pass' && !hasOutput(r) && <p className="text-xs text-muted-foreground">Passed. Nothing was printed.</p>}
                     {hasOutput(r) && (
-                      <Collapsible>
+                      <Collapsible open={!!consoleOpen[c.name]} onOpenChange={(v) => setConsoleOpen((o) => ({ ...o, [c.name]: v }))}>
                         <CollapsibleTrigger className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
                           <Terminal className="size-3.5" /> Console output
                         </CollapsibleTrigger>
